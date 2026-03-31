@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanımlar | AresPipe</title>
+<script>(function(){var t=localStorage.getItem('syos_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ac:#2D8EFF;--gr:#16a36e;--re:#e53e3e;--warn:#d97706;--leg:#7c3aed;}
+[data-theme=dark]{--bg:#0d1117;--sur:#161b24;--sur2:#1c2333;--bor:#262f3e;--tx:#e6ecf4;--txd:#6b7a90;--txm:#94a3b8;}
+[data-theme=light-anthracite]{--bg:#d8dde4;--sur:#e4e9ef;--sur2:#d0d7e0;--bor:#bcc5d0;--tx:#141e2b;--txm:#3a4f63;--txd:#637080;}
+
+
+
+/* SIDEBAR — tam sistem sidebar */
+
+[data-theme="dark"] .icon-sun{display:block!important;}[data-theme="dark"] .icon-moon{display:none!important;}
+[data-theme="light"] .icon-sun{display:none!important;}[data-theme="light"] .icon-moon{display:block!important;}
+[data-theme="slate"] .icon-sun{display:block!important;}[data-theme="slate"] .icon-moon{display:none!important;}
+[data-theme="navy"] .icon-sun{display:block!important;}[data-theme="navy"] .icon-moon{display:none!important;}
+
+.uyari-bell{position:absolute;top:10px;right:80px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;background:var(--sur);border:1px solid var(--bor);transition:all 0.2s;text-decoration:none;}
+.uyari-bell:hover{border-color:var(--re);background:rgba(239,68,68,0.08);}
+.uyari-bell-yeni{border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.08);animation:bellPulse 2s ease-in-out infinite;}
+@keyframes bellPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3);}50%{box-shadow:0 0 0 6px rgba(239,68,68,0);}}
+.uyari-sayac{position:absolute;top:-5px;right:-5px;background:var(--re);color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--bg);}
+
+/* SAYFA */
+.page{padding:28px 28px 40px;}
+.page-title-label{font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--tx);line-height:1;}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--txd);margin-bottom:6px;}
+.breadcrumb a{color:var(--txd);text-decoration:none;}.breadcrumb a:hover{color:var(--ac);}
+
+/* SEKMELER */
+.tab-bar{display:flex;gap:2px;border-bottom:2px solid var(--bor);margin-bottom:20px;}
+.tab-btn{padding:10px 20px;background:transparent;border:none;font-family:'Barlow',sans-serif;font-size:14px;font-weight:500;color:var(--txd);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all 0.15s;display:flex;align-items:center;gap:7px;}
+.tab-btn:hover{color:var(--tx);}
+.tab-btn.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
+.tc{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:18px;border-radius:99px;font-size:11px;font-weight:700;padding:0 5px;background:var(--sur2);color:var(--txd);}
+.tab-btn.active .tc{background:rgba(45,142,255,.12);color:var(--ac);}
+.panel{display:none;}.panel.on{display:block;}
+
+/* TABLE */
+.tablo-kart{background:var(--sur);border:1px solid var(--bor);border-radius:16px;overflow:hidden;}
+.tablo-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--bor);}
+.tablo-baslik{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--bor);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--bor);transition:background 0.12s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--sur2);}
+td{padding:12px 16px;font-size:13px;vertical-align:middle;}
+.td-kod{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--ac);}
+.td-eylem{display:flex;gap:6px;justify-content:flex-end;}
+
+/* BUTON */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;font-family:'Barlow',sans-serif;}
+.btn-ac{background:var(--ac);color:#fff;}.btn-ac:hover{filter:brightness(1.1);}
+.btn-g{background:var(--sur2);color:var(--tx);border:1px solid var(--bor);}.btn-g:hover{border-color:var(--ac);color:var(--ac);}
+.btn-re{background:rgba(229,62,62,.10);color:var(--re);border:1px solid rgba(229,62,62,.25);}.btn-re:hover{background:rgba(229,62,62,.18);}
+.btn-sm{padding:5px 10px;font-size:12px;}
+
+/* RENK CHIP */
+.renk-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.renk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* AKTİF / PASİF */
+.aktif-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;}
+.b-ak{background:rgba(22,163,110,.12);color:var(--gr);}
+.b-pa{background:rgba(100,116,139,0.12);color:var(--txd);}
+
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;}
+.mbox{background:var(--sur);border:1px solid var(--bor);border-radius:18px;padding:24px;width:100%;max-width:500px;box-shadow:0 24px 60px rgba(0,0,0,0.5);}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.mtitle{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;}
+.mcl{background:none;border:none;color:var(--txd);font-size:22px;cursor:pointer;line-height:1;}.mcl:hover{color:var(--tx);}
+.fg{margin-bottom:14px;}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.fi{width:100%;padding:8px 12px;border-radius:9px;border:1px solid var(--bor);background:var(--sur2);color:var(--tx);font-size:13px;font-family:'Barlow',sans-serif;outline:none;}
+.fi:focus{border-color:var(--ac);}
+.fta{width:100%;padding:8px 12px;border-radius:9px;border:1px solid var(--bor);background:var(--sur2);color:var(--tx);font-size:13px;font-family:'Barlow',sans-serif;outline:none;resize:vertical;min-height:60px;}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mfooter{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--bor);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:12px 20px;display:flex;align-items:center;gap:12px;z-index:1100;animation:tin 0.3s ease;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+.t-ok{border-left:3px solid var(--gr);}.t-er{border-left:3px solid var(--re);}
+@keyframes tin{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+
+/* SOL KENAR RENK (Kural B-01) */
+.cl-ac{border-left:3px solid var(--ac) !important;}
+.cl-gr{border-left:3px solid var(--gr) !important;}
+.cl-re{border-left:3px solid var(--re) !important;}
+.cl-warn{border-left:3px solid var(--warn) !important;}
+.cl-leg{border-left:3px solid var(--leg) !important;}
+.bos{text-align:center;padding:40px 20px;color:var(--txd);}
+.arama-fi{padding:7px 12px;border-radius:9px;border:1px solid var(--bor);background:var(--sur2);color:var(--tx);font-size:13px;font-family:'Barlow',sans-serif;outline:none;width:220px;}
+.arama-fi:focus{border-color:var(--ac);}
+</style>
+<script src="ares-store.js"></script>
+<script src="ares-layout.js"></script>
+</head>
+<body>
+
+<div class="app-shell">
+
+<div class="main-content">
+  <div class="page">
+
+<div style="margin-bottom:20px;">
+  <div class="breadcrumb"><a href="index.html">Ana Sayfa</a><span>/</span><span>Tanımlar</span></div>
+  <h1 class="page-title">Tanımlar</h1>
+</div>
+
+<!-- YENİ EKLE BUTONU (F-01: filtre barı gibi) -->
+<div class="cl-warn" style="display:flex;align-items:center;gap:10px;margin-bottom:16px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:10px 14px;">
+  <button class="btn btn-ac" id="ekleBtn" onclick="yeniEkle()" style="height:34px;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Yeni Ekle
+  </button>
+</div>
+
+<!-- SEKMELER -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="malzeme" onclick="tabSec('malzeme',this)">Malzeme Tipleri <span class="tc" id="tMalzeme">0</span></button>
+  <button class="tab-btn" data-tab="kaynak"  onclick="tabSec('kaynak',this)">Kaynak Yöntemleri <span class="tc" id="tKaynak">0</span></button>
+  <button class="tab-btn" data-tab="sertifika" onclick="tabSec('sertifika',this)">Sertifika Tipleri <span class="tc" id="tSertifika">0</span></button>
+  <button class="tab-btn" data-tab="cap"     onclick="tabSec('cap',this)">Çap Sınıfları <span class="tc" id="tCap">0</span></button>
+</div>
+
+<!-- MALZEME PANELİ -->
+<div class="panel on" id="panelmalzeme">
+  <div class="tablo-kart cl-ac">
+    <div class="tablo-header">
+      <div class="tablo-baslik">Malzeme Tipleri</div>
+      <input class="arama-fi" placeholder="🔍 Ara…" oninput="tabloFiltre('malzeme',this.value)">
+    </div>
+    <table>
+      <thead><tr><th>KOD</th><th>AD</th><th>STANDART</th><th>AKMA DAY. (MPa)</th><th>NOTLAR</th><th>DURUM</th><th style="text-align:right;">EYLEM</th></tr></thead>
+      <tbody id="malzemeTablo"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- KAYNAK PANELİ -->
+<div class="panel" id="panelkaynak">
+  <div class="tablo-kart cl-ac">
+    <div class="tablo-header">
+      <div class="tablo-baslik">Kaynak Yöntemleri</div>
+      <input class="arama-fi" placeholder="🔍 Ara…" oninput="tabloFiltre('kaynak',this.value)">
+    </div>
+    <table>
+      <thead><tr><th>KOD</th><th>AD</th><th>AWS NO</th><th>AÇIKLAMA</th><th>DURUM</th><th style="text-align:right;">EYLEM</th></tr></thead>
+      <tbody id="kaynakTablo"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SERTİFİKA PANELİ -->
+<div class="panel" id="panelsertifika">
+  <div class="tablo-kart cl-ac">
+    <div class="tablo-header">
+      <div class="tablo-baslik">Sertifika Tipleri</div>
+      <input class="arama-fi" placeholder="🔍 Ara…" oninput="tabloFiltre('sertifika',this.value)">
+    </div>
+    <table>
+      <thead><tr><th>KOD</th><th>AD</th><th>VERİCİ KURULUŞ</th><th>GEÇERLİLİK</th><th>AÇIKLAMA</th><th>DURUM</th><th style="text-align:right;">EYLEM</th></tr></thead>
+      <tbody id="sertifikaTablo"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ÇAP PANELİ -->
+<div class="panel" id="panelcap">
+  <div class="tablo-kart cl-ac">
+    <div class="tablo-header">
+      <div class="tablo-baslik">Çap Sınıfları</div>
+      <input class="arama-fi" placeholder="🔍 Ara…" oninput="tabloFiltre('cap',this.value)">
+    </div>
+    <table>
+      <thead><tr><th>DN</th><th>DIŞ ÇAP (mm)</th><th>SINIF</th><th>ET KALINLIĞI (mm)</th><th>AÇIKLAMA</th><th>DURUM</th><th style="text-align:right;">EYLEM</th></tr></thead>
+      <tbody id="capTablo"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /page -->
+</div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- MODAL -->
+<div class="mov" id="modal" style="display:none;">
+<div class="mbox">
+  <div class="mhead">
+    <div class="mtitle" id="modalBaslik">Yeni Kayıt</div>
+    <button class="mcl" onclick="modalKapat()">×</button>
+  </div>
+  <div id="modalForm"></div>
+  <div class="mfooter">
+    <button class="btn btn-g" onclick="modalKapat()">İptal</button>
+    <button class="btn btn-ac" onclick="kaydet()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Kaydet
+    </button>
+  </div>
+</div>
+</div>
+
+<script>
+// ─── VERİ ─────────────────────────────────────────────────────────────
+const VARSAYILAN = {
+  malzeme: [
+    {id:'M001',kod:'A106-B',ad:'Carbon Steel Seamless',standart:'ASTM A106',akma:241,notlar:'Yüksek sıcaklık servisi',aktif:true},
+    {id:'M002',kod:'A312-TP316L',ad:'Stainless Steel Seamless',standart:'ASTM A312',akma:170,notlar:'Korozyon dirençli',aktif:true},
+    {id:'M003',kod:'A335-P11',ad:'Alloy Steel Seamless',standart:'ASTM A335',akma:207,notlar:'Krom-molibden çelik',aktif:true},
+    {id:'M004',kod:'A53-B',ad:'Carbon Steel Welded',standart:'ASTM A53',akma:241,notlar:'Genel amaçlı',aktif:true},
+    {id:'M005',kod:'A358-316L',ad:'Austenitic Stainless Welded',standart:'ASTM A358',akma:170,notlar:'Çift geçişli kaynaklı',aktif:false},
+  ],
+  kaynak: [
+    {id:'K001',kod:'SMAW',ad:'Manuel Metal Ark Kaynağı',awsNo:'AWS D1.1',aciklama:'Örtülü elektrod ile kaynak',aktif:true},
+    {id:'K002',kod:'GTAW',ad:'TIG Kaynağı',awsNo:'AWS D10.12',aciklama:'Gaz tungsten ark kaynağı',aktif:true},
+    {id:'K003',kod:'GMAW',ad:'MIG/MAG Kaynağı',awsNo:'AWS D1.1',aciklama:'Gaz metal ark kaynağı',aktif:true},
+    {id:'K004',kod:'FCAW',ad:'Özlü Tel Kaynağı',awsNo:'AWS D1.1',aciklama:'Flux-core ark kaynağı',aktif:true},
+    {id:'K005',kod:'SAW',ad:'Tozaltı Kaynağı',awsNo:'AWS D1.1',aciklama:'Submerged arc welding',aktif:false},
+  ],
+  sertifika: [
+    {id:'S001',kod:'ABS-CERT',ad:'ABS Sınıf Sertifikası',kurulus:'American Bureau of Shipping',gecerlilik:'5 yıl',aciklama:'Deniz taşıtı sınıflandırma',aktif:true},
+    {id:'S002',kod:'DNV-WPS',ad:'DNV Kaynak Prosedür Belgesi',kurulus:'DNV GL',gecerlilik:'3 yıl',aciklama:'Kaynak prosedür şartnamesi',aktif:true},
+    {id:'S003',kod:'ASME-U',ad:'ASME U Damgası',kurulus:'ASME',gecerlilik:'3 yıl',aciklama:'Basınçlı kap imalat',aktif:true},
+    {id:'S004',kod:'ISO-9001',ad:'ISO 9001 Kalite Belgesi',kurulus:'TÜV / BSI',gecerlilik:'3 yıl',aciklama:'Kalite yönetim sistemi',aktif:true},
+    {id:'S005',kod:'EN-15085',ad:'Demiryolu Kaynak Sertifikası',kurulus:'TÜV Rheinland',gecerlilik:'3 yıl',aciklama:'Raylı araç kaynak belgesi',aktif:false},
+  ],
+  cap: [
+    {id:'C001',dn:'DN15',dis:21.3,sinif:'SCH40',et:2.77,aciklama:'½" boru',aktif:true},
+    {id:'C002',dn:'DN25',dis:33.4,sinif:'SCH40',et:3.38,aciklama:'1" boru',aktif:true},
+    {id:'C003',dn:'DN50',dis:60.3,sinif:'SCH40',et:3.91,aciklama:'2" boru',aktif:true},
+    {id:'C004',dn:'DN80',dis:88.9,sinif:'SCH40',et:5.49,aciklama:'3" boru',aktif:true},
+    {id:'C005',dn:'DN100',dis:114.3,sinif:'SCH40',et:6.02,aciklama:'4" boru',aktif:true},
+    {id:'C006',dn:'DN150',dis:168.3,sinif:'SCH40',et:7.11,aciklama:'6" boru',aktif:true},
+    {id:'C007',dn:'DN200',dis:219.1,sinif:'SCH40',et:8.18,aciklama:'8" boru',aktif:true},
+  ]
+};
+
+let AKTİF_TAB = 'malzeme';
+let DUZENLEME_ID = null;
+let veri = {};
+
+// ─── STORE YÜKLE ─────────────────────────────────────────────────────
+function veriYukle() {
+  const k = localStorage.getItem('syos_tanimlar');
+  if (k) { try { veri = JSON.parse(k); } catch{ veri = JSON.parse(JSON.stringify(VARSAYILAN)); } }
+  else { veri = JSON.parse(JSON.stringify(VARSAYILAN)); localStorage.setItem('syos_tanimlar', JSON.stringify(veri)); }
+  sayacGuncelle();
+  tabloRender(AKTİF_TAB);
+}
+
+function veriKaydet() { localStorage.setItem('syos_tanimlar', JSON.stringify(veri)); sayacGuncelle(); }
+
+function sayacGuncelle() {
+  ['malzeme','kaynak','sertifika','cap'].forEach(t=>{
+    const el = document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1));
+    if (el) el.textContent = (veri[t]||[]).filter(x=>x.aktif).length;
+  });
+}
+
+// ─── TABLO RENDER ────────────────────────────────────────────────────
+const KOLON = {
+  malzeme:   ['kod','ad','standart','akma','notlar'],
+  kaynak:    ['kod','ad','awsNo','aciklama'],
+  sertifika: ['kod','ad','kurulus','gecerlilik','aciklama'],
+  cap:       ['dn','dis','sinif','et','aciklama'],
+};
+
+function tabloRender(tip, filtre='') {
+  const tbody = document.getElementById(tip + 'Tablo');
+  if (!tbody) return;
+  const liste = (veri[tip]||[]).filter(x => {
+    if (!filtre) return true;
+    return Object.values(x).join(' ').toLowerCase().includes(filtre.toLowerCase());
+  });
+  if (!liste.length) { tbody.innerHTML = '<tr><td colspan="9" class="bos">Kayıt bulunamadı</td></tr>'; return; }
+  tbody.innerHTML = liste.map(x => {
+    const cols = KOLON[tip].map(k=>`<td>${x[k]||'—'}</td>`).join('');
+    const aktifBadge = x.aktif
+      ? '<span class="aktif-badge b-ak">● Aktif</span>'
+      : '<span class="aktif-badge b-pa">○ Pasif</span>';
+    return `<tr>
+      <td class="td-kod">${x[KOLON[tip][0]]}</td>
+      ${KOLON[tip].slice(1).map(k=>`<td>${x[k]||'—'}</td>`).join('')}
+      <td>${aktifBadge}</td>
+      <td><div class="td-eylem">
+        <button class="btn btn-g btn-sm" onclick="duzenle('${tip}','${x.id}')">Düzenle</button>
+        <button class="btn btn-re btn-sm" onclick="sil('${tip}','${x.id}')">Sil</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function tabloFiltre(tip, val) { tabloRender(tip, val); }
+
+// ─── TAB GEÇİŞ ───────────────────────────────────────────────────────
+function tabSec(tip, btn) {
+  AKTİF_TAB = tip;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('active');
+  document.getElementById('panel'+tip).classList.add('on');
+  tabloRender(tip);
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────
+const FORMLAR = {
+  malzeme: `
+    <div class="fr2">
+      <div class="fg"><label class="fl">Kod</label><input class="fi" id="fKod" placeholder="A106-B"></div>
+      <div class="fg"><label class="fl">Standart</label><input class="fi" id="fStandart" placeholder="ASTM A106"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad</label><input class="fi" id="fAd" placeholder="Carbon Steel Seamless"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Akma Dayanımı (MPa)</label><input class="fi" id="fAkma" type="number" placeholder="241"></div>
+      <div class="fg"><label class="fl">Durum</label><select class="fi" id="fAktif"><option value="true">Aktif</option><option value="false">Pasif</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Notlar</label><textarea class="fta" id="fNotlar"></textarea></div>`,
+  kaynak: `
+    <div class="fr2">
+      <div class="fg"><label class="fl">Kod</label><input class="fi" id="fKod" placeholder="SMAW"></div>
+      <div class="fg"><label class="fl">AWS No</label><input class="fi" id="fAwsNo" placeholder="AWS D1.1"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad</label><input class="fi" id="fAd" placeholder="Manuel Metal Ark Kaynağı"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Açıklama</label><input class="fi" id="fAciklama" placeholder="Kısa açıklama"></div>
+      <div class="fg"><label class="fl">Durum</label><select class="fi" id="fAktif"><option value="true">Aktif</option><option value="false">Pasif</option></select></div>
+    </div>`,
+  sertifika: `
+    <div class="fr2">
+      <div class="fg"><label class="fl">Kod</label><input class="fi" id="fKod" placeholder="ABS-CERT"></div>
+      <div class="fg"><label class="fl">Veren Kuruluş</label><input class="fi" id="fKurulus" placeholder="ABS"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad</label><input class="fi" id="fAd" placeholder="Sertifika adı"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Geçerlilik Süresi</label><input class="fi" id="fGecerlilik" placeholder="3 yıl"></div>
+      <div class="fg"><label class="fl">Durum</label><select class="fi" id="fAktif"><option value="true">Aktif</option><option value="false">Pasif</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Açıklama</label><textarea class="fta" id="fAciklama"></textarea></div>`,
+  cap: `
+    <div class="fr2">
+      <div class="fg"><label class="fl">DN</label><input class="fi" id="fDn" placeholder="DN50"></div>
+      <div class="fg"><label class="fl">Sınıf (Schedule)</label><input class="fi" id="fSinif" placeholder="SCH40"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Dış Çap (mm)</label><input class="fi" id="fDis" type="number" step="0.01" placeholder="60.3"></div>
+      <div class="fg"><label class="fl">Et Kalınlığı (mm)</label><input class="fi" id="fEt" type="number" step="0.01" placeholder="3.91"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Açıklama</label><input class="fi" id="fAciklama" placeholder='2" boru'></div>
+      <div class="fg"><label class="fl">Durum</label><select class="fi" id="fAktif"><option value="true">Aktif</option><option value="false">Pasif</option></select></div>
+    </div>`,
+};
+
+const ADLAR = {malzeme:'Malzeme Tipi', kaynak:'Kaynak Yöntemi', sertifika:'Sertifika Tipi', cap:'Çap Sınıfı'};
+
+function yeniEkle() {
+  DUZENLEME_ID = null;
+  document.getElementById('modalBaslik').textContent = 'Yeni ' + ADLAR[AKTİF_TAB];
+  document.getElementById('modalForm').innerHTML = FORMLAR[AKTİF_TAB];
+  document.getElementById('modal').style.display='flex';
+}
+
+function duzenle(tip, id) {
+  DUZENLEME_ID = id;
+  const kayit = (veri[tip]||[]).find(x=>x.id===id);
+  if (!kayit) return;
+  document.getElementById('modalBaslik').textContent = ADLAR[tip] + ' Düzenle';
+  document.getElementById('modalForm').innerHTML = FORMLAR[tip];
+  // Doldur
+  const fieldMap = {
+    malzeme: {fKod:'kod',fAd:'ad',fStandart:'standart',fAkma:'akma',fNotlar:'notlar',fAktif:'aktif'},
+    kaynak:  {fKod:'kod',fAd:'ad',fAwsNo:'awsNo',fAciklama:'aciklama',fAktif:'aktif'},
+    sertifika:{fKod:'kod',fAd:'ad',fKurulus:'kurulus',fGecerlilik:'gecerlilik',fAciklama:'aciklama',fAktif:'aktif'},
+    cap:     {fDn:'dn',fDis:'dis',fSinif:'sinif',fEt:'et',fAciklama:'aciklama',fAktif:'aktif'},
+  };
+  Object.entries(fieldMap[tip]).forEach(([fid,key])=>{
+    const el=document.getElementById(fid);
+    if(el) el.value = kayit[key]!==undefined ? String(kayit[key]) : '';
+  });
+  document.getElementById('modal').style.display='flex';
+}
+
+function modalKapat() { document.getElementById('modal').style.display='none'; DUZENLEME_ID=null; }
+
+function kaydet() {
+  const tip = AKTİF_TAB;
+  let yeni = {};
+
+  if (tip==='malzeme') {
+    yeni = { kod:v('fKod'),ad:v('fAd'),standart:v('fStandart'),akma:parseFloat(v('fAkma'))||0,notlar:v('fNotlar'),aktif:v('fAktif')==='true' };
+    if (!yeni.kod||!yeni.ad) { toast('Kod ve Ad zorunludur','er'); return; }
+  } else if (tip==='kaynak') {
+    yeni = { kod:v('fKod'),ad:v('fAd'),awsNo:v('fAwsNo'),aciklama:v('fAciklama'),aktif:v('fAktif')==='true' };
+    if (!yeni.kod||!yeni.ad) { toast('Kod ve Ad zorunludur','er'); return; }
+  } else if (tip==='sertifika') {
+    yeni = { kod:v('fKod'),ad:v('fAd'),kurulus:v('fKurulus'),gecerlilik:v('fGecerlilik'),aciklama:v('fAciklama'),aktif:v('fAktif')==='true' };
+    if (!yeni.kod||!yeni.ad) { toast('Kod ve Ad zorunludur','er'); return; }
+  } else if (tip==='cap') {
+    yeni = { dn:v('fDn'),dis:parseFloat(v('fDis'))||0,sinif:v('fSinif'),et:parseFloat(v('fEt'))||0,aciklama:v('fAciklama'),aktif:v('fAktif')==='true' };
+    if (!yeni.dn) { toast('DN zorunludur','er'); return; }
+  }
+
+  if (DUZENLEME_ID) {
+    const idx = (veri[tip]||[]).findIndex(x=>x.id===DUZENLEME_ID);
+    if (idx>-1) { veri[tip][idx] = {...veri[tip][idx],...yeni}; }
+  } else {
+    yeni.id = tip.charAt(0).toUpperCase() + Date.now();
+    (veri[tip] = veri[tip]||[]).push(yeni);
+  }
+
+  veriKaydet();
+  tabloRender(tip);
+  modalKapat();
+  toast((DUZENLEME_ID?'Güncellendi':'Eklendi') + ' ✓', 'ok');
+  _log('TANIM_'+(DUZENLEME_ID?'GUNCELLE':'EKLE'), tip, yeni.kod||yeni.dn||'');
+}
+
+function sil(tip, id) {
+  if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
+  veri[tip] = (veri[tip]||[]).filter(x=>x.id!==id);
+  veriKaydet();
+  tabloRender(tip);
+  toast('Silindi','ok');
+  _log('TANIM_SIL', tip, id);
+}
+
+function v(id) { const el=document.getElementById(id); return el?el.value.trim():''; }
+
+// ─── LOG ─────────────────────────────────────────────────────────────
+function _log(islem, kaynak, aciklama) {
+  const log = JSON.parse(localStorage.getItem('syos_islemLog') || '[]');
+  log.unshift({ id:'L'+Date.now(), tarih:new Date().toLocaleString('tr-TR'), islem, kaynak, aciklama });
+  localStorage.setItem('syos_islemLog', JSON.stringify(log.slice(0,500)));
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────
+let toastT=null;
+function toast(msg,tip='ok'){const e=document.querySelector('.toast');if(e)e.remove();const el=document.createElement('div');el.className='toast t-'+tip;el.textContent=msg;document.body.appendChild(el);if(toastT)clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),3000);}
+
+
+
+// ─── INIT ────────────────────────────────────────────────────────────
+veriYukle();
+</script>
+</body>
+</html>

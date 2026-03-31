@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktif Devreler — AresPipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Flaş önleme -->
+  <script>(function(){try{var t=localStorage.getItem('syos_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+  <style>
+    /* ── Tema değişkenleri — her sayfada zorunlu ── */
+    :root { --ac:#2D8EFF; --gr:#16a36e; --re:#e53e3e; --warn:#d97706; --leg:#7c3aed; }
+    [data-theme="dark"]             { --bg:#0d1117; --sur:#161b24; --sur2:#1c2333; --bor:#262f3e; --tx:#e6ecf4; --txm:#94a3b8; --txd:#6b7a90; }
+    [data-theme="light-anthracite"] { --bg:#d8dde4; --sur:#e4e9ef; --sur2:#d0d7e0; --bor:#bcc5d0; --tx:#141e2b; --txm:#3a4f63; --txd:#637080; }
+
+    /* ── Sayfa layout ── */
+    .page { padding: 28px; }
+    .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:12px; }
+    .page-title  { font-family:'Barlow Condensed',sans-serif; font-size:36px; font-weight:800; color:var(--tx); line-height:1; }
+    .breadcrumb  { font-size:12px; color:var(--txd); margin-bottom:4px; }
+    .breadcrumb a { color:var(--txd); text-decoration:none; }
+    .breadcrumb a:hover { color:var(--ac); }
+
+    /* ── Stat kartları ── */
+    .stat-row { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+    .sc       { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:14px 18px; display:flex; align-items:center; gap:14px; flex:1; min-width:150px; transition:border-color .18s; }
+    .sc-icon  { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ic-blue  { background:#4f46e5; color:#fff; } .ic-green { background:#16a34a; color:#fff; } .ic-cyan { background:#0891b2; color:#fff; }
+    .ic-orange{ background:#f97316; color:#fff; } .ic-amber { background:#d97706; color:#fff; } .ic-violet{ background:#7c3aed; color:#fff; }
+    .sc-body  { flex:1; min-width:0; }
+    .sc-label { font-size:12px; color:var(--txd); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .sc-val   { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; line-height:1.2; color:var(--tx); }
+    .sc-val span { font-size:13px; font-weight:400; color:var(--txd); }
+    .sc-prog  { height:4px; background:var(--bor); border-radius:99px; overflow:hidden; margin-top:6px; }
+    .sc-prog-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--warn),var(--gr)); transition:width .5s; }
+    .sc-donut { cursor:pointer; }
+    .sc-donut:hover { border-color:var(--ac); }
+
+    /* ── Filtre barı ── */
+    .filter-bar { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:12px 16px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .fsel { padding:7px 12px; border-radius:9px; border:1px solid var(--bor); background:var(--sur2); color:var(--tx); font-size:13px; font-family:'Barlow',sans-serif; outline:none; cursor:pointer; min-width:140px; transition:border-color .15s; }
+    .fsel:hover,.fsel:focus { border-color:var(--ac); }
+    .search-wrap  { position:relative; flex:1; max-width:280px; }
+    .search-icon  { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--txd); pointer-events:none; }
+    .fi-search    { width:100%; padding:7px 12px 7px 32px; border-radius:9px; border:1px solid var(--bor); background:var(--sur2); color:var(--tx); font-size:13px; font-family:'Barlow',sans-serif; outline:none; transition:border-color .15s; }
+    .fi-search:focus { border-color:var(--ac); }
+    .filter-sep   { width:1px; height:28px; background:var(--bor); flex-shrink:0; }
+    .btn-oncelik  { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:9px; border:1px solid var(--bor); background:var(--sur2); color:var(--txd); font-size:13px; font-family:'Barlow',sans-serif; cursor:pointer; white-space:nowrap; transition:all .15s; }
+    .btn-oncelik.aktif { border-color:#f59e0b; color:#f59e0b; background:rgba(245,158,11,.07); }
+    .btn-oncelik:hover:not(.aktif) { border-color:#f59e0b; color:#f59e0b; }
+    .btn-sifirla  { display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:9px; border:1px solid var(--bor); background:var(--sur2); color:var(--txd); font-size:13px; font-family:'Barlow',sans-serif; cursor:pointer; white-space:nowrap; transition:all .15s; }
+    .btn-sifirla:hover { border-color:var(--re); color:var(--re); }
+
+    /* ── Tablo ── */
+    .table-wrap   { background:var(--sur); border:1px solid var(--bor); border-radius:16px; overflow:hidden; }
+    .table-header { display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--bor); flex-wrap:wrap; gap:10px; }
+    .table-title  { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; }
+    .table-count  { font-size:13px; font-weight:400; color:var(--txm); margin-left:8px; }
+    .table-scroll { overflow-x:auto; }
+    .data-table   { width:100%; border-collapse:collapse; font-size:14px; white-space:nowrap; min-width:1100px; }
+    .data-table th { padding:10px 12px; text-align:left; font-size:11px; font-weight:600; color:var(--txd); text-transform:uppercase; letter-spacing:.5px; background:var(--sur2); border-bottom:1px solid var(--bor); }
+    .data-table td { padding:11px 12px; border-bottom:1px solid var(--bor); vertical-align:middle; white-space:nowrap; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tbody tr { cursor:pointer; transition:background .12s; }
+    .data-table tbody tr:hover td { background:rgba(45,142,255,.04); }
+    .data-table tbody tr.row-stopped td { background:rgba(229,62,62,.03); }
+    .star-cell  { text-align:center; cursor:pointer; user-select:none; }
+    .star-cell:hover .star-icon { transform:scale(1.25); }
+    .star-icon  { display:inline-block; font-size:16px; transition:transform .15s; }
+    .star-icon.empty { color:var(--txd); }
+    .star-icon.full  { color:#f59e0b; }
+
+    /* ── Badge'ler ── */
+    .status-badge { display:inline-flex; align-items:center; padding:3px 9px; border-radius:20px; font-size:12px; font-weight:500; white-space:nowrap; }
+    .sb-baslamadi { background:rgba(100,116,139,.1); color:var(--txd); border:1px solid rgba(100,116,139,.2); }
+    .sb-imalatta  { background:rgba(45,142,255,.12); color:var(--ac); }
+    .sb-kalite    { background:rgba(124,58,237,.12); color:var(--leg); }
+    .sb-sevkehazir{ background:rgba(22,163,110,.12); color:var(--gr); }
+    .mat-badge    { display:inline-block; padding:2px 6px; border-radius:10px; font-size:11px; font-weight:500; margin:1px; }
+    .mb-celik     { background:rgba(45,142,255,.1); color:var(--ac); }
+    .mb-pas       { background:rgba(124,58,237,.1); color:var(--leg); }
+    .yuzey-badge  { display:inline-block; padding:2px 6px; border-radius:10px; font-size:11px; font-weight:500; margin:1px; }
+    .yb-asit      { background:rgba(45,142,255,.1); color:var(--ac); }
+    .yb-galvaniz  { background:rgba(22,163,110,.1); color:var(--gr); }
+    .yb-siyah     { background:rgba(107,122,144,.15); color:var(--txm); }
+
+    /* ── İlerleme ── */
+    .prog-cell  { display:flex; align-items:center; gap:8px; }
+    .prog-pct   { font-size:14px; font-weight:500; min-width:36px; }
+    .prog-mini  { flex:1; min-width:60px; height:5px; background:var(--bor); border-radius:99px; overflow:hidden; }
+    .prog-fill  { height:100%; border-radius:99px; }
+    .action-btn { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:7px; border:1px solid var(--bor); background:var(--sur2); color:var(--txd); cursor:pointer; transition:all .15s; }
+    .action-btn:hover { border-color:var(--ac); color:var(--ac); }
+
+    /* ── Butonlar ── */
+    .btn-outline { display:inline-flex; align-items:center; gap:6px; padding:0 13px; height:34px; border-radius:8px; border:1px solid var(--bor); background:var(--sur2); color:var(--txm); font-size:13px; font-weight:600; cursor:pointer; font-family:'Barlow',sans-serif; transition:all .15s; }
+    .btn-outline:hover:not(:disabled) { border-color:var(--ac); color:var(--ac); }
+    .btn-outline:disabled { opacity:.38; cursor:not-allowed; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:0 14px; height:34px; border-radius:8px; border:none; background:var(--ac); color:#fff; font-size:13px; font-weight:700; cursor:pointer; font-family:'Barlow',sans-serif; transition:opacity .2s; }
+    .btn-primary:hover { opacity:.85; }
+
+    /* ── Kural B-01 sol kenar renk çizgileri ── */
+    .cl-ac   { border-left:3px solid var(--ac)!important; }
+    .cl-gr   { border-left:3px solid var(--gr)!important; }
+    .cl-re   { border-left:3px solid var(--re)!important; }
+    .cl-warn { border-left:3px solid var(--warn)!important; }
+    .cl-leg  { border-left:3px solid var(--leg)!important; }
+    .info-card  { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:18px 20px; }
+    .info-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--txd); margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--bor); }
+
+    /* ── Modaller ── */
+    .modal-ov   { position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-ov.open { display:flex; }
+    .modal-box  { background:var(--sur); border:1px solid var(--bor); border-radius:18px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,.5); }
+    .modal-sm   { max-width:400px; }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--bor); }
+    .modal-head-left  { display:flex; align-items:center; gap:10px; }
+    .modal-head-icon  { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; }
+    .modal-title      { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; }
+    .modal-close      { width:30px; height:30px; border-radius:50%; border:1px solid var(--bor); background:var(--sur2); cursor:pointer; font-size:16px; color:var(--txd); display:flex; align-items:center; justify-content:center; transition:all .15s; }
+    .modal-close:hover { border-color:var(--re); color:var(--re); }
+    .modal-body      { padding:20px 22px; display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+    .modal-body-full { padding:20px 22px; }
+    @media(max-width:560px){ .modal-body { grid-template-columns:1fr; } }
+    .modal-list { display:flex; flex-direction:column; gap:8px; max-height:340px; overflow-y:auto; }
+    .modal-item { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border:1px solid var(--bor); border-radius:10px; background:var(--sur2); }
+    .modal-item-left { display:flex; align-items:center; gap:10px; }
+    .modal-dot  { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .modal-foot { padding:14px 22px; border-top:1px solid var(--bor); display:flex; justify-content:flex-end; gap:8px; }
+    .donut-wrap      { display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .donut-svg-wrap  { position:relative; width:180px; height:180px; }
+    .donut-center    { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; text-align:center; }
+    .donut-center-val{ font-size:20px; font-weight:800; }
+    .donut-center-sub{ font-size:10px; color:var(--txd); margin-top:2px; }
+    .donut-legend    { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+    .donut-legend-item{ display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txd); }
+    .donut-legend-dot { width:8px; height:8px; border-radius:50%; }
+    .fmt-options { display:flex; gap:8px; margin-bottom:16px; }
+    .fmt-opt { display:flex; align-items:center; gap:8px; flex:1; padding:11px 14px; border:1px solid var(--bor); border-radius:10px; background:var(--sur2); cursor:pointer; font-size:13px; font-weight:500; font-family:'Barlow',sans-serif; transition:border-color .15s; }
+    .fmt-opt:hover { border-color:var(--ac); }
+    .fmt-opt input[type=radio] { accent-color:var(--ac); }
+
+    /* ── Toast ── */
+    .toast         { position:fixed; bottom:24px; right:24px; background:var(--sur); border:1px solid var(--bor); border-radius:10px; padding:12px 18px; display:flex; align-items:center; gap:12px; z-index:9999; font-size:14px; box-shadow:0 8px 24px rgba(0,0,0,.3); animation:slideIn .3s ease; }
+    .toast-success { border-left:3px solid var(--gr); }
+    .toast-error   { border-left:3px solid var(--re); }
+    .toast-info    { border-left:3px solid var(--ac); }
+    @keyframes slideIn { from{transform:translateX(110%);opacity:0;} to{transform:translateX(0);opacity:1;} }
+    @media(max-width:768px){ .page{ padding:16px; } }
+    /* ── Pagination ── */
+    .pg-btn { min-width:32px; height:32px; padding:0 8px; border-radius:7px; border:1px solid var(--bor); background:var(--sur2); color:var(--txm); font-size:13px; cursor:pointer; font-family:'Barlow',sans-serif; transition:all .15s; }
+    .pg-btn:hover:not(:disabled) { border-color:var(--ac); color:var(--ac); }
+    .pg-btn:disabled { opacity:.35; cursor:not-allowed; }
+    .pg-btn.pg-aktif { background:var(--ac); border-color:var(--ac); color:#fff; font-weight:700; }
+
+  </style>
+
+  <script src="ares-store.js"></script>
+  <script src="ares-layout.js"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="main-content">
+    <div class="page">
+
+      <!-- BAŞLIK -->
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> › <span style="color:var(--tx)">Aktif Devreler</span></div>
+          <div class="page-title">Aktif Devreler</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-outline" id="btnExport">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Dışa Aktar
+          </button>
+          <button class="btn-primary" onclick="location.href='devre_yeni.html'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Yeni Devre
+          </button>
+        </div>
+      </div>
+
+      <!-- STAT KARTLARI -->
+      <div class="stat-row">
+        <div class="sc cl-ac">
+          <div class="sc-icon ic-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <div class="sc-body"><div class="sc-label">Devre Adedi</div><div class="sc-val"><span id="stDevre">—</span> <span>adet</span></div></div>
+        </div>
+        <div class="sc cl-gr">
+          <div class="sc-icon ic-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="sc-body"><div class="sc-label">Spool Adedi</div><div class="sc-val"><span id="stSpool">—</span> <span>adet</span></div></div>
+        </div>
+        <div class="sc cl-ac">
+          <div class="sc-icon ic-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="sc-body"><div class="sc-label">Ağırlık</div><div class="sc-val"><span id="stAgirlik" style="font-size:18px;">—</span> <span>kg</span></div></div>
+        </div>
+        <div class="sc cl-warn sc-donut" id="scMalzeme">
+          <div class="sc-icon ic-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div>
+          <div class="sc-body"><div class="sc-label">Malzeme</div></div>
+          <svg width="40" height="40" id="malzemePreview" style="flex-shrink:0;"></svg>
+        </div>
+        <div class="sc cl-leg sc-donut" id="scCap">
+          <div class="sc-icon ic-violet"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <div class="sc-body"><div class="sc-label">Çap Dağılımı</div></div>
+          <svg width="40" height="40" id="capPreview" style="flex-shrink:0;"></svg>
+        </div>
+        <div class="sc cl-re">
+          <div class="sc-icon ic-orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="sc-body">
+            <div class="sc-label">İlerleme</div>
+            <div class="sc-val" id="stIlerleme">—</div>
+            <div class="sc-prog"><div class="sc-prog-fill" id="barIlerleme" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FİLTRE BAR -->
+      <div class="filter-bar cl-ac">
+        <select class="fsel" id="fFirma">
+          <option value="">Tüm Firmalar</option>
+          <option value="TERSAN">TERSAN</option>
+          <option value="ADA">ADA</option>
+        </select>
+        <select class="fsel" id="fProje">
+          <option value="">Tüm Projeler</option>
+          <option value="NB1099C">NB1099C</option>
+          <option value="NB1137">NB1137</option>
+          <option value="NB138">NB138</option>
+        </select>
+        <select class="fsel" id="fMalzeme">
+          <option value="">Tüm Malzemeler</option>
+          <option value="celik">Çelik</option>
+          <option value="paslanmaz">Paslanmaz</option>
+        </select>
+        <select class="fsel" id="fYuzey">
+          <option value="">Tüm Yüzeyler</option>
+          <option value="Asit">Asit</option>
+          <option value="Galvaniz">Galvaniz</option>
+          <option value="Siyah">Siyah</option>
+        </select>
+        <select class="fsel" id="fDurum">
+          <option value="">Tüm Durumlar</option>
+          <option value="baslamadi">Başlamadı</option>
+          <option value="imalatta">İmalatta</option>
+          <option value="kalite_davette">Kalite Davette</option>
+          <option value="sevke_hazir">Sevke Hazır</option>
+        </select>
+        <div class="filter-sep"></div>
+        <div class="search-wrap">
+          <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="fi-search" type="text" id="fArama" placeholder="İş emri, proje, devre...">
+        </div>
+        <button class="btn-oncelik" id="btnOncelik">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Sadece Öncelikliler
+        </button>
+        <button class="btn-sifirla" id="btnSifirla">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Sıfırla
+        </button>
+      </div>
+
+      <!-- TABLO -->
+      <div class="table-wrap cl-ac">
+        <div class="table-header">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="table-title">Devre Listesi <span class="table-count" id="tableCount"></span></span>
+            <button class="btn-outline" id="btnMalzemeListesi" disabled style="height:30px;font-size:12px;" title="Önce en az bir devre yıldızlayın">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              Malzeme Listesi Çıkar
+            </button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:36px;text-align:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></th>
+                <th style="width:32px;">#</th>
+                <th>İş Emri No</th>
+                <th>Tersane</th>
+                <th>Gemi</th>
+                <th>Devre Adı</th>
+                <th>Zone</th>
+                <th style="text-align:right;">Spool</th>
+                <th style="text-align:right;">Ağırlık</th>
+                <th>Malzeme</th>
+                <th>Yüzey</th>
+                <th>İlerleme</th>
+                <th>Durum</th>
+                <th>Son İşlem</th>
+                <th style="width:40px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /.page -->
+  </div><!-- /.main-content -->
+</div><!-- /.app-shell -->
+
+<!-- ═══ MODALLER ═══ -->
+<div class="modal-ov" id="modalMalzeme">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-head-icon" style="background:#d97706;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div>
+        <div class="modal-title">Malzeme Dağılımı</div>
+      </div>
+      <button class="modal-close" data-close="modalMalzeme">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-list" id="malzemeList"></div>
+      <div class="donut-wrap"><div class="donut-svg-wrap"><svg width="180" height="180" id="malzemeSvg"></svg><div class="donut-center" id="malzemeCenter"></div></div><div class="donut-legend" id="malzemeLegend"></div></div>
+    </div>
+    <div class="modal-foot"><button class="btn-outline" data-close="modalMalzeme">Kapat</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalCap">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-head-icon" style="background:#7c3aed;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <div class="modal-title">Çap Dağılımı</div>
+      </div>
+      <button class="modal-close" data-close="modalCap">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-list" id="capList"></div>
+      <div class="donut-wrap"><div class="donut-svg-wrap"><svg width="180" height="180" id="capSvg"></svg><div class="donut-center" id="capCenter"></div></div><div class="donut-legend" id="capLegend"></div></div>
+    </div>
+    <div class="modal-foot"><button class="btn-outline" data-close="modalCap">Kapat</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalExport">
+  <div class="modal-box modal-sm">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-head-icon" style="background:#0891b2;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        <div class="modal-title">Dışa Aktar</div>
+      </div>
+      <button class="modal-close" data-close="modalExport">✕</button>
+    </div>
+    <div class="modal-body-full">
+      <p id="exportInfo" style="font-size:13px;color:var(--txd);margin-bottom:16px;"></p>
+      <div style="display:flex;gap:10px;">
+        <button id="btnExcel" style="flex:1;padding:14px;border-radius:10px;border:1px solid var(--bor);background:var(--sur2);cursor:pointer;font-size:13px;font-weight:600;color:var(--gr);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Barlow',sans-serif;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Excel
+        </button>
+        <button id="btnPdf" style="flex:1;padding:14px;border-radius:10px;border:1px solid var(--bor);background:var(--sur2);cursor:pointer;font-size:13px;font-weight:600;color:var(--re);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Barlow',sans-serif;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalML">
+  <div class="modal-box modal-sm">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-head-icon" style="background:var(--ac);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <div class="modal-title">Malzeme Listesi Çıkar</div>
+      </div>
+      <button class="modal-close" data-close="modalML">✕</button>
+    </div>
+    <div class="modal-body-full">
+      <div class="info-card cl-ac" style="margin-bottom:16px;">
+        <div class="info-title">ℹ Bilgilendirme</div>
+        <p id="mlInfo" style="font-size:13px;color:var(--txm);margin-bottom:6px;"></p>
+        <p style="font-size:12px;color:var(--txd);">Liste her zaman yıldızlı devreler için oluşturulur — aktif filtreye göre değil.</p>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Format Seçin</p>
+      <div class="fmt-options">
+        <label class="fmt-opt"><input type="radio" name="mlFormat" value="excel" checked> <span style="color:var(--gr);">Excel</span></label>
+        <label class="fmt-opt"><input type="radio" name="mlFormat" value="pdf"> <span style="color:var(--re);">PDF</span></label>
+        <label class="fmt-opt"><input type="radio" name="mlFormat" value="her_ikisi"> <span>Her İkisi</span></label>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn-outline" data-close="modalML">İptal</button>
+        <button class="btn-primary" id="btnMLOlustur">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Oluştur
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── VERİ ──────────────────────────────────────────────────────────
+const DEVRELER = [
+  {id:1,  isEmri:'I26-010', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'f500',         spool:10, agirlik:1840.5,  malzeme:['celik'],      yuzey:['Asit','Galvaniz'], ilerleme:72,  durum:'imalatta',      sonIslem:'12.03.2026 14:22'},
+  {id:2,  isEmri:'I26-011', tersane:'TERSAN', gemi:'NB1099C', devre:'582-Sewage Graywater', zone:'D100-E2',       spool:6,  agirlik:920.0,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:45,  durum:'imalatta',      sonIslem:'11.03.2026 09:10'},
+  {id:3,  isEmri:'I26-012', tersane:'TERSAN', gemi:'NB1099C', devre:'803-bg',               zone:'CF400',         spool:8,  agirlik:1360.75, malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:88,  durum:'kalite_davette',sonIslem:'13.03.2026 16:45'},
+  {id:4,  isEmri:'I26-013', tersane:'TERSAN', gemi:'NB1099C', devre:'813-Fire System',      zone:'Z11-12-13-14',  spool:14, agirlik:2100.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:30,  durum:'baslamadi',     sonIslem:'08.03.2026 11:00'},
+  {id:5,  isEmri:'I26-014', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'c1003',         spool:5,  agirlik:750.25,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:60,  durum:'imalatta',      sonIslem:'10.03.2026 13:30'},
+  {id:6,  isEmri:'I26-023', tersane:'ADA',    gemi:'NB138',   devre:'Air Vent Sounding',    zone:'Z10',           spool:4,  agirlik:480.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:100, durum:'sevke_hazir',   sonIslem:'14.03.2026 10:00'},
+  {id:7,  isEmri:'I26-025', tersane:'ADA',    gemi:'NB138',   devre:'Fuel Filling Transfer',zone:'Z14',           spool:7,  agirlik:1120.5,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:55,  durum:'imalatta',      sonIslem:'12.03.2026 08:45'},
+  {id:8,  isEmri:'I26-026', tersane:'ADA',    gemi:'NB138',   devre:'Ballast',              zone:'z101',          spool:9,  agirlik:1650.0,  malzeme:['celik'],      yuzey:['Galvaniz','Siyah'],ilerleme:20,  durum:'baslamadi',     sonIslem:'07.03.2026 15:20'},
+  {id:9,  isEmri:'I26-027', tersane:'ADA',    gemi:'NB138',   devre:'Fuel System',          zone:'z10-11-14',     spool:11, agirlik:1890.75, malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:75,  durum:'imalatta',      sonIslem:'13.03.2026 12:15'},
+  {id:10, isEmri:'I26-028', tersane:'ADA',    gemi:'NB138',   devre:'813-Fire System',      zone:'Z14',           spool:6,  agirlik:980.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:40,  durum:'imalatta',      sonIslem:'11.03.2026 14:00'},
+  {id:11, isEmri:'I26-030', tersane:'TERSAN', gemi:'NB1137',  devre:'582-Sanitary Disch',   zone:'M120-Galv',     spool:3,  agirlik:1360.75, malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:90,  durum:'kalite_davette',sonIslem:'15.03.2026 09:30'},
+  {id:12, isEmri:'I26-032', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'G400-Galv',     spool:8,  agirlik:1240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:65,  durum:'imalatta',      sonIslem:'12.03.2026 16:00'},
+  {id:13, isEmri:'I26-033', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'Y200-Galv',     spool:5,  agirlik:810.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:50,  durum:'imalatta',      sonIslem:'11.03.2026 10:45'},
+  {id:14, isEmri:'I26-034', tersane:'TERSAN', gemi:'NB1137',  devre:'803-Bilge System',     zone:'AT110-Galv-P2', spool:12, agirlik:2240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:35,  durum:'baslamadi',     sonIslem:'09.03.2026 13:00'},
+  {id:15, isEmri:'I26-038', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi',   zone:'B100',          spool:4,  agirlik:560.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:80,  durum:'imalatta',      sonIslem:'13.03.2026 11:30'},
+  {id:16, isEmri:'I26-039', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi 2', zone:'B100',          spool:3,  agirlik:420.25,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:95,  durum:'sevke_hazir',   sonIslem:'15.03.2026 14:20'},
+  {id:17, isEmri:'I26-043', tersane:'TERSAN', gemi:'NB1137',  devre:'701-FO-KK',            zone:'CF400K25',      spool:7,  agirlik:1050.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:15,  durum:'baslamadi',     sonIslem:'06.03.2026 09:00'},
+  {id:18, isEmri:'I26-048', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devre 3',   zone:'B100',          spool:2,  agirlik:310.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:70,  durum:'imalatta',      sonIslem:'12.03.2026 15:45'},
+  {id:19, isEmri:'I26-049', tersane:'TERSAN', gemi:'NB1137',  devre:'265-overboard',        zone:'f1101',         spool:6,  agirlik:890.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:55,  durum:'imalatta',      sonIslem:'11.03.2026 12:30'},
+];
+
+const RENKLER = ['#2D8EFF','#e53e3e','#d97706','#16a36e','#7c3aed','#f97316','#06b6d4','#84cc16','#ec4899','#8b5cf6'];
+
+// ── YARDIMCI ─────────────────────────────────────────────────────
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function gv(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+function modal(id, open) { var el = document.getElementById(id); if(el) el.classList.toggle('open', open); }
+
+// ── YILDIZ SİSTEMİ (Kural Y-01) ──────────────────────────────────
+function getOncelikler() { try { return JSON.parse(localStorage.getItem('syos_devre_oncelik') || '[]'); } catch(e) { return []; } }
+function setOncelikler(arr) { try { localStorage.setItem('syos_devre_oncelik', JSON.stringify(arr)); } catch(e) {} }
+function isStarred(id) { return getOncelikler().indexOf(id) !== -1; }
+
+function yildizToggle(id) {
+  var arr = getOncelikler();
+  var idx = arr.indexOf(id);
+  if (idx === -1) arr.push(id); else arr.splice(idx, 1);
+  setOncelikler(arr);
+  var el = document.getElementById('star_' + id);
+  if (el) {
+    var s = isStarred(id);
+    el.textContent = s ? '★' : '☆';
+    el.className = 'star-icon ' + (s ? 'full' : 'empty');
+  }
+  guncelleMLButonu();
+  if (oncelikFiltreAktif) renderTable();
+}
+
+function guncelleMLButonu() {
+  var btn = document.getElementById('btnMalzemeListesi');
+  if (!btn) return;
+  var has = getOncelikler().length > 0;
+  btn.disabled = !has;
+  btn.title = has ? 'Yıldızlı devreler için malzeme listesi oluştur' : 'Önce en az bir devre yıldızlayın';
+}
+
+// ── FİLTRE ───────────────────────────────────────────────────────
+var oncelikFiltreAktif = false;
+var _sayfa = 1;
+var _sayfaBasi = 25;
+
+function oncelikToggle() {
+  oncelikFiltreAktif = !oncelikFiltreAktif;
+  var btn = document.getElementById('btnOncelik');
+  if (btn) btn.classList.toggle('aktif', oncelikFiltreAktif);
+  renderTable();
+}
+
+function getFiltered() {
+  var firma   = gv('fFirma');
+  var proje   = gv('fProje');
+  var malzeme = gv('fMalzeme');
+  var yuzey   = gv('fYuzey');
+  var durum   = gv('fDurum');
+  var arama   = (document.getElementById('fArama') ? document.getElementById('fArama').value : '').toLowerCase().trim();
+  var oncelikler = getOncelikler();
+
+  return DEVRELER.filter(function(d) {
+    if (oncelikFiltreAktif && oncelikler.indexOf(d.id) === -1) return false;
+    if (firma   && d.tersane !== firma) return false;
+    if (proje   && d.gemi    !== proje) return false;
+    if (malzeme && d.malzeme.indexOf(malzeme) === -1) return false;
+    if (yuzey   && d.yuzey.indexOf(yuzey) === -1) return false;
+    if (durum   && d.durum   !== durum) return false;
+    if (arama) {
+      var hay = [d.isEmri, d.tersane, d.gemi, d.devre, d.zone].join(' ').toLowerCase();
+      if (hay.indexOf(arama) === -1) return false;
+    }
+    return true;
+  }).sort(function(a, b) {
+    var sa = isStarred(a.id) ? 0 : 1;
+    var sb = isStarred(b.id) ? 0 : 1;
+    return sa - sb || a.id - b.id;
+  });
+}
+
+function filtreleriSifirla() {
+  ['fFirma','fProje','fMalzeme','fYuzey','fDurum'].forEach(function(id) {
+    var el = document.getElementById(id); if(el) el.value = '';
+  });
+  var ara = document.getElementById('fArama'); if(ara) ara.value = '';
+  oncelikFiltreAktif = false;
+  var btn = document.getElementById('btnOncelik'); if(btn) btn.classList.remove('aktif');
+  renderTable();
+}
+
+// ── TABLO RENDER ─────────────────────────────────────────────────
+function progColor(p) { return p === 0 ? 'var(--txd)' : p < 30 ? 'var(--re)' : p < 70 ? 'var(--warn)' : 'var(--gr)'; }
+
+function renderTable(sayfaReset) {
+  var tbody = document.getElementById('tableBody');
+  var count = document.getElementById('tableCount');
+  if (!tbody) return;
+
+  if (sayfaReset !== false) _sayfa = 1;
+
+  var liste = getFiltered();
+  var topToplam = liste.length;
+  var topSayfa = Math.max(1, Math.ceil(topToplam / _sayfaBasi));
+  if (_sayfa > topSayfa) _sayfa = topSayfa;
+
+  if (count) count.textContent = '(' + topToplam + ' devre)';
+
+  // Stat kartları güncelle
+  var topSpool   = liste.reduce(function(s,d){ return s + d.spool; }, 0);
+  var topAgirlik = liste.reduce(function(s,d){ return s + d.agirlik; }, 0);
+  var topIler    = liste.length ? Math.round(liste.reduce(function(s,d){ return s + d.ilerleme; }, 0) / liste.length) : 0;
+  var stD = document.getElementById('stDevre');    if(stD) stD.textContent = liste.length;
+  var stS = document.getElementById('stSpool');    if(stS) stS.textContent = topSpool;
+  var stA = document.getElementById('stAgirlik');  if(stA) stA.textContent = topAgirlik.toLocaleString('tr-TR', {minimumFractionDigits:2});
+  var stI = document.getElementById('stIlerleme'); if(stI) stI.textContent = '%' + topIler;
+  var barI = document.getElementById('barIlerleme'); if(barI) { barI.style.width = topIler + '%'; barI.style.background = progColor(topIler); }
+
+  // Donut önizleme
+  var malzemeSayim = {};
+  liste.forEach(function(d){ d.malzeme.forEach(function(m){ malzemeSayim[m] = (malzemeSayim[m]||0)+1; }); });
+  var malzemeItems = Object.keys(malzemeSayim).map(function(k,i){ return {label:k,val:malzemeSayim[k],color:RENKLER[i]}; });
+  miniDonut('malzemePreview', malzemeItems.map(function(x){return x.val;}), malzemeItems.map(function(x){return x.color;}));
+
+  var capSayim = {};
+  liste.forEach(function(d){ var k = d.zone||'?'; capSayim[k] = (capSayim[k]||0)+1; });
+  var capItems = Object.keys(capSayim).slice(0,5).map(function(k,i){ return {label:k,val:capSayim[k],color:RENKLER[i+3]}; });
+  miniDonut('capPreview', capItems.map(function(x){return x.val;}), capItems.map(function(x){return x.color;}));
+
+  if (!liste.length) {
+    tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:32px;color:var(--txd);font-size:14px;">Filtreyle eşleşen devre bulunamadı</td></tr>';
+    paginationGuncelle(0, 0, 0);
+    return;
+  }
+
+  var baslangic = (_sayfa - 1) * _sayfaBasi;
+  var bitis = Math.min(baslangic + _sayfaBasi, liste.length);
+  var sayfaListesi = liste.slice(baslangic, bitis);
+  paginationGuncelle(liste.length, _sayfa, Math.ceil(liste.length / _sayfaBasi));
+
+  var DURUM_MAP = {
+    baslamadi:     {cls:'sb-baslamadi', text:'Başlamadı'},
+    imalatta:      {cls:'sb-imalatta',  text:'İmalatta'},
+    kalite_davette:{cls:'sb-kalite',    text:'Kalite Davette'},
+    sevke_hazir:   {cls:'sb-sevkehazir',text:'Sevke Hazır'},
+  };
+
+  tbody.innerHTML = sayfaListesi.map(function(d, i) {
+    var globalIdx = baslangic + i;
+    var starred = isStarred(d.id);
+    var dur = DURUM_MAP[d.durum] || {cls:'sb-baslamadi', text:d.durum};
+    var matBadge = d.malzeme.map(function(m){ return '<span class="mat-badge ' + (m==='celik'?'mb-celik':'mb-pas') + '">' + esc(m==='celik'?'Çelik':'Paslanmaz') + '</span>'; }).join('');
+    var yuzeyBadge = d.yuzey.map(function(y){ var cls = y==='Asit'?'yb-asit':y==='Galvaniz'?'yb-galvaniz':'yb-siyah'; return '<span class="yuzey-badge '+cls+'">'+esc(y)+'</span>'; }).join('');
+    var pc = progColor(d.ilerleme);
+
+    return '<tr onclick="devreAc(' + d.id + ')">' +
+      '<td class="star-cell" onclick="event.stopPropagation();yildizToggle(' + d.id + ')"><span id="star_' + d.id + '" class="star-icon ' + (starred?'full':'empty') + '">' + (starred?'★':'☆') + '</span></td>' +
+      '<td style="color:var(--txd);font-size:12px;">' + (globalIdx+1) + '</td>' +
+      '<td style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:var(--leg);">' + esc(d.isEmri) + '</td>' +
+      '<td style="font-size:13px;color:var(--txm);">' + esc(d.tersane) + '</td>' +
+      '<td style="font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:700;color:var(--ac);">' + esc(d.gemi) + '</td>' +
+      '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;font-weight:500;">' + esc(d.devre) + '</td>' +
+      '<td style="font-size:12px;color:var(--txd);">' + esc(d.zone) + '</td>' +
+      '<td style="text-align:right;font-weight:600;">' + d.spool + '</td>' +
+      '<td style="text-align:right;font-size:13px;color:var(--txm);">' + d.agirlik.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' kg</td>' +
+      '<td>' + matBadge + '</td>' +
+      '<td>' + yuzeyBadge + '</td>' +
+      '<td><div class="prog-cell"><span class="prog-pct" style="color:' + pc + '">%' + d.ilerleme + '</span><div class="prog-mini"><div class="prog-fill" style="width:' + d.ilerleme + '%;background:' + pc + ';"></div></div></div></td>' +
+      '<td><span class="status-badge ' + dur.cls + '">' + dur.text + '</span></td>' +
+      '<td style="font-size:12px;color:var(--txd);">' + esc(d.sonIslem||'—') + '</td>' +
+      '<td style="text-align:center;"><button class="action-btn" onclick="event.stopPropagation();devreAc(' + d.id + ')" title="Detay">→</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function devreAc(id) {
+  var d = DEVRELER.find(function(x){ return x.id === id; });
+  if (!d) return;
+  try { localStorage.setItem('syos_aktif_devre', JSON.stringify(d)); } catch(e) {}
+  location.href = 'devre_detay_sayfasi.html';
+}
+
+// ── DONUT ────────────────────────────────────────────────────────
+function miniDonut(svgId, vals, cols) {
+  var svg = document.getElementById(svgId);
+  if (!svg) return;
+  var total = vals.reduce(function(a,b){return a+b;},0);
+  if (!total) { svg.innerHTML=''; return; }
+  var cx=20,cy=20,r=16,sw=7;
+  var offset=0;
+  var paths = vals.map(function(v,i){
+    var angle = (v/total)*2*Math.PI;
+    var x1=cx+r*Math.sin(offset), y1=cy-r*Math.cos(offset);
+    offset+=angle;
+    var x2=cx+r*Math.sin(offset), y2=cy-r*Math.cos(offset);
+    var large=angle>Math.PI?1:0;
+    return '<path d="M'+x1+' '+y1+' A'+r+' '+r+' 0 '+large+' 1 '+x2+' '+y2+'" fill="none" stroke="'+cols[i]+'" stroke-width="'+sw+'" stroke-linecap="butt"/>';
+  });
+  svg.innerHTML = paths.join('');
+}
+
+function fullDonut(svgId, centerId, legendId, items, cols, centerLabel) {
+  var svg = document.getElementById(svgId);
+  if (!svg) return;
+  var total = items.reduce(function(a,b){return a+b.val;},0);
+  if (!total) return;
+  var cx=90,cy=90,r=70,sw=22;
+  var offset=-Math.PI/2;
+  var paths = items.map(function(item,i){
+    var angle=(item.val/total)*2*Math.PI;
+    var x1=cx+r*Math.cos(offset), y1=cy+r*Math.sin(offset);
+    offset+=angle;
+    var x2=cx+r*Math.cos(offset), y2=cy+r*Math.sin(offset);
+    var large=angle>Math.PI?1:0;
+    return '<path d="M'+x1+' '+y1+' A'+r+' '+r+' 0 '+large+' 1 '+x2+' '+y2+'" fill="none" stroke="'+cols[i]+'" stroke-width="'+sw+'" stroke-linecap="butt"/>';
+  });
+  svg.innerHTML = paths.join('');
+  var center = document.getElementById(centerId);
+  if (center) center.innerHTML = '<div class="donut-center-val">' + total + '</div><div class="donut-center-sub">' + esc(centerLabel) + '</div>';
+  var legend = document.getElementById(legendId);
+  if (legend) legend.innerHTML = items.map(function(item,i){
+    return '<div class="donut-legend-item"><div class="donut-legend-dot" style="background:'+cols[i]+'"></div>'+esc(item.label)+' ('+item.val+')</div>';
+  }).join('');
+}
+
+// ── MODAL AÇMA ───────────────────────────────────────────────────
+function malzemeModalAc() {
+  var liste = getFiltered();
+  var sayim = {};
+  liste.forEach(function(d){ d.malzeme.forEach(function(m){ sayim[m]=(sayim[m]||0)+1; }); });
+  var items = Object.keys(sayim).map(function(k,i){ return {label:k==='celik'?'Çelik':'Paslanmaz',val:sayim[k],color:RENKLER[i]}; });
+  var cols = items.map(function(x){return x.color;});
+  var list = document.getElementById('malzemeList');
+  if (list) list.innerHTML = items.map(function(x,i){
+    return '<div class="modal-item"><div class="modal-item-left"><div class="modal-dot" style="background:'+cols[i]+'"></div><span>'+esc(x.label)+'</span></div><span style="font-weight:700;">'+x.val+' devre</span></div>';
+  }).join('');
+  fullDonut('malzemeSvg','malzemeCenter','malzemeLegend',items,cols,'devre');
+  modal('modalMalzeme', true);
+}
+
+function capModalAc() {
+  var liste = getFiltered();
+  var sayim = {};
+  liste.forEach(function(d){ var k=d.zone||'?'; sayim[k]=(sayim[k]||0)+1; });
+  var items = Object.keys(sayim).slice(0,8).map(function(k,i){ return {label:k,val:sayim[k],color:RENKLER[i]}; });
+  var cols = items.map(function(x){return x.color;});
+  var list = document.getElementById('capList');
+  if (list) list.innerHTML = items.map(function(x,i){
+    return '<div class="modal-item"><div class="modal-item-left"><div class="modal-dot" style="background:'+cols[i]+'"></div><span>'+esc(x.label)+'</span></div><span style="font-weight:700;">'+x.val+'</span></div>';
+  }).join('');
+  fullDonut('capSvg','capCenter','capLegend',items,cols,'zone');
+  modal('modalCap', true);
+}
+
+function malzemeListesiModalAc() {
+  var starred = getOncelikler();
+  var sayim = starred.length;
+  var info = document.getElementById('mlInfo');
+  if (info) info.textContent = sayim + ' yıldızlı devre seçili.';
+  modal('modalML', true);
+}
+
+function malzemeListesiOlustur() {
+  var fmt = document.querySelector('input[name="mlFormat"]:checked');
+  var format = fmt ? fmt.value : 'excel';
+  showToast('Malzeme listesi (' + format + ') hazırlanıyor...', 'info');
+  modal('modalML', false);
+}
+
+function exportModalAc() {
+  var liste = getFiltered();
+  var info = document.getElementById('exportInfo');
+  if (info) info.textContent = liste.length + ' devre, ' + liste.reduce(function(s,d){return s+d.spool;},0) + ' spool listeleniyor.';
+  modal('modalExport', true);
+}
+
+function exportPdf() {
+  var liste = getFiltered();
+  var satirlar = liste.map(function(d,i){
+    return '<tr><td>'+(i+1)+'</td><td>'+d.isEmri+'</td><td>'+d.tersane+'</td><td>'+d.gemi+'</td><td>'+d.devre+'</td><td>'+d.zone+'</td><td>'+d.spool+'</td><td>'+d.agirlik.toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg</td></tr>';
+  }).join('');
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Aktif Devreler</title>' +
+    '<style>body{font-family:Arial,sans-serif;font-size:11px;padding:10mm;}' +
+    'h1{font-size:18px;font-weight:800;margin:0 0 4px;}' +
+    'table{width:100%;border-collapse:collapse;margin-top:12px;}' +
+    'th{background:#f1f5f9;padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;}' +
+    'td{padding:6px 8px;border-bottom:1px solid #f1f5f9;}' +
+    '.bar{background:#1e3a5f;color:#fff;padding:8px 16px;display:flex;justify-content:space-between;margin-bottom:16px;}' +
+    '.bar button{border:none;padding:4px 12px;border-radius:4px;cursor:pointer;}' +
+    '@media print{.bar{display:none;}}@page{size:A4 landscape;margin:8mm}</style></head><body>' +
+    '<div class="bar"><span>AresPipe — Aktif Devreler</span><div style="display:flex;gap:6px;">' +
+    '<button onclick="window.close()" style="background:rgba(255,255,255,.2);color:#fff;">Kapat</button>' +
+    '<button onclick="window.print()" style="background:#fff;color:#1e3a5f;font-weight:700;">Yazdır / PDF</button></div></div>' +
+    '<h1>Aktif Devreler</h1><p style="font-size:11px;color:#64748b;">'+liste.length+' devre · '+new Date().toLocaleDateString('tr-TR')+'</p>' +
+    '<table><thead><tr><th>#</th><th>İş Emri</th><th>Tersane</th><th>Gemi</th><th>Devre</th><th>Zone</th><th>Spool</th><th>Ağırlık</th></tr></thead>' +
+    '<tbody>'+satirlar+'</tbody></table></body></html>';
+  var w = window.open('','_blank','width=1200,height=800');
+  if (!w) { showToast('Popup engelleyici kapatın ve tekrar deneyin','error'); return; }
+  w.document.write(html); w.document.close();
+  showToast('PDF önizlemesi açıldı','success');
+  modal('modalExport', false);
+}
+
+
+// ── PAGINATION ────────────────────────────────────────────────────
+function paginationGuncelle(toplam, aktifSayfa, topSayfa) {
+  var cont = document.getElementById('paginationCont');
+  if (!cont) return;
+  if (toplam === 0 || topSayfa <= 1) { cont.innerHTML = ''; return; }
+
+  var baslangic = (aktifSayfa - 1) * _sayfaBasi + 1;
+  var bitis = Math.min(aktifSayfa * _sayfaBasi, toplam);
+
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">';
+  html += '<span style="font-size:13px;color:var(--txd);">' + baslangic + '–' + bitis + ' / ' + toplam + ' devre</span>';
+  html += '<div style="display:flex;gap:4px;align-items:center;">';
+
+  // İlk ve önceki
+  html += '<button onclick="sayfaGit(1)" ' + (aktifSayfa===1?'disabled':'') + ' class="pg-btn" title="İlk sayfa">«</button>';
+  html += '<button onclick="sayfaGit(' + (aktifSayfa-1) + ')" ' + (aktifSayfa===1?'disabled':'') + ' class="pg-btn">‹</button>';
+
+  // Sayfa numaraları
+  var start = Math.max(1, aktifSayfa - 2);
+  var end = Math.min(topSayfa, aktifSayfa + 2);
+  if (start > 1) html += '<span style="color:var(--txd);padding:0 4px;">…</span>';
+  for (var i = start; i <= end; i++) {
+    var aktif = i === aktifSayfa;
+    html += '<button onclick="sayfaGit(' + i + ')" class="pg-btn' + (aktif?' pg-aktif':'') + '">' + i + '</button>';
+  }
+  if (end < topSayfa) html += '<span style="color:var(--txd);padding:0 4px;">…</span>';
+
+  // Sonraki ve son
+  html += '<button onclick="sayfaGit(' + (aktifSayfa+1) + ')" ' + (aktifSayfa===topSayfa?'disabled':'') + ' class="pg-btn">›</button>';
+  html += '<button onclick="sayfaGit(' + topSayfa + ')" ' + (aktifSayfa===topSayfa?'disabled':'') + ' class="pg-btn" title="Son sayfa">»</button>';
+
+  html += '</div></div>';
+  cont.innerHTML = html;
+}
+
+function sayfaGit(n) {
+  var liste = getFiltered();
+  var topSayfa = Math.max(1, Math.ceil(liste.length / _sayfaBasi));
+  _sayfa = Math.max(1, Math.min(n, topSayfa));
+  renderTable(false);
+  var tablo = document.querySelector('.table-wrap');
+  if (tablo) tablo.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ── TOAST ────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var old = document.querySelector('.toast'); if(old) old.remove();
+  var t = document.createElement('div');
+  t.className = 'toast toast-' + (type||'info');
+  t.innerHTML = '<span>' + esc(msg) + '</span><button style="background:none;border:none;color:var(--txd);cursor:pointer;font-size:18px;margin-left:auto;" onclick="this.parentElement.remove()">✕</button>';
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.remove(); }, 3500);
+}
+
+// ── NAV BADGE ────────────────────────────────────────────────────
+function navBadgeGuncelle() {
+  var badges = JSON.parse(localStorage.getItem('syos_nav_badges') || '{}');
+  badges['devreler'] = 0;
+  localStorage.setItem('syos_nav_badges', JSON.stringify(badges));
+}
+
+// ── BAŞLATMA (DOMContentLoaded) ──────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Modal kapama
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-ov')) { e.target.classList.remove('open'); return; }
+    var closeTarget = e.target.closest('[data-close]');
+    if (closeTarget) { modal(closeTarget.dataset.close, false); }
+  });
+
+  // Buton bağlamaları — null kontrolü ile
+  var bağla = function(id, fn) { var el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  bağla('scMalzeme',        malzemeModalAc);
+  bağla('scCap',            capModalAc);
+  bağla('btnExport',        exportModalAc);
+  bağla('btnMalzemeListesi',malzemeListesiModalAc);
+  bağla('btnOncelik',       oncelikToggle);
+  bağla('btnSifirla',       filtreleriSifirla);
+  bağla('btnMLOlustur',     malzemeListesiOlustur);
+  bağla('btnPdf',           exportPdf);
+  bağla('btnExcel', function(){
+    showToast('Excel çıktısı hazırlanıyor...','info');
+    modal('modalExport', false);
+  });
+
+  // Filtre değişimleri
+  ['fFirma','fProje','fMalzeme','fYuzey','fDurum'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', function(){ _sayfa=1; renderTable(); });
+  });
+  var aramaTimer;
+  var aramaEl = document.getElementById('fArama');
+  if (aramaEl) aramaEl.addEventListener('input', function() {
+    clearTimeout(aramaTimer);
+    aramaTimer = setTimeout(renderTable, 250);
+  });
+
+  // İlk render
+  navBadgeGuncelle();
+  guncelleMLButonu();
+  renderTable();
+});
+</script>
+
+</body>
+</html>
