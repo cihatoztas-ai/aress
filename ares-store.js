@@ -128,14 +128,17 @@ const SYOS = (function () {
   }
 
   // ── Log yardımcısı ───────────────────────────────────────
-  function _log(islem, kaynak, aciklama) {
+  function _log(islem, kaynak, aciklama, katman, katmanId, ust) {
     const log = _get('islemLog') || [];
     log.unshift({
       id: 'L' + Date.now(),
       tarih: new Date().toLocaleString('tr-TR'),
-      islem, kaynak, aciklama
+      islem, kaynak, aciklama,
+      katman:   katman   || 'sistem',   // sistem | spool | devre | proje | personel | tersane
+      katmanId: katmanId || '',
+      ust: ust || {}                    // { spool, devre, proje, tersane } üst bağlamlar
     });
-    _set('islemLog', log.slice(0, 500)); // max 500 kayıt
+    _set('islemLog', log.slice(0, 1000)); // max 1000 kayıt
   }
 
   // ── Sayaç ────────────────────────────────────────────────
@@ -185,7 +188,7 @@ const SYOS = (function () {
       _set('kkHazir', kkHazir);
     }
 
-    _log('KK_GONDER', spoolKodu, tersane + ' / ' + devre + ' — Kalite kontrole gönderildi');
+    _log('KK_GONDER', spoolKodu, tersane+' / '+devre+' — Kalite kontrole gönderildi', 'spool', spoolKodu, {devre:devre,tersane:tersane});
     return true;
   }
 
@@ -204,7 +207,7 @@ const SYOS = (function () {
       _set('sevkHazir', sevkHazir);
     }
 
-    _log('SEVK_HAZIR', spoolKodu, tersane + ' / ' + devre + ' — Sevkiyat hazırlık listesine eklendi');
+    _log('SEVK_HAZIR', spoolKodu, tersane+' / '+devre+' — Sevkiyat hazırlık listesine eklendi', 'spool', spoolKodu, {devre:devre,tersane:tersane});
     return true;
   }
 
@@ -225,7 +228,7 @@ const SYOS = (function () {
       '⛔'
     );
 
-    _log('SPOOL_DURDUR', spoolKodu, sebep + ': ' + aciklama);
+    _log('SPOOL_DURDUR', spoolKodu, sebep+': '+aciklama, 'spool', spoolKodu, {});
     return true;
   }
 
@@ -236,7 +239,7 @@ const SYOS = (function () {
       durdurmaAciklama: '',
       durdurulmaTarihi: null
     });
-    _log('SPOOL_BASLAT', spoolKodu, 'Durdurma kaldırıldı, yeniden aktif');
+    _log('SPOOL_BASLAT', spoolKodu, 'Durdurma kaldırıldı, yeniden aktif', 'spool', spoolKodu, {});
     return true;
   }
 
@@ -383,7 +386,7 @@ const SYOS = (function () {
     const liste = _get('testler') || [];
     liste.unshift(paket);
     _set('testler', liste);
-    _log('TEST_OLUSTUR', no, tip + ' — ' + tersane + ' / ' + devre);
+    _log('TEST_OLUSTUR', no, tip+' — '+tersane+' / '+devre, 'devre', devre, {tersane:tersane,proje:projeNo});
     return paket;
   }
 
@@ -399,7 +402,7 @@ const SYOS = (function () {
     else if (genel === 'kaldi')  liste[idx].durum = 'hatali';
 
     _set('testler', liste);
-    _log('TEST_SONUC', testId, genel + ' — ' + kisi);
+    _log('TEST_SONUC', testId, genel+' — '+kisi, 'sistem', testId, {});
     return true;
   }
 
@@ -467,7 +470,7 @@ const SYOS = (function () {
       '⛔'
     );
 
-    _log('DEVRE_DURDUR', devreKodu, sebep + ' — ' + spoollar.length + ' spool');
+    _log('DEVRE_DURDUR', devreKodu, sebep+' — '+spoollar.length+' spool', 'devre', devreKodu, {});
     return true;
   }
 
@@ -484,14 +487,22 @@ const SYOS = (function () {
       liste[idx].aktif = false;
       _set('durdurulmusDevreler', liste);
     }
-    _log('DEVRE_BASLAT', devreKodu, 'Durdurma kaldırıldı');
+    _log('DEVRE_BASLAT', devreKodu, 'Durdurma kaldırıldı', 'devre', devreKodu, {});
     return true;
   }
 
   // ── İŞLEM LOGU ──────────────────────────────────────────
 
-  function islemLogu(limit) {
-    const log = _get('islemLog') || [];
+  function islemLogu(limit, filtre) {
+    let log = _get('islemLog') || [];
+    if (filtre) {
+      if (filtre.katman)   log = log.filter(l => l.katman === filtre.katman);
+      if (filtre.katmanId) log = log.filter(l => l.katmanId === filtre.katmanId);
+      if (filtre.islem)    log = log.filter(l => (l.islem||'').includes(filtre.islem));
+      if (filtre.tarihBas) log = log.filter(l => l.tarih >= filtre.tarihBas);
+      if (filtre.tarihBit) log = log.filter(l => l.tarih <= filtre.tarihBit);
+      if (filtre.tersane)  log = log.filter(l => l.kaynak && l.kaynak.includes(filtre.tersane) || (l.ust && l.ust.tersane === filtre.tersane));
+    }
     return limit ? log.slice(0, limit) : log;
   }
 
@@ -540,14 +551,14 @@ const SYOS = (function () {
     };
     liste.unshift(kayit);
     _set('dok_' + devreId, liste);
-    _log('DOK_EKLE', devreId, ad + ' (' + tur + ')');
+    _log('DOK_EKLE', devreId, ad+' ('+tur+')', 'devre', devreId, {});
     return kayit;
   }
 
   function dokumanSil(devreId, dokId) {
     const liste = dokumanGetir(devreId).filter(d => d.id !== dokId);
     _set('dok_' + devreId, liste);
-    _log('DOK_SIL', devreId, dokId);
+    _log('DOK_SIL', devreId, dokId, 'devre', devreId, {});
     return true;
   }
 
