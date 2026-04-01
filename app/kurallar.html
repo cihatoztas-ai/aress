@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurallar & Şartnameler | AresPipe</title>
+<!-- ✅ Flash prevention — Kural FP-01 -->
+<script>(function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.visibility='hidden';})()</script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ac:#2D8EFF;--gr:#16a36e;--re:#e53e3e;--warn:#d97706;--leg:#7c3aed;}
+[data-theme=dark]{--bg:#0d1117;--sur:#161b24;--sur2:#1c2333;--bor:#262f3e;--tx:#e6ecf4;--txd:#6b7a90;--txm:#94a3b8;}
+[data-theme=light-anthracite]{--bg:#d8dde4;--sur:#e4e9ef;--sur2:#d0d7e0;--bor:#bcc5d0;--tx:#141e2b;--txm:#3a4f63;--txd:#637080;}
+
+.page{padding:28px 28px 60px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--tx);line-height:1;margin-bottom:4px;}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--txd);margin-bottom:6px;}
+.breadcrumb a{color:var(--txd);text-decoration:none;}.breadcrumb a:hover{color:var(--ac);}
+
+/* TAB BAR */
+.tab-bar{display:flex;gap:2px;border-bottom:2px solid var(--bor);margin-bottom:28px;overflow-x:auto;}
+.tab-btn{padding:10px 22px;background:transparent;border:none;font-family:'Barlow',sans-serif;font-size:14px;font-weight:500;color:var(--txd);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all 0.15s;}
+.tab-btn:hover{color:var(--tx);}
+.tab-btn.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:700;}
+.panel{display:none;}.panel.on{display:block;}
+
+/* SECTION HEADER */
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:32px;}
+.sec-header:first-child{margin-top:0;}
+.sec-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;letter-spacing:1px;text-transform:uppercase;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--tx);}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+
+/* KURAL KARTI */
+.kural-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px;margin-bottom:8px;}
+.kural-kart{background:var(--sur);border:1px solid var(--bor);border-radius:14px;overflow:hidden;transition:border-color 0.15s;}
+.kural-kart:hover{border-color:var(--ac);}
+.kural-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bor);}
+.kural-kod{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;padding:3px 10px;border-radius:6px;letter-spacing:0.5px;}
+.kural-baslik{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--tx);}
+.kural-body{padding:14px 18px;}
+.kural-aciklama{font-size:13px;color:var(--txm);line-height:1.6;margin-bottom:12px;}
+
+/* ÖRNEK BLOKLAR */
+.ornek-label{font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.ornek-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+
+/* B-01 Sol kenar örnekleri */
+.demo-card{background:var(--sur2);border:1px solid var(--bor);border-radius:10px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:10px;min-width:120px;}
+.demo-card .dc-label{font-size:12px;font-weight:600;color:var(--txm);}
+.demo-card .dc-desc{font-size:11px;color:var(--txd);}
+
+/* B-02 Renk örnekleri */
+.renk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.renk-chip{border-radius:9px;padding:10px 8px;text-align:center;}
+.renk-hex{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;margin-top:4px;}
+.renk-isim{font-size:10px;color:var(--txd);margin-top:2px;}
+
+/* F-01 Filtre barı örneği */
+.demo-filtre{background:var(--sur2);border:1px solid var(--warn);border-left:3px solid var(--warn);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.demo-btn{background:var(--ac);color:#fff;border:none;border-radius:7px;padding:6px 12px;font-size:12px;font-weight:600;font-family:'Barlow',sans-serif;cursor:default;}
+.demo-spacer{flex:1;}
+.demo-input{background:var(--sur);border:1px solid var(--bor);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--txm);font-family:'Barlow',sans-serif;width:120px;}
+.demo-select{background:var(--sur);border:1px solid var(--bor);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--txm);font-family:'Barlow',sans-serif;}
+
+/* T-01 Tablo örneği */
+.demo-table{width:100%;border-collapse:collapse;font-size:12px;}
+.demo-table th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--bor);cursor:pointer;}
+.demo-table th.aktif{color:var(--ac);}
+.demo-table td{padding:8px 10px;border-bottom:1px solid var(--bor);color:var(--txm);}
+.demo-table tr:last-child td{border-bottom:none;}
+
+/* P-01 Pagination örneği */
+.demo-pagination{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.demo-pg-btn{background:var(--sur2);border:1px solid var(--bor);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--txm);font-family:'Barlow',sans-serif;cursor:default;}
+.demo-pg-info{font-size:12px;color:var(--txd);flex:1;text-align:center;}
+
+/* D-01 Dil örneği */
+.demo-i18n{background:var(--sur2);border-radius:8px;padding:10px 14px;font-size:12px;font-family:monospace;color:var(--gr);margin-bottom:8px;border-left:3px solid var(--gr);}
+
+/* LOG YAPISI */
+.demo-log{background:var(--sur2);border-radius:8px;padding:12px 14px;font-size:11px;font-family:monospace;color:var(--txm);line-height:1.8;border-left:3px solid var(--ac);}
+.demo-log .lk{color:var(--warn);}
+.demo-log .lv{color:var(--gr);}
+.demo-log .ls{color:var(--ac);}
+
+/* SAYFA ŞARTNAME */
+.sartname-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px;}
+.sartname-kart{background:var(--sur);border:1px solid var(--bor);border-radius:16px;overflow:hidden;}
+.sartname-head{padding:16px 20px;border-bottom:1px solid var(--bor);display:flex;align-items:center;gap:12px;}
+.sartname-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.sartname-baslik{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--tx);}
+.sartname-dosya{font-size:11px;color:var(--txd);font-family:monospace;}
+.sartname-body{padding:16px 20px;}
+.sartname-row{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-bottom:10px;font-size:13px;}
+.sartname-etiket{font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;padding-top:2px;}
+.sartname-deger{color:var(--txm);line-height:1.5;}
+.sartname-deger a{color:var(--ac);text-decoration:none;}
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;margin:1px;}
+.tag-ac{background:rgba(45,142,255,.12);color:var(--ac);}
+.tag-gr{background:rgba(22,163,110,.12);color:var(--gr);}
+.tag-warn{background:rgba(217,119,6,.12);color:var(--warn);}
+.tag-re{background:rgba(229,62,62,.12);color:var(--re);}
+.tag-leg{background:rgba(124,58,237,.12);color:var(--leg);}
+.durum-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.d-tamam{background:rgba(22,163,110,.12);color:var(--gr);}
+.d-revizyon{background:rgba(217,119,6,.12);color:var(--warn);}
+.d-yapilmadi{background:rgba(100,116,139,.12);color:var(--txd);}
+.sartname-divider{border:none;border-top:1px solid var(--bor);margin:12px 0;}
+
+/* NOT KARTI */
+.not-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+.not-kart{background:var(--sur);border:1px solid var(--bor);border-left:3px solid var(--warn);border-radius:12px;padding:14px 16px;}
+.not-kod{font-size:10px;font-weight:800;color:var(--warn);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
+.not-baslik{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px;}
+.not-aciklama{font-size:12px;color:var(--txm);line-height:1.5;}
+
+/* AKSIYON KARTI */
+.aksiyon-list{display:flex;flex-direction:column;gap:8px;}
+.aksiyon-item{display:flex;align-items:flex-start;gap:12px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:12px 14px;}
+.aksiyon-no{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--ac);min-width:28px;}
+.aksiyon-icerik{flex:1;}
+.aksiyon-baslik{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px;}
+.aksiyon-aciklama{font-size:12px;color:var(--txd);}
+.aksiyon-durum{flex-shrink:0;}
+
+.cl-ac{border-left:3px solid var(--ac)!important;}
+.cl-gr{border-left:3px solid var(--gr)!important;}
+.cl-re{border-left:3px solid var(--re)!important;}
+.cl-warn{border-left:3px solid var(--warn)!important;}
+.cl-leg{border-left:3px solid var(--leg)!important;}
+</style>
+<script src="ares-store.js"></script>
+<script src="ares-layout.js"></script>
+</head>
+<body>
+<div class="app-shell">
+<div class="main-content">
+<div class="page">
+
+  <div style="margin-bottom:20px;">
+    <div class="breadcrumb"><a href="index.html">Ana Sayfa</a><span>/</span><span>Kurallar & Şartnameler</span></div>
+    <h1 class="page-title">Kurallar & Şartnameler</h1>
+    <div style="font-size:13px;color:var(--txd);margin-top:4px;">AresPipe geliştirme kuralları, görsel örnekler ve sayfa teknik şartnameleri</div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="tabSec('arayuz',this)">Arayüz Kuralları</button>
+    <button class="tab-btn" onclick="tabSec('veri',this)">Veri & Log</button>
+    <button class="tab-btn" onclick="tabSec('mimari',this)">Mimari & SaaS</button>
+    <button class="tab-btn" onclick="tabSec('guvenlik',this)">Güvenlik</button>
+    <button class="tab-btn" onclick="tabSec('sartname',this)">Sayfa Şartnameleri</button>
+    <button class="tab-btn" onclick="tabSec('notlar',this)">Notlar</button>
+    <button class="tab-btn" onclick="tabSec('aksiyon',this)">Aksiyon Planı</button>
+  </div>
+
+  <!-- ═══════════════════════════ ARAYÜZ KURALLARI ═══════════════════════════ -->
+  <div class="panel on" id="panelarayuz">
+
+    <!-- B-01 -->
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">B-01</span><div class="sec-title">Sol Kenar Renk Sistemi</div><div class="sec-line"></div></div>
+    <div class="kural-grid">
+      <div class="kural-kart cl-ac">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">B-01</span>
+          <span class="kural-baslik">Sol Kenar Renk Sistemi</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Kartlar ve bileşenler durumlarını sol kenardaki 3px renkli çizgiyle belirtir. CSS sınıfı doğrudan elemana eklenir.</div>
+          <div class="ornek-label">Görsel Örnekler</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="demo-card cl-ac"><div><div class="dc-label">.cl-ac — Mavi</div><div class="dc-desc">Bilgi, nötr, genel durum</div></div></div>
+            <div class="demo-card cl-gr"><div><div class="dc-label">.cl-gr — Yeşil</div><div class="dc-desc">Tamamlandı, olumlu</div></div></div>
+            <div class="demo-card cl-re"><div><div class="dc-label">.cl-re — Kırmızı</div><div class="dc-desc">Hata, kritik durum</div></div></div>
+            <div class="demo-card cl-warn"><div><div class="dc-label">.cl-warn — Turuncu</div><div class="dc-desc">Uyarı, bekliyor</div></div></div>
+            <div class="demo-card cl-leg"><div><div class="dc-label">.cl-leg — Mor</div><div class="dc-desc">Özel, premium</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B-02 -->
+      <div class="kural-kart cl-leg">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">B-02</span>
+          <span class="kural-baslik">Standart Renk Değişkenleri</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Tüm renkler CSS değişkeni ile tanımlanır. Hardcoded renk yasak. Tema geçişinde otomatik değişir.</div>
+          <div class="ornek-label">Accent Renkler (Her İki Temada Sabit)</div>
+          <div class="renk-grid">
+            <div class="renk-chip" style="background:rgba(45,142,255,.15);"><div style="font-size:18px;text-align:center;">●</div><div class="renk-hex" style="color:var(--ac);">#2D8EFF</div><div class="renk-isim">--ac</div></div>
+            <div class="renk-chip" style="background:rgba(22,163,110,.15);"><div style="font-size:18px;text-align:center;color:var(--gr);">●</div><div class="renk-hex" style="color:var(--gr);">#16a36e</div><div class="renk-isim">--gr</div></div>
+            <div class="renk-chip" style="background:rgba(229,62,62,.15);"><div style="font-size:18px;text-align:center;color:var(--re);">●</div><div class="renk-hex" style="color:var(--re);">#e53e3e</div><div class="renk-isim">--re</div></div>
+            <div class="renk-chip" style="background:rgba(217,119,6,.15);"><div style="font-size:18px;text-align:center;color:var(--warn);">●</div><div class="renk-hex" style="color:var(--warn);">#d97706</div><div class="renk-isim">--warn</div></div>
+            <div class="renk-chip" style="background:rgba(124,58,237,.15);"><div style="font-size:18px;text-align:center;color:var(--leg);">●</div><div class="renk-hex" style="color:var(--leg);">#7c3aed</div><div class="renk-isim">--leg</div></div>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="ornek-label">Tema Değişkenleri</div>
+            <div class="demo-log">
+              <span class="lk">--bg</span> <span class="lv">Sayfa arka planı</span><br>
+              <span class="lk">--sur</span> <span class="lv">Kart / panel yüzeyi</span><br>
+              <span class="lk">--sur2</span> <span class="lv">İkincil yüzey (input, hover)</span><br>
+              <span class="lk">--bor</span> <span class="lv">Kenarlık rengi</span><br>
+              <span class="lk">--tx</span> <span class="lv">Ana metin</span><br>
+              <span class="lk">--txm</span> <span class="lv">Orta ton metin</span><br>
+              <span class="lk">--txd</span> <span class="lv">Soluk / yardımcı metin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F-01 -->
+    <div class="sec-header" style="margin-top:24px;"><span class="sec-badge" style="background:rgba(217,119,6,.12);color:var(--warn);">F-01</span><div class="sec-title">Filtre Barı</div><div class="sec-line"></div></div>
+    <div class="kural-grid">
+      <div class="kural-kart cl-warn">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">F-01</span>
+          <span class="kural-baslik">Filtre Barı Düzeni</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Her liste sayfasında filtre barı zorunludur. Sol tarafta birincil aksiyon butonu, sağ tarafta arama ve filtreler. Filtre barı <strong>.cl-warn</strong> veya <strong>.cl-ac</strong> sınıfı alır.</div>
+          <div class="ornek-label">Doğru Düzen</div>
+          <div class="demo-filtre">
+            <button class="demo-btn">+ Yeni Ekle</button>
+            <div class="demo-spacer"></div>
+            <input class="demo-input" placeholder="🔍 Ara…" readonly>
+            <select class="demo-select"><option>Durum</option></select>
+          </div>
+          <div style="font-size:11px;color:var(--txd);">← Sol: Aksiyon &nbsp;&nbsp;&nbsp; Sağ: Filtreler →</div>
+        </div>
+      </div>
+
+      <!-- P-01 -->
+      <div class="kural-kart cl-ac">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">P-01</span>
+          <span class="kural-baslik">Pagination</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Tüm liste tablolarında sayfalama zorunludur. Sayfa başına 25 satır. Filtrelenmiş listede sayfa 1'e dön.</div>
+          <div class="ornek-label">Görsel Örnek</div>
+          <div class="demo-pagination">
+            <button class="demo-pg-btn">← Önceki</button>
+            <div class="demo-pg-info">26 – 50 / 143 kayıt</div>
+            <button class="demo-pg-btn">Sonraki →</button>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--txd);">• 25 satır/sayfa &nbsp;•&nbsp; Önceki/Sonraki &nbsp;•&nbsp; X-Y/Z kayıt ortada</div>
+        </div>
+      </div>
+
+      <!-- T-01 -->
+      <div class="kural-kart cl-gr">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">T-01</span>
+          <span class="kural-baslik">Tablo Sıralama</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Tüm tablo başlıklarına tıklanabilir sıralama. Tıklanınca ASC → DESC → Varsayılan döngüsü. Aktif sütunda ok ikonu gösterilir.</div>
+          <div class="ornek-label">Görsel Örnek</div>
+          <div style="background:var(--sur2);border-radius:8px;overflow:hidden;border:1px solid var(--bor);">
+            <table class="demo-table">
+              <thead><tr>
+                <th class="aktif">KOD ↑</th>
+                <th>AD</th>
+                <th>DURUM</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="color:var(--ac);font-weight:700;">A106-B</td><td>Carbon Steel</td><td><span style="color:var(--gr);font-size:11px;font-weight:700;">● Aktif</span></td></tr>
+                <tr><td style="color:var(--ac);font-weight:700;">A312</td><td>Stainless Steel</td><td><span style="color:var(--gr);font-size:11px;font-weight:700;">● Aktif</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- D-01 -->
+      <div class="kural-kart cl-leg">
+        <div class="kural-head">
+          <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">D-01</span>
+          <span class="kural-baslik">Dil Desteği</span>
+        </div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Tüm statik metinlerde <code style="background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;">data-i18n</code> etiketi zorunlu. JS render'larda <code style="background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;">t()</code> kullanılır. <code style="background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;">_onLangChange</code> hook'u veriYukle'den sonra tanımlanır.</div>
+          <div class="ornek-label">HTML Etiketleme</div>
+          <div class="demo-i18n">&lt;div data-i18n="tanim_baslik"&gt;Tanımlar&lt;/div&gt;<br>&lt;input data-i18n-placeholder="genel_ara"&gt;</div>
+          <div class="ornek-label">JS İçinde</div>
+          <div class="demo-i18n">el.textContent = t('tanim_baslik');<br>window._onLangChange = function() { tabloRender(AKTİF_TAB); };</div>
+          <div style="font-size:11px;color:var(--txd);">Key isimlendirme: <strong>sayfa_alan</strong> formatı. Örn: tanim_baslik, genel_kaydet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B-03 -->
+    <div class="sec-header" style="margin-top:24px;"><span class="sec-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">B-03</span><div class="sec-title">Sayfa Şablonu Zorunlu Kontrol Listesi</div><div class="sec-line"></div></div>
+    <div class="kural-kart cl-ac" style="max-width:700px;">
+      <div class="kural-head">
+        <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">B-03</span>
+        <span class="kural-baslik">Her Sayfa Tesliminde Zorunlu</span>
+      </div>
+      <div class="kural-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">html lang="tr" data-theme="dark"</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">Flash prevention script (link'ten önce)</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">title: [Sayfa Adı] | AresPipe</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">Barlow font linki</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">ares-store.js → ares-layout.js sırası</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">app-shell > main-content > page yapısı</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">Sidebar/topbar elle yazılmaz (inject)</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">Hardcoded renk yok — CSS variable</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">cl-* sınıfları uygulanmış</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">data-i18n etiketleri var</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">innerHTML yasak → textContent kullan</span></div>
+          <div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--gr);font-weight:800;">✓</span><span style="color:var(--txm);">Hassas veri localStorage'a yazılmaz</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════ VERİ & LOG ═══════════════════════════ -->
+  <div class="panel" id="panelveri">
+
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">L-01~05</span><div class="sec-title">Log Kuralları</div><div class="sec-line"></div></div>
+    <div class="kural-grid">
+      <div class="kural-kart cl-ac">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">L-01</span><span class="kural-baslik">Otomatik Log Kayıt</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Şu işlemler otomatik loglanır:</div>
+          <div style="font-size:12px;color:var(--txm);line-height:2;">
+            • Spool durum değişikliği (kesim, kaynak, kalite, sevkiyat)<br>
+            • Devre durum değişikliği<br>
+            • Personel iş başı / iş bitiş<br>
+            • Test sonucu girişi<br>
+            • Kalite kontrol geçti / kaldı<br>
+            • Kullanıcı giriş / çıkış
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-gr">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">L-04</span><span class="kural-baslik">Log Kayıt Yapısı</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Tüm log kayıtları bu yapıda tutulur. Key: <code style="background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;">ares_islemLog</code></div>
+          <div class="demo-log">
+{<br>
+&nbsp;&nbsp;<span class="lk">"id"</span>: <span class="lv">"L1234567890"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"tarih"</span>: <span class="lv">"31.03.2026, 14:22"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"katman"</span>: <span class="ls">"spool"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"katmanId"</span>: <span class="lv">"SP-001"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"islem"</span>: <span class="lv">"KESİM"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"yapan"</span>: <span class="lv">"Mehmet Yılmaz"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"kaynak"</span>: <span class="lv">"NB1101 / FW-305"</span>,<br>
+&nbsp;&nbsp;<span class="lk">"ust"</span>: { <span class="ls">"devre"</span>: <span class="lv">"FW-305"</span>, <span class="ls">"proje"</span>: <span class="lv">"NB1101"</span> }<br>
+}
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--txd);">Maks 1000 kayıt localStorage'da. Production'da Supabase'e taşınır.</div>
+        </div>
+      </div>
+      <div class="kural-kart cl-warn">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">L-03</span><span class="kural-baslik">Log Görüntüleme Katmanları</span></div>
+        <div class="kural-body">
+          <div style="font-size:12px;color:var(--txm);line-height:2.2;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;">
+              <div style="font-weight:700;color:var(--txd);">Nerede</div><div style="font-weight:700;color:var(--txd);">Ne Görünür</div>
+              <div>Spool detay</div><div style="color:var(--txm);">Sadece o spoolun logları</div>
+              <div>Devre detay</div><div style="color:var(--txm);">O devredeki tüm spool logları özet</div>
+              <div>Proje detay</div><div style="color:var(--txm);">Devre bazlı özet</div>
+              <div>Personel detay</div><div style="color:var(--txm);">O personelin yaptıkları</div>
+              <div>İşlem Logu</div><div style="color:var(--txm);">Tümü, filtreli</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--warn);font-weight:600;">Her detay sayfasında "Son 10 işlem" şeridi zorunlu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ MİMARİ & SAAS ═══════════════════════════ -->
+  <div class="panel" id="panelmimari">
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(124,58,237,.12);color:var(--leg);">M-01~09</span><div class="sec-title">SaaS & Mimari Kurallar</div><div class="sec-line"></div></div>
+    <div class="kural-grid">
+      <div class="kural-kart cl-leg">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">M-07</span><span class="kural-baslik">SaaS Tenant Yapısı</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Bir firmanın verisi hiçbir koşulda başka firmaya görünmez. Tüm tablolarda <code style="background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;">tenant_id</code> zorunlu.</div>
+          <div class="demo-log">
+{ <span class="lk">tenant_id</span>: <span class="lv">"firma-abc"</span>,<br>
+&nbsp;&nbsp;<span class="lk">moduller</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ls">kesim</span>: <span class="lv">"aktif"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ls">kalite</span>: <span class="lv">"aktif"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ls">raporlar</span>: <span class="lv">"kilitli"</span><br>
+&nbsp;&nbsp;} }
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-re">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(229,62,62,.12);color:var(--re);">M-08</span><span class="kural-baslik">Frontend Yetkilendirme Yasağı</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Yetki kontrolü hiçbir zaman frontend'de yapılmaz. Supabase RLS halleder.</div>
+          <div class="demo-log" style="border-color:var(--re);">
+<span style="color:var(--re);">// ❌ YANLIŞ</span><br>
+if (kullanici.rol === <span class="lv">"yonetici"</span>) {<br>
+&nbsp;&nbsp;silButonu.style.display = <span class="lv">"block"</span>;<br>
+}<br><br>
+<span style="color:var(--gr);">// ✅ DOĞRU</span><br>
+<span class="lk">// Supabase RLS halleder</span><br>
+<span class="lk">// Frontend sadece veriyi gösterir</span>
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-warn">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">M-09</span><span class="kural-baslik">İşlem Basamakları Sistemi ⚠️ KRİTİK</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Spool oluşturulunca o anki aktif basamak listesi spool kaydına <strong>kopyalanır</strong>. Sonradan tanımlar değişse de spool kendi listesiyle devam eder.</div>
+          <div style="font-size:12px;color:var(--txm);line-height:2;margin-top:8px;">
+            • <strong>Silme yasak</strong> — sadece aktif:false yapılabilir<br>
+            • <strong>Sistem adı</strong> değiştirilemez, görünen ad değiştirilebilir<br>
+            • <strong>Sıra değişikliği</strong> mevcut spoolları etkilemez<br>
+            • <strong>Yeni basamak</strong> sadece yeni spoolları etkiler
+          </div>
+          <div style="margin-top:8px;background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--re);font-weight:600;">
+            ⚠️ Supabase kurulumunda MUTLAKA uygulanacak — atlanmaz!
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-ac">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">M-04</span><span class="kural-baslik">Personel Tipleri</span></div>
+        <div class="kural-body">
+          <div style="display:grid;grid-template-columns:80px 1fr 100px 60px;gap:6px;font-size:11px;">
+            <div style="font-weight:800;color:var(--txd);">TİP</div><div style="font-weight:800;color:var(--txd);">AÇIKLAMA</div><div style="font-weight:800;color:var(--txd);">BELGE TAKİBİ</div><div style="font-weight:800;color:var(--txd);">QR</div>
+            <div style="color:var(--ac);font-weight:700;">kadrolu</div><div style="color:var(--txm);">Firmaya bağlı, tam zamanlı</div><div style="color:var(--txm);">Tam takip</div><div style="color:var(--gr);">Evet</div>
+            <div style="color:var(--warn);font-weight:700;">kiralık</div><div style="color:var(--txm);">Başka firmadan geçici</div><div style="color:var(--txm);">İş güvenliği</div><div style="color:var(--gr);">Evet</div>
+            <div style="color:var(--leg);font-weight:700;">taşeron</div><div style="color:var(--txm);">Taşeron firması personeli</div><div style="color:var(--txm);">İş güvenliği</div><div style="color:var(--gr);">Evet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ GÜVENLİK ═══════════════════════════ -->
+  <div class="panel" id="panelguvenlik">
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(229,62,62,.12);color:var(--re);">G-01~20</span><div class="sec-title">Güvenlik Protokolü</div><div class="sec-line"></div></div>
+    <div class="kural-grid">
+      <div class="kural-kart cl-re">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(229,62,62,.12);color:var(--re);">G-01</span><span class="kural-baslik">XSS Koruması</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Kullanıcıdan gelen hiçbir veri sanitize edilmeden HTML'e yazılamaz.</div>
+          <div class="demo-log" style="border-color:var(--re);">
+<span style="color:var(--re);">// ❌ YASAK</span><br>
+el.innerHTML = kullanicidan_gelen_veri;<br><br>
+<span style="color:var(--gr);">// ✅ DOĞRU</span><br>
+el.textContent = kullanicidan_gelen_veri;
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-re">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(229,62,62,.12);color:var(--re);">G-02</span><span class="kural-baslik">localStorage Güvenliği</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Şifre, token, TC, banka bilgisi localStorage'a yazılmaz. Sadece UI tercihleri saklanır.</div>
+          <div style="font-size:12px;margin-top:8px;">
+            <div style="color:var(--gr);font-weight:600;margin-bottom:4px;">✅ İzin verilenler:</div>
+            <div style="color:var(--txm);">ares_theme, ares_lang, sidebarCollapsed</div>
+            <div style="color:var(--re);font-weight:600;margin-top:8px;margin-bottom:4px;">❌ Yasak:</div>
+            <div style="color:var(--txm);">Şifre, JWT token, TC kimlik no, banka bilgisi</div>
+          </div>
+        </div>
+      </div>
+      <div class="kural-kart cl-warn">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">G-05</span><span class="kural-baslik">RLS Zorunluluğu</span></div>
+        <div class="kural-body">
+          <div class="kural-aciklama">Her tablo için RLS aktif olmalı. RLS olmadan hiçbir tablo production'a alınamaz. Supabase service key hiçbir zaman frontend'de kullanılmaz.</div>
+        </div>
+      </div>
+      <div class="kural-kart cl-ac">
+        <div class="kural-head"><span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">G-09</span><span class="kural-baslik">Şifre Politikası & Oturum</span></div>
+        <div class="kural-body">
+          <div style="font-size:12px;color:var(--txm);line-height:2;">
+            • Min 8 karakter, 1 büyük harf, 1 rakam<br>
+            • JWT token: 1 saat<br>
+            • Refresh token: 7 gün<br>
+            • Super Admin: 2FA zorunlu, maks 4 saat oturum
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ SAYFA ŞARTNAMELERİ ═══════════════════════════ -->
+  <div class="panel" id="panelsartname">
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(22,163,110,.12);color:var(--gr);">ŞARTNAME</span><div class="sec-title">Sayfa Teknik Şartnameleri</div><div class="sec-line"></div></div>
+    <div class="sartname-grid">
+
+      <!-- TANIMLAR -->
+      <div class="sartname-kart cl-gr">
+        <div class="sartname-head">
+          <div class="sartname-icon" style="background:rgba(22,163,110,.12);">⚙️</div>
+          <div>
+            <div class="sartname-baslik">Tanımlar</div>
+            <div class="sartname-dosya">tanimlar.html</div>
+          </div>
+          <div style="margin-left:auto;"><span class="durum-badge d-tamam">✓ Tamamlandı</span></div>
+        </div>
+        <div class="sartname-body">
+          <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Sistem geneli sabit tanımları yönetir: malzeme tipleri, kaynak yöntemleri, sertifika tipleri, çap sınıfları, işlem basamakları.</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_tanimlar</code> localStorage</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Diğer sayfaların kullandığı dropdown seçenekleri, işlem basamağı listesi</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Bağlantılar</div><div class="sartname-deger">Spool oluşturma (basamak snapshot), Personel (sertifika), Sevkiyat (malzeme)</div></div>
+          <hr class="sartname-divider">
+          <div class="sartname-row"><div class="sartname-etiket">Aktif Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01</span><span class="tag tag-ac">B-02</span><span class="tag tag-ac">B-03</span><span class="tag tag-warn">F-01</span><span class="tag tag-ac">P-01</span><span class="tag tag-ac">T-01</span><span class="tag tag-leg">D-01</span><span class="tag tag-warn">M-09</span><span class="tag tag-re">G-01</span><span class="tag tag-re">G-02</span></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Görünmez</div><div class="sartname-deger">İşlem basamağı değişikliklerinde otomatik log (L-01). Basamak silinemez, sadece pasif yapılır (M-09).</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Dil Desteği</div><div class="sartname-deger">✅ data-i18n + t() + _onLangChange hook</div></div>
+        </div>
+      </div>
+
+      <!-- BÜKÜM -->
+      <div class="sartname-kart cl-warn">
+        <div class="sartname-head">
+          <div class="sartname-icon" style="background:rgba(217,119,6,.12);">🔄</div>
+          <div>
+            <div class="sartname-baslik">Büküm Yönetimi</div>
+            <div class="sartname-dosya">bukum.html</div>
+          </div>
+          <div style="margin-left:auto;"><span class="durum-badge d-revizyon">⚠ Revizyon Bekliyor</span></div>
+        </div>
+        <div class="sartname-body">
+          <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Büküm işlemi bekleyen spoolları listeler, fason büküm dosyalarını yönetir, bükülen spoolları takip eder.</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_bukumler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_fasonlar</code></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Spool durum güncellemesi, fason büküm belgesi, QR kodu</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Bağlantılar</div><div class="sartname-deger">Spool detay, Kesim (önceki basamak), Kaynak (sonraki basamak)</div></div>
+          <hr class="sartname-divider">
+          <div class="sartname-row"><div class="sartname-etiket">Aktif Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01</span><span class="tag tag-ac">B-02</span><span class="tag tag-ac">B-03</span><span class="tag tag-re">G-01</span><span class="tag tag-re">G-02</span></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Eksikler</div><div class="sartname-deger"><span class="tag tag-leg">D-01</span> dil desteği yok &nbsp;<span class="tag tag-warn">F-01</span> filtre barı eski yapıda &nbsp;<span class="tag tag-ac">P-01</span> pagination yok</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Görünmez</div><div class="sartname-deger">Büküm tamamlanınca otomatik log (L-01). QR okutma ile durum güncelleme (NOT-02, ileride).</div></div>
+        </div>
+      </div>
+
+      <!-- SPOOL DETAY -->
+      <div class="sartname-kart cl-ac">
+        <div class="sartname-head">
+          <div class="sartname-icon" style="background:rgba(45,142,255,.12);">📦</div>
+          <div>
+            <div class="sartname-baslik">Spool Detay</div>
+            <div class="sartname-dosya">spool_detay.html</div>
+          </div>
+          <div style="margin-left:auto;"><span class="durum-badge d-yapilmadi">— Yapılmadı</span></div>
+        </div>
+        <div class="sartname-body">
+          <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Tek bir spoolun tüm bilgilerini, basamak ilerlemesini, loglarını ve işlem geçmişini gösterir.</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger">URL parametresi ile spool ID. <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_spooller</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_islemLog</code></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Durum güncellemesi, not ekleme, log kaydı</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Bağlantılar</div><div class="sartname-deger">Devre detay (üst), İlgili üretim sayfaları (basamağa göre)</div></div>
+          <hr class="sartname-divider">
+          <div class="sartname-row"><div class="sartname-etiket">Zorunlu Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01</span><span class="tag tag-ac">B-03</span><span class="tag tag-ac">L-01</span><span class="tag tag-ac">L-03</span><span class="tag tag-warn">M-09</span><span class="tag tag-leg">D-01</span></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Görünmez</div><div class="sartname-deger">Son 10 işlem şeridi (L-03). Basamak snapshot — spool kendi listesiyle devam eder (M-09). Durum değişikliğinde otomatik log.</div></div>
+        </div>
+      </div>
+
+      <!-- DEVRE DETAY -->
+      <div class="sartname-kart cl-ac">
+        <div class="sartname-head">
+          <div class="sartname-icon" style="background:rgba(45,142,255,.12);">🔌</div>
+          <div>
+            <div class="sartname-baslik">Devre Detay</div>
+            <div class="sartname-dosya">devre_detay.html</div>
+          </div>
+          <div style="margin-left:auto;"><span class="durum-badge d-yapilmadi">— Yapılmadı</span></div>
+        </div>
+        <div class="sartname-body">
+          <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Bir devreye ait tüm spoolların listesi, genel ilerleme durumu ve devre bazlı log özeti.</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger">URL parametresi ile devre ID. <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_devreler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_spooller</code></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Spool listesi, ilerleme yüzdesi, log özeti</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Bağlantılar</div><div class="sartname-deger">Devreler listesi (üst), Spool detay (alt)</div></div>
+          <hr class="sartname-divider">
+          <div class="sartname-row"><div class="sartname-etiket">Zorunlu Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01</span><span class="tag tag-ac">B-03</span><span class="tag tag-warn">F-01</span><span class="tag tag-ac">P-01</span><span class="tag tag-ac">T-01</span><span class="tag tag-ac">L-03</span><span class="tag tag-leg">D-01</span></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Görünmez</div><div class="sartname-deger">Devredeki tüm spool loglarının özeti (L-03). Son 10 işlem şeridi zorunlu.</div></div>
+        </div>
+      </div>
+
+      <!-- DEVRELER LİSTESİ -->
+      <div class="sartname-kart cl-ac">
+        <div class="sartname-head">
+          <div class="sartname-icon" style="background:rgba(45,142,255,.12);">📋</div>
+          <div>
+            <div class="sartname-baslik">Aktif Devreler</div>
+            <div class="sartname-dosya">devreler.html</div>
+          </div>
+          <div style="margin-left:auto;"><span class="durum-badge d-yapilmadi">— Yapılmadı</span></div>
+        </div>
+        <div class="sartname-body">
+          <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Atölyedeki tüm aktif devreleri listeler, proje/tersane/durum bazlı filtreler sunar.</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_devreler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_projeler</code></div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Devre detay sayfasına yönlendirme, CSV export</div></div>
+          <div class="sartname-row"><div class="sartname-etiket">Bağlantılar</div><div class="sartname-deger">Proje listesi (üst), Devre detay (alt)</div></div>
+          <hr class="sartname-divider">
+          <div class="sartname-row"><div class="sartname-etiket">Zorunlu Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01</span><span class="tag tag-ac">B-03</span><span class="tag tag-warn">F-01</span><span class="tag tag-ac">P-01</span><span class="tag tag-ac">T-01</span><span class="tag tag-leg">D-01</span></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ NOTLAR ═══════════════════════════ -->
+  <div class="panel" id="panelnotlar">
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(217,119,6,.12);color:var(--warn);">NOT</span><div class="sec-title">İleride Kurallaşacak</div><div class="sec-line"></div></div>
+    <div class="not-grid">
+      <div class="not-kart"><div class="not-kod">NOT-01</div><div class="not-baslik">Geri Bildirim Modülü</div><div class="not-aciklama">Hata tipleri, sorumluluk atama, cezai yaptırım kaydı, dosya ekleri, yapay zeka eğitim verisi kullanımı kurallaştırılacak.</div></div>
+      <div class="not-kart"><div class="not-kod">NOT-02</div><div class="not-baslik">QR Sistemi</div><div class="not-aciklama">Her spool ve personel için QR üretilecek. Mobil uygulama ile birlikte gelecek. Supabase olmadan gerçek zamanlı çalışmaz.</div></div>
+      <div class="not-kart"><div class="not-kod">NOT-03</div><div class="not-baslik">Mobil Uygulama</div><div class="not-aciklama">Ana iskelet tamamlandıktan sonra. Basit arayüz — iş başı/bitiş, spool durum güncelleme, fotoğraf. İngilizce sabit, ikon ağırlıklı.</div></div>
+      <div class="not-kart"><div class="not-kod">NOT-04</div><div class="not-baslik">Müşteri Portalı</div><div class="not-aciklama">Mobil uygulamadan sonra gelecek. Çok dilli, salt okunur. Müşteri sadece kendi projesini görür.</div></div>
+      <div class="not-kart"><div class="not-kod">NOT-05</div><div class="not-baslik">Sistem Kurgusu</div><div class="not-aciklama">Kullanıcı tipleri, modüller listesi, kullanıcı akışları Supabase kurulumundan önce detaylandırılacak.</div></div>
+      <div class="not-kart"><div class="not-kod">NOT-06</div><div class="not-baslik">İş Kaydı & Performans Takip</div><div class="not-aciklama">Personel işleri spool bazında kayıt altına alınır. QR okutma anında log sistemi olayı kaydeder. İş kaydı ayrıca log tutmaz.</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ AKSİYON PLANI ═══════════════════════════ -->
+  <div class="panel" id="panelaksiyon">
+    <div class="sec-header"><span class="sec-badge" style="background:rgba(22,163,110,.12);color:var(--gr);">PLAN</span><div class="sec-title">Aksiyon Planı</div><div class="sec-line"></div></div>
+    <div style="margin-bottom:20px;font-size:13px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;">✅ Tamamlananlar</div>
+    <div class="aksiyon-list" style="margin-bottom:28px;">
+      <div class="aksiyon-item"><div class="aksiyon-no">1</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">ares_ key değişikliği</div><div class="aksiyon-aciklama">syos_ → ares_ tüm sayfalarda tamamlandı</div></div><div class="aksiyon-durum"><span class="durum-badge d-tamam">✓ Tamam</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">2</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">app/ klasör yapısı</div><div class="aksiyon-aciklama">GitHub'da app/ klasörü, Vercel deploy</div></div><div class="aksiyon-durum"><span class="durum-badge d-tamam">✓ Tamam</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">3</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">tanimlar.html</div><div class="aksiyon-aciklama">D-01 dil desteği, B-01~03, M-09 tamamlandı</div></div><div class="aksiyon-durum"><span class="durum-badge d-tamam">✓ Tamam</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">4</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">Vercel deploy</div><div class="aksiyon-aciklama">Netlify'dan Vercel'e geçildi, deploy aktif</div></div><div class="aksiyon-durum"><span class="durum-badge d-tamam">✓ Tamam</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">5</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">Dil sistemi (TR/EN/AR)</div><div class="aksiyon-aciklama">ares-layout.js dil yöneticisi, _onLangChange hook, 3 dil paketi</div></div><div class="aksiyon-durum"><span class="durum-badge d-tamam">✓ Tamam</span></div></div>
+    </div>
+
+    <div style="margin-bottom:20px;font-size:13px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;">⚙️ Devam Edenler / Sıradakiler</div>
+    <div class="aksiyon-list" style="margin-bottom:28px;">
+      <div class="aksiyon-item"><div class="aksiyon-no">6</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">spool_detay.html</div><div class="aksiyon-aciklama">Sıfırdan yazılacak — en temel birim</div></div><div class="aksiyon-durum"><span class="durum-badge d-revizyon">→ Sırada</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">7</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">devre_detay.html</div><div class="aksiyon-aciklama">Spool detay tamamlandıktan sonra</div></div><div class="aksiyon-durum"><span class="durum-badge d-yapilmadi">Bekliyor</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">8</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">devreler.html</div><div class="aksiyon-aciklama">Devre detay tamamlandıktan sonra</div></div><div class="aksiyon-durum"><span class="durum-badge d-yapilmadi">Bekliyor</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">9</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">bukum.html & markalama.html revizyon</div><div class="aksiyon-aciklama">D-01 dil desteği, F-01 filtre barı, P-01 pagination eksik</div></div><div class="aksiyon-durum"><span class="durum-badge d-revizyon">⚠ Revizyon</span></div></div>
+    </div>
+
+    <div style="margin-bottom:20px;font-size:13px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;">🗄️ Supabase Aşaması</div>
+    <div class="aksiyon-list">
+      <div class="aksiyon-item"><div class="aksiyon-no">10</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">Sistem kurgusu netleştir</div><div class="aksiyon-aciklama">Modüller, kullanıcı akışları, işlem basamakları listesi</div></div><div class="aksiyon-durum"><span class="durum-badge d-yapilmadi">Bekliyor</span></div></div>
+      <div class="aksiyon-item" style="border-color:rgba(229,62,62,.3);"><div class="aksiyon-no" style="color:var(--re);">⚠</div><div class="aksiyon-icerik"><div class="aksiyon-baslik" style="color:var(--re);">M-09 Basamak Snapshot — KRİTİK</div><div class="aksiyon-aciklama">Spool oluşturulunca aktif basamak listesi kopyalanır. Supabase şemasında ilk ele alınacak konu. ATLANAMAZ.</div></div><div class="aksiyon-durum"><span class="durum-badge" style="background:rgba(229,62,62,.12);color:var(--re);">⚠ Kritik</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">11</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">Veritabanı şeması tasarla</div><div class="aksiyon-aciklama">Tablo yapıları, ilişkiler, tenant_id, RLS kuralları</div></div><div class="aksiyon-durum"><span class="durum-badge d-yapilmadi">Bekliyor</span></div></div>
+      <div class="aksiyon-item"><div class="aksiyon-no">12</div><div class="aksiyon-icerik"><div class="aksiyon-baslik">Super Admin Paneli</div><div class="aksiyon-aciklama">Supabase kurulduktan sonra — tenant, modül, lisans yönetimi</div></div><div class="aksiyon-durum"><span class="durum-badge d-yapilmadi">Bekliyor</span></div></div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+</div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<script>
+function tabSec(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  btn.classList.add('active');
+  document.getElementById('panel' + id).classList.add('on');
+}
+document.documentElement.style.visibility = '';
+</script>
+</body>
+</html>

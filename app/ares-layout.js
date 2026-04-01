@@ -185,6 +185,10 @@
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>'
     },
     {
+      type: 'item', key: 'kurallar', label: 'Kurallar & Şartnameler', href: 'kurallar.html',
+      icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>'
+    },
+    {
       type: 'item', key: 'log', label: 'İşlem Logu', i18n: 'nav_islem_logu', href: 'log.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
     },
@@ -215,6 +219,7 @@
     if (p.includes('personel')) return 'personel';
     if (p.includes('tezgah')) return 'tezgah';
     if (p.includes('tanim')) return 'tanim';
+    if (p.includes('kurallar')) return 'kurallar';
     if (p.includes('log')) return 'log';
     if (p.includes('rapor')) return 'raporlar';
     if (p.includes('ayarlar')) return 'ayarlar';
