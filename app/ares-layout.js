@@ -105,6 +105,7 @@
     tr: '<rect width="20" height="14" fill="#E30A17"/><circle cx="8" cy="7" r="3" fill="white"/><circle cx="9" cy="7" r="2.2" fill="#E30A17"/><polygon points="11.5,7 12.8,6 12.8,8" fill="white"/>',
     en: '<rect width="20" height="14" fill="#012169"/><line x1="0" y1="0" x2="20" y2="14" stroke="white" stroke-width="2"/><line x1="20" y1="0" x2="0" y2="14" stroke="white" stroke-width="2"/><rect x="8" width="4" height="14" fill="white"/><rect y="5" width="20" height="4" fill="white"/><rect x="9" width="2" height="14" fill="#C8102E"/><rect y="6" width="20" height="2" fill="#C8102E"/>',
     de: '<rect width="20" height="5" fill="#000"/><rect y="5" width="20" height="4" fill="#DD0000"/><rect y="9" width="20" height="5" fill="#FFCE00"/>',
+    ar: '<rect width="20" height="14" fill="#006233"/><rect y="5" width="20" height="4" fill="white"/><rect y="9" width="20" height="5" fill="#000"/>',
   };
 
   function updateLangToggle() {
@@ -573,6 +574,10 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
           <div class="lang-opt" data-lang="en" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--txm);transition:background 0.1s;">
             <svg width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;"><rect width="20" height="14" fill="#012169"/><line x1="0" y1="0" x2="20" y2="14" stroke="white" stroke-width="2"/><line x1="20" y1="0" x2="0" y2="14" stroke="white" stroke-width="2"/><rect x="8" width="4" height="14" fill="white"/><rect y="5" width="20" height="4" fill="white"/><rect x="9" width="2" height="14" fill="#C8102E"/><rect y="6" width="20" height="2" fill="#C8102E"/></svg>
             English
+          </div>
+          <div class="lang-opt" data-lang="ar" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--txm);transition:background 0.1s;">
+            <svg width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;"><rect width="20" height="14" fill="#006233"/><rect y="5" width="20" height="4" fill="white"/><rect y="9" width="20" height="5" fill="#000"/></svg>
+            العربية
           </div>
         </div>
       </div>
