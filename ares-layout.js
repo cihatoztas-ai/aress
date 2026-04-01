@@ -23,6 +23,78 @@
   const PAGE = (window.location.pathname.split('/').pop() || 'index.html').replace('.html', '');
   if (['giris', 'mobil'].some(p => PAGE.includes(p))) return;
 
+  // ── DİL YÖNETİCİSİ (Kural D-01) ────────────────────────────
+  var _langData = {};
+  var _langLoaded = false;
+
+  function getLang() {
+    return localStorage.getItem('ares_lang') || 'tr';
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('ares_lang', lang);
+    loadLang(lang, function() {
+      applyLang();
+      updateLangToggle();
+    });
+  }
+
+  function loadLang(lang, cb) {
+    // Önce cache'e bak
+    var cached = sessionStorage.getItem('ares_lang_' + lang);
+    if (cached) {
+      try { _langData = JSON.parse(cached); _langLoaded = true; if(cb) cb(); return; } catch{}
+    }
+    // Fetch
+    fetch('lang/' + lang + '.json?v=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        _langData = data;
+        _langLoaded = true;
+        sessionStorage.setItem('ares_lang_' + lang, JSON.stringify(data));
+        if (cb) cb();
+      })
+      .catch(function(){
+        // Dosya bulunamazsa Türkçe fallback
+        _langLoaded = true;
+        if (cb) cb();
+      });
+  }
+
+  // t() — metin çeviri fonksiyonu (global)
+  window.t = function(key, params) {
+    var text = _langData[key] || key;
+    if (params) {
+      Object.keys(params).forEach(function(k){
+        text = text.replace('{' + k + '}', params[k]);
+      });
+    }
+    return text;
+  };
+
+  function applyLang() {
+    // data-i18n etiketli elementleri güncelle
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      var text = window.t(key);
+      if (text !== key) el.textContent = text;
+    });
+    // data-i18n-placeholder etiketli elementleri güncelle
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      var text = window.t(key);
+      if (text !== key) el.placeholder = text;
+    });
+    // NAV labellarını güncelle
+    updateSidebar();
+  }
+
+  function updateLangToggle() {
+    var lang = getLang();
+    var btn = document.getElementById('lang-toggle');
+    if (btn) btn.textContent = lang === 'tr' ? 'EN' : 'TR';
+  }
+
   // ── NAVIGASYON TANIMI ───────────────────────────────────────
   const NAV = [
     {
@@ -461,6 +533,12 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         <span class="theme-switch-icon" id="ts-moon">🌙</span>
       </div>
 
+      <button id="lang-toggle" title="Dil / Language"
+        onclick="window._setLang && window._setLang(localStorage.getItem('ares_lang')==='tr'?'en':'tr')"
+        style="height:30px;padding:0 10px;border-radius:7px;border:1px solid;background:transparent;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.15s;flex-shrink:0;letter-spacing:.5px;">
+        ${getLang() === 'tr' ? 'EN' : 'TR'}
+      </button>
+
       <a href="uyarilar.html" id="tb-bell" title="Uyarılar"
         style="position:relative;width:36px;height:36px;border-radius:9px;border:1px solid;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.15s;flex-shrink:0;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
@@ -575,6 +653,9 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
   // ── INIT ──────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
+    // Layout inject öncesi flaşı engelle
+    document.body.style.visibility = 'hidden';
+
     // Sayfa açılışında transition'ı geçici kapat — soldan kayma engellemek için
     var noTr = document.createElement('style');
     noTr.id = 'ares-no-transition';
@@ -584,12 +665,19 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     authKontrol();
     injectGlobalCSS();
     applyTheme(localStorage.getItem('syos_theme') || 'dark');
-    buildSidebar();    // ← sidebar HTML'ini oluştur
-    updateSidebar();   // ← nav içeriğini doldur
+    buildSidebar();
+    updateSidebar();
     buildTopbar();
     setupToggle();
     setupThemeSwitch();
     applyTheme(localStorage.getItem('syos_theme') || 'dark');
+
+    // Dil yöneticisi
+    window._setLang = setLang;
+    loadLang(getLang(), function() {
+      applyLang();
+      updateLangToggle();
+    });
 
     // Logo tıklayınca ana sayfa
     document.addEventListener('click', function (e) {
@@ -600,11 +688,12 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     updateLogoFromSettings();
 
-    // Transition'ı geri aç — ilk render bittikten sonra
+    // Transition'ı geri aç + sayfayı göster
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         var el = document.getElementById('ares-no-transition');
         if (el) el.remove();
+        document.body.style.visibility = 'visible';
       });
     });
   });
