@@ -106,76 +106,76 @@
   // ── NAVIGASYON TANIMI ───────────────────────────────────────
   const NAV = [
     {
-      type: 'item', key: 'index', label: 'Ana Sayfa', href: 'index.html',
+      type: 'item', key: 'index', label: 'Ana Sayfa', i18n: 'nav_ana_sayfa', href: 'index.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>'
     },
-    { type: 'sep', label: 'PROJELER' },
+    { type: 'sep', label: 'PROJELER', i18n: 'nav_projeler' },
     {
-      type: 'item', key: 'proje', label: 'Projeler', href: 'proje_liste.html',
+      type: 'item', key: 'proje', label: 'Projeler', i18n: 'nav_projeler_menu', href: 'proje_liste.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>'
     },
     {
-      type: 'item', key: 'devre', label: 'Aktif Devreler', href: 'devreler.html',
+      type: 'item', key: 'devre', label: 'Aktif Devreler', i18n: 'nav_aktif_devreler', href: 'devreler.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'
     },
-    { type: 'sep', label: 'ÜRETİM' },
+    { type: 'sep', label: 'ÜRETİM', i18n: 'nav_uretim' },
     {
-      type: 'item', key: 'kesim', label: 'Kesim', href: 'kesim.html',
+      type: 'item', key: 'kesim', label: 'Kesim', i18n: 'nav_kesim', href: 'kesim.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>'
     },
     {
-      type: 'item', key: 'bukum', label: 'Büküm', href: 'bukum.html',
+      type: 'item', key: 'bukum', label: 'Büküm', i18n: 'nav_bukum', href: 'bukum.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4z"/><path d="M14 4h6v6h-6z"/><path d="M4 14h6v6H4z"/><path d="M17 17m-3 0a3 3 0 106 0 3 3 0 10-6 0"/></svg>'
     },
     {
-      type: 'item', key: 'markalama', label: 'Markalama', href: 'markalama.html',
+      type: 'item', key: 'markalama', label: 'Markalama', i18n: 'nav_markalama', href: 'markalama.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'
     },
-    { type: 'sep', label: 'KALİTE & LOJİSTİK' },
+    { type: 'sep', label: 'KALİTE & LOJİSTİK', i18n: 'nav_kalite_lojistik' },
     {
-      type: 'item', key: 'kalite', label: 'Kalite Kontrol', href: 'kalite_kontrol.html',
+      type: 'item', key: 'kalite', label: 'Kalite Kontrol', i18n: 'nav_kalite_kontrol', href: 'kalite_kontrol.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
     },
     {
-      type: 'item', key: 'test', label: 'Testler', href: 'testler.html',
+      type: 'item', key: 'test', label: 'Testler', i18n: 'nav_testler', href: 'testler.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v11m0 0H5m4 0h10M5 14a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>'
     },
     {
-      type: 'item', key: 'sevk', label: 'Sevkiyatlar', href: 'sevkiyatlar.html',
+      type: 'item', key: 'sevk', label: 'Sevkiyatlar', i18n: 'nav_sevkiyatlar', href: 'sevkiyatlar.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>'
     },
-    { type: 'sep', label: 'YÖNETİM' },
+    { type: 'sep', label: 'YÖNETİM', i18n: 'nav_yonetim' },
     {
-      type: 'item', key: 'uyari', label: 'Uyarılar', href: 'uyarilar.html', badge: true,
+      type: 'item', key: 'uyari', label: 'Uyarılar', i18n: 'nav_uyarilar', href: 'uyarilar.html', badge: true,
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>'
     },
     {
-      type: 'item', key: 'tersane', label: 'Tersaneler', href: 'tersaneler.html',
+      type: 'item', key: 'tersane', label: 'Tersaneler', i18n: 'nav_tersaneler', href: 'tersaneler.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
     },
     {
-      type: 'item', key: 'personel', label: 'Personel', href: 'personel.html',
+      type: 'item', key: 'personel', label: 'Personel', i18n: 'nav_personel', href: 'personel.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>'
     },
     {
-      type: 'item', key: 'tezgah', label: 'Tezgahlar', href: 'tezgahlar.html',
+      type: 'item', key: 'tezgah', label: 'Tezgahlar', i18n: 'nav_tezgahlar', href: 'tezgahlar.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>'
     },
-    { type: 'sep', label: 'SİSTEM' },
+    { type: 'sep', label: 'SİSTEM', i18n: 'nav_sistem' },
     {
-      type: 'item', key: 'tanim', label: 'Tanımlar', href: 'tanimlar.html',
+      type: 'item', key: 'tanim', label: 'Tanımlar', i18n: 'nav_tanimlar', href: 'tanimlar.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>'
     },
     {
-      type: 'item', key: 'log', label: 'İşlem Logu', href: 'log.html',
+      type: 'item', key: 'log', label: 'İşlem Logu', i18n: 'nav_islem_logu', href: 'log.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
     },
     {
-      type: 'item', key: 'raporlar', label: 'Raporlar', href: 'raporlar.html',
+      type: 'item', key: 'raporlar', label: 'Raporlar', i18n: 'nav_raporlar', href: 'raporlar.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'
     },
     {
-      type: 'item', key: 'ayarlar', label: 'Ayarlar', href: 'ayarlar.html',
+      type: 'item', key: 'ayarlar', label: 'Ayarlar', i18n: 'nav_ayarlar', href: 'ayarlar.html',
       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'
     },
   ];
@@ -457,7 +457,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     return NAV.map(item => {
       if (item.type === 'sep') {
-        return `<div style="padding:12px 12px 4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap;overflow:hidden;transition:opacity 0.15s;" class="nav-sep-label">${item.label}</div>`;
+        return `<div style="padding:12px 12px 4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap;overflow:hidden;transition:opacity 0.15s;" class="nav-sep-label">${item.i18n ? window.t(item.i18n) : item.label}</div>`;
       }
       const active = activeKey === item.key;
       const badge  = item.badge && uyariSayisi > 0
@@ -465,7 +465,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         : '';
       return `<a class="nav-item${active ? ' active' : ''}" href="${item.href}" data-label="${item.label}">
         <span class="nav-icon">${item.icon}</span>
-        <span class="nav-label">${item.label}</span>
+        <span class="nav-label">${item.i18n ? window.t(item.i18n) : item.label}</span>
         ${badge}
       </a>`;
     }).join('');
