@@ -710,8 +710,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
   // ── INIT ──────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
-    // Layout inject öncesi flaşı engelle
-    document.body.style.visibility = 'hidden';
+    // Flash prevention html üzerinde zaten aktif — body'ye gerek yok
 
     // Sayfa açılışında transition'ı geçici kapat — soldan kayma engellemek için
     var noTr = document.createElement('style');
@@ -753,7 +752,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
       requestAnimationFrame(function () {
         var el = document.getElementById('ares-no-transition');
         if (el) el.remove();
-        document.body.style.visibility = 'visible';
+        document.documentElement.style.visibility = '';
       });
     });
   });
