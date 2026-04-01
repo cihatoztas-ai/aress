@@ -132,7 +132,12 @@ td{padding:12px 16px;font-size:13px;vertical-align:middle;}
   if (saved !== 'tr') {
     fetch('lang/' + saved + '.json')
       .then(function(r){ return r.json(); })
-      .then(function(data){ window._lang = data; window._applyLang(); })
+      .then(function(data){
+        window._lang = data;
+        window._applyLang();
+        // ✅ D-01: JS ile üretilen tablo içeriğini de yenile
+        if (typeof tabloRender === 'function') tabloRender(AKTİF_TAB);
+      })
       .catch(function(e){ console.warn('AresPipe: Dil dosyası yüklenemedi —', e); });
   }
 })();
