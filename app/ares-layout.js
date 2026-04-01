@@ -33,12 +33,19 @@
 
   function setLang(lang) {
     localStorage.setItem('ares_lang', lang);
-    loadLang(lang, function() {
+    if (lang === 'tr') {
+      // ✅ D-01: Türkçe varsayılan — _langData temizle, sayfa HTML'i göster
+      _langData = {};
       applyLang();
       updateLangToggle();
-      // ✅ D-01: Sayfa bazlı hook — tabloRender gibi işlemler için
       if (typeof window._onLangChange === 'function') window._onLangChange(lang);
-    });
+    } else {
+      loadLang(lang, function() {
+        applyLang();
+        updateLangToggle();
+        if (typeof window._onLangChange === 'function') window._onLangChange(lang);
+      });
+    }
   }
 
   function loadLang(lang, cb) {
@@ -68,15 +75,25 @@
   };
 
   function applyLang() {
+    var isTr = Object.keys(_langData).length === 0;
     // data-i18n etiketli elementleri güncelle
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       var key = el.getAttribute('data-i18n');
-      var text = window.t(key);
-      if (text !== key) el.textContent = text;
+      // Orijinal Türkçe metni ilk seferinde kaydet
+      if (!el.hasAttribute('data-i18n-tr')) el.setAttribute('data-i18n-tr', el.textContent.trim());
+      if (isTr) {
+        // Türkçeye dön — orijinal HTML metnini geri yükle
+        el.textContent = el.getAttribute('data-i18n-tr');
+      } else {
+        var text = window.t(key);
+        if (text !== key) el.textContent = text;
+      }
     });
     // data-i18n-placeholder etiketli elementleri güncelle
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
       var key = el.getAttribute('data-i18n-placeholder');
+      if (!el.hasAttribute('data-i18n-placeholder-tr')) el.setAttribute('data-i18n-placeholder-tr', el.placeholder || '');
+      if (isTr) { el.placeholder = el.getAttribute('data-i18n-placeholder-tr'); return; }
       var text = window.t(key);
       if (text !== key) el.placeholder = text;
     });
