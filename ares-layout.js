@@ -196,19 +196,19 @@
   }
 
   function getUyariSayisi() {
-    try { return (JSON.parse(localStorage.getItem('syos_uyarilar') || '[]')).filter(x => !x.goruldu).length; }
+    try { return (JSON.parse(localStorage.getItem('ares_uyarilar') || '[]')).filter(x => !x.goruldu).length; }
     catch (e) { return 0; }
   }
 
   function getOturum() {
-    try { return JSON.parse(localStorage.getItem('syos_oturum') || '{}'); }
+    try { return JSON.parse(localStorage.getItem('ares_oturum') || '{}'); }
     catch (e) { return {}; }
   }
 
   function authKontrol() {
     const o = getOturum();
     if (!o || !o.rol) {
-      localStorage.setItem('syos_oturum', JSON.stringify({ tamAd: 'Demo Kullanıcı', rol: 'yonetici', id: 'demo' }));
+      localStorage.setItem('ares_oturum', JSON.stringify({ tamAd: 'Demo Kullanıcı', rol: 'yonetici', id: 'demo' }));
     }
     return true;
   }
@@ -486,8 +486,8 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     const logoMark = document.querySelector('.logo-mark');
     const logoText = document.querySelector('.logo-text');
     if (!logoMark || !logoText) return;
-    const aresLogo = localStorage.getItem('syos_logo_ares');
-    const firma    = JSON.parse(localStorage.getItem('syos_firma') || '{}');
+    const aresLogo = localStorage.getItem('ares_logo_ares');
+    const firma    = JSON.parse(localStorage.getItem('ares_firma') || '{}');
     if (aresLogo) {
       logoMark.innerHTML = `<img src="${aresLogo}" style="width:22px;height:22px;object-fit:contain;border-radius:4px;">`;
       logoMark.style.background = 'transparent';
@@ -587,7 +587,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     // Logout
     document.getElementById('tb-logout').onclick = () => {
       if (confirm('Çıkış yapmak istiyor musunuz?')) {
-        localStorage.removeItem('syos_oturum');
+        localStorage.removeItem('ares_oturum');
         window.location.href = 'giris.html';
       }
     };
@@ -599,7 +599,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
   function applyTheme(t) {
     if (!['dark', 'light-anthracite'].includes(t)) t = 'dark';
     document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('syos_theme', t);
+    localStorage.setItem('ares_theme', t);
     const sun  = document.getElementById('ts-sun');
     const moon = document.getElementById('ts-moon');
     if (sun)  sun.classList.toggle('active',  t === 'light-anthracite');
@@ -664,13 +664,13 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     authKontrol();
     injectGlobalCSS();
-    applyTheme(localStorage.getItem('syos_theme') || 'dark');
+    applyTheme(localStorage.getItem('ares_theme') || 'dark');
     buildSidebar();
     updateSidebar();
     buildTopbar();
     setupToggle();
     setupThemeSwitch();
-    applyTheme(localStorage.getItem('syos_theme') || 'dark');
+    applyTheme(localStorage.getItem('ares_theme') || 'dark');
 
     // Dil yöneticisi
     window._setLang = setLang;

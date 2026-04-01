@@ -529,7 +529,7 @@ const SYOS = (function () {
   }
 
   // ── DÖKÜMANLAR ───────────────────────────────────────────
-  // Dökümanlar devre bazlı saklanır: syos_dok_<devreId>
+  // Dökümanlar devre bazlı saklanır: ares_dok_<devreId>
   // Her kayıt: { id, ad, tur, dosyaAdi, uzanti, boyutBytes, base64, tarih, yukleyen }
 
   function dokumanGetir(devreId) {
