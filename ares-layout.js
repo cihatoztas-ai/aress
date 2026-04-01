@@ -89,10 +89,23 @@
     updateSidebar();
   }
 
+  var _LANG_FLAGS = {
+    tr: '<rect width="20" height="14" fill="#E30A17"/><circle cx="8" cy="7" r="3" fill="white"/><circle cx="9" cy="7" r="2.2" fill="#E30A17"/><polygon points="11.5,7 12.8,6 12.8,8" fill="white"/>',
+    en: '<rect width="20" height="14" fill="#012169"/><line x1="0" y1="0" x2="20" y2="14" stroke="white" stroke-width="2"/><line x1="20" y1="0" x2="0" y2="14" stroke="white" stroke-width="2"/><rect x="8" width="4" height="14" fill="white"/><rect y="5" width="20" height="4" fill="white"/><rect x="9" width="2" height="14" fill="#C8102E"/><rect y="6" width="20" height="2" fill="#C8102E"/>',
+    de: '<rect width="20" height="5" fill="#000"/><rect y="5" width="20" height="4" fill="#DD0000"/><rect y="9" width="20" height="5" fill="#FFCE00"/>',
+  };
+
   function updateLangToggle() {
     var lang = getLang();
-    var btn = document.getElementById('lang-toggle');
-    if (btn) btn.textContent = lang === 'tr' ? 'EN' : 'TR';
+    var flag = document.getElementById('lang-flag');
+    var code = document.getElementById('lang-code');
+    if (flag && _LANG_FLAGS[lang]) flag.innerHTML = _LANG_FLAGS[lang];
+    if (code) code.textContent = lang.toUpperCase();
+    // Aktif seçeneği işaretle
+    document.querySelectorAll('.lang-opt').forEach(function(opt) {
+      opt.style.background = opt.dataset.lang === lang ? 'var(--sur2)' : '';
+      opt.style.color = opt.dataset.lang === lang ? 'var(--tx)' : '';
+    });
   }
 
   // ── NAVIGASYON TANIMI ───────────────────────────────────────
@@ -533,11 +546,24 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         <span class="theme-switch-icon" id="ts-moon">🌙</span>
       </div>
 
-      <button id="lang-toggle" title="Dil / Language"
-        onclick="window._setLang && window._setLang(localStorage.getItem('ares_lang')==='tr'?'en':'tr')"
-        style="height:30px;padding:0 10px;border-radius:7px;border:1px solid;background:transparent;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.15s;flex-shrink:0;letter-spacing:.5px;">
-        ${getLang() === 'tr' ? 'EN' : 'TR'}
-      </button>
+      <div id="lang-wrap" style="position:relative;flex-shrink:0;">
+        <button id="lang-toggle" title="Dil / Language"
+          style="display:flex;align-items:center;gap:6px;height:30px;padding:0 9px;border-radius:7px;border:1px solid;background:transparent;cursor:pointer;transition:all 0.15s;font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;">
+          <svg id="lang-flag" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;flex-shrink:0;">${getLang()==='tr'?'<rect width="20" height="14" fill="#E30A17"/><circle cx="8" cy="7" r="3" fill="white"/><circle cx="9" cy="7" r="2.2" fill="#E30A17"/><polygon points="11.5,7 12.8,6 12.8,8" fill="white"/>':getLang()==='en'?'<rect width="20" height="14" fill="#012169"/><line x1="0" y1="0" x2="20" y2="14" stroke="white" stroke-width="2"/><line x1="20" y1="0" x2="0" y2="14" stroke="white" stroke-width="2"/><rect x="8" width="4" height="14" fill="white"/><rect y="5" width="20" height="4" fill="white"/><rect x="9" width="2" height="14" fill="#C8102E"/><rect y="6" width="20" height="2" fill="#C8102E"/>':'<rect width="20" height="5" fill="#000"/><rect y="5" width="20" height="4" fill="#DD0000"/><rect y="9" width="20" height="5" fill="#FFCE00"/>'}</svg>
+          <span id="lang-code">${getLang().toUpperCase()}</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:0.5;"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="lang-menu" style="position:absolute;top:calc(100% + 6px);right:0;background:var(--sur);border:1px solid var(--bor);border-radius:9px;overflow:hidden;display:none;z-index:500;min-width:120px;box-shadow:0 8px 20px rgba(0,0,0,0.18);">
+          <div class="lang-opt" data-lang="tr" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--txm);transition:background 0.1s;">
+            <svg width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;"><rect width="20" height="14" fill="#E30A17"/><circle cx="8" cy="7" r="3" fill="white"/><circle cx="9" cy="7" r="2.2" fill="#E30A17"/><polygon points="11.5,7 12.8,6 12.8,8" fill="white"/></svg>
+            Türkçe
+          </div>
+          <div class="lang-opt" data-lang="en" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--txm);transition:background 0.1s;">
+            <svg width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;"><rect width="20" height="14" fill="#012169"/><line x1="0" y1="0" x2="20" y2="14" stroke="white" stroke-width="2"/><line x1="20" y1="0" x2="0" y2="14" stroke="white" stroke-width="2"/><rect x="8" width="4" height="14" fill="white"/><rect y="5" width="20" height="4" fill="white"/><rect x="9" width="2" height="14" fill="#C8102E"/><rect y="6" width="20" height="2" fill="#C8102E"/></svg>
+            English
+          </div>
+        </div>
+      </div>
 
       <a href="uyarilar.html" id="tb-bell" title="Uyarılar"
         style="position:relative;width:36px;height:36px;border-radius:9px;border:1px solid;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.15s;flex-shrink:0;">
@@ -593,6 +619,42 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     };
 
     setupSearch();
+  }
+
+  // ── Dil Dropdown ───────────────────────────────────────────
+  function setupLangDropdown() {
+    var toggle = document.getElementById('lang-toggle');
+    var menu   = document.getElementById('lang-menu');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.querySelectorAll('.lang-opt').forEach(function(opt) {
+      opt.addEventListener('mouseenter', function() {
+        this.style.background = 'var(--sur2)';
+        this.style.color = 'var(--tx)';
+      });
+      opt.addEventListener('mouseleave', function() {
+        var lang = getLang();
+        if (this.dataset.lang !== lang) {
+          this.style.background = '';
+          this.style.color = '';
+        }
+      });
+      opt.addEventListener('click', function() {
+        menu.style.display = 'none';
+        window._setLang && window._setLang(this.dataset.lang);
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#lang-wrap')) {
+        menu.style.display = 'none';
+      }
+    });
   }
 
   // ── Tema ───────────────────────────────────────────────────
@@ -670,6 +732,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     buildTopbar();
     setupToggle();
     setupThemeSwitch();
+    setupLangDropdown();
     applyTheme(localStorage.getItem('ares_theme') || 'dark');
 
     // Dil yöneticisi
