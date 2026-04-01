@@ -474,7 +474,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     return NAV.map(item => {
       if (item.type === 'sep') {
-        return `<div style="padding:12px 12px 4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap;overflow:hidden;transition:opacity 0.15s;" class="nav-sep-label">${item.i18n ? window.t(item.i18n) : item.label}</div>`;
+        return `<div style="padding:12px 12px 4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap;overflow:hidden;transition:opacity 0.15s;" class="nav-sep-label">${item.i18n && window.t(item.i18n) !== item.i18n ? window.t(item.i18n) : item.label}</div>`;
       }
       const active = activeKey === item.key;
       const badge  = item.badge && uyariSayisi > 0
@@ -482,7 +482,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         : '';
       return `<a class="nav-item${active ? ' active' : ''}" href="${item.href}" data-label="${item.label}">
         <span class="nav-icon">${item.icon}</span>
-        <span class="nav-label">${item.i18n ? window.t(item.i18n) : item.label}</span>
+        <span class="nav-label">${item.i18n && window.t(item.i18n) !== item.i18n ? window.t(item.i18n) : item.label}</span>
         ${badge}
       </a>`;
     }).join('');
