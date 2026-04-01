@@ -36,6 +36,8 @@
     loadLang(lang, function() {
       applyLang();
       updateLangToggle();
+      // ✅ D-01: Sayfa bazlı hook — tabloRender gibi işlemler için
+      if (typeof window._onLangChange === 'function') window._onLangChange(lang);
     });
   }
 
@@ -740,6 +742,8 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
     loadLang(getLang(), function() {
       applyLang();
       updateLangToggle();
+      // ✅ D-01: Sayfa hazır olduktan sonra hook'u tetikle
+      if (typeof window._onLangChange === 'function') window._onLangChange(getLang());
     });
 
     // Logo tıklayınca ana sayfa

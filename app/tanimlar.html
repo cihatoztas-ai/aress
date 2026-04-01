@@ -107,41 +107,7 @@ td{padding:12px 16px;font-size:13px;vertical-align:middle;}
 <!-- ✅ Script sırası — Kural SC-01 -->
 <script src="ares-store.js"></script>
 <script src="ares-layout.js"></script>
-<!-- ✅ D-01 Dil Sistemi — ares-layout.js tanımlamamışsa fallback -->
-<script>
-(function(){
-  if (typeof window.t === 'function') return;
-  window._lang = {};
-  window.t = function(key, params) {
-    var str = (window._lang[key] !== undefined) ? window._lang[key] : key;
-    if (params) Object.entries(params).forEach(function(e){ str = str.replace('{'+e[0]+'}', e[1]); });
-    return str;
-  };
-  window._applyLang = function() {
-    document.querySelectorAll('[data-i18n]').forEach(function(el) {
-      var key = el.getAttribute('data-i18n');
-      if (window._lang[key] !== undefined) el.textContent = window._lang[key];
-    });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
-      var key = el.getAttribute('data-i18n-placeholder');
-      if (window._lang[key] !== undefined) el.placeholder = window._lang[key];
-    });
-  };
-  // D-01: Varsayılan Türkçe — sadece başka dil seçilmişse yükle
-  var saved = localStorage.getItem('ares_lang') || 'tr';
-  if (saved !== 'tr') {
-    fetch('lang/' + saved + '.json')
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        window._lang = data;
-        window._applyLang();
-        // ✅ D-01: JS ile üretilen tablo içeriğini de yenile
-        if (typeof tabloRender === 'function') tabloRender(AKTİF_TAB);
-      })
-      .catch(function(e){ console.warn('AresPipe: Dil dosyası yüklenemedi —', e); });
-  }
-})();
-</script>
+<!-- ✅ D-01: Dil ares-layout.js tarafından yönetilir, _onLangChange hook ile tablo yenilenir -->
 </head>
 <body>
 
@@ -786,6 +752,9 @@ function toast(msg, tip='ok') {
 }
 
 // ─── INIT ────────────────────────────────────────────────────────
+// ✅ D-01: Dil değişince JS ile üretilen tabloyu da yenile
+window._onLangChange = function() { tabloRender(AKTİF_TAB); };
+
 document.documentElement.style.visibility = '';
 veriYukle();
 </script>
