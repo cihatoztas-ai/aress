@@ -41,21 +41,13 @@
     });
   }
 
-  // ✅ D-01: Cache versiyonu — en.json değişince artır
-  var LANG_VER = 'v2';
-
   function loadLang(lang, cb) {
-    var cacheKey = 'ares_lang_' + lang + '_' + LANG_VER;
-    var cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      try { _langData = JSON.parse(cached); _langLoaded = true; if(cb) cb(); return; } catch{}
-    }
-    fetch('lang/' + lang + '.json?v=' + LANG_VER)
+    // Cache yok - her zaman fetch
+    fetch('lang/' + lang + '.json?nocache=' + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(data){
         _langData = data;
         _langLoaded = true;
-        sessionStorage.setItem(cacheKey, JSON.stringify(data));
         if (cb) cb();
       })
       .catch(function(){
