@@ -41,23 +41,24 @@
     });
   }
 
+  // ✅ D-01: Cache versiyonu — en.json değişince artır
+  var LANG_VER = 'v2';
+
   function loadLang(lang, cb) {
-    // Önce cache'e bak
-    var cached = sessionStorage.getItem('ares_lang_' + lang);
+    var cacheKey = 'ares_lang_' + lang + '_' + LANG_VER;
+    var cached = sessionStorage.getItem(cacheKey);
     if (cached) {
       try { _langData = JSON.parse(cached); _langLoaded = true; if(cb) cb(); return; } catch{}
     }
-    // Fetch
-    fetch('lang/' + lang + '.json?v=' + Date.now())
+    fetch('lang/' + lang + '.json?v=' + LANG_VER)
       .then(function(r){ return r.json(); })
       .then(function(data){
         _langData = data;
         _langLoaded = true;
-        sessionStorage.setItem('ares_lang_' + lang, JSON.stringify(data));
+        sessionStorage.setItem(cacheKey, JSON.stringify(data));
         if (cb) cb();
       })
       .catch(function(){
-        // Dosya bulunamazsa Türkçe fallback
         _langLoaded = true;
         if (cb) cb();
       });
