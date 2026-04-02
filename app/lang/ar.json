@@ -261,5 +261,13 @@
   "dv_circuit_moves": "حركات الدائرة",
   "dv_moves_note": "العمليات على السبولات تظهر في تفاصيل السبول",
   "dv_unit_spool": "سبول",
-  "dv_genel_bilgiler": "معلومات عامة"
+  "dv_genel_bilgiler": "معلومات عامة",
+  "dv_tip_created": "تم الإنشاء",
+  "dv_tip_stopped": "موقوف",
+  "dv_tip_restarted": "تم الاستئناف",
+  "dv_tip_kk": "دعوة مراقبة الجودة",
+  "dv_tip_shipped": "أُرسل للشحن",
+  "dv_tip_deadline": "تم تحديث الموعد",
+  "dv_tip_note": "ملاحظة مضافة",
+  "dv_tip_cancelled": "إلغاء السبول"
 }

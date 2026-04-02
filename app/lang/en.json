@@ -261,5 +261,13 @@
   "dv_circuit_moves": "Circuit Movements",
   "dv_moves_note": "Spool operations are shown in spool detail",
   "dv_unit_spool": "spool",
-  "dv_genel_bilgiler": "General Info"
+  "dv_genel_bilgiler": "General Info",
+  "dv_tip_created": "Created",
+  "dv_tip_stopped": "Stopped",
+  "dv_tip_restarted": "Restarted",
+  "dv_tip_kk": "QC Invitation",
+  "dv_tip_shipped": "Sent to Shipment",
+  "dv_tip_deadline": "Deadline Updated",
+  "dv_tip_note": "Note Added",
+  "dv_tip_cancelled": "Spool Cancelled"
 }
