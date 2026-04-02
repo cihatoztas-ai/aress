@@ -24,8 +24,8 @@
 *{box-sizing:border-box;}
 
 /* === SAYFA === */
-.page{padding:24px 28px 60px;}
-@media(max-width:768px){.page{padding:16px 16px 40px;}}
+.page{padding:0 28px 60px;}
+@media(max-width:768px){.page{padding:0 16px 40px;}}
 
 /* === BUTONLAR === */
 .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:36px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--txm);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif;}
@@ -76,9 +76,10 @@
 .table-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 10px;border-bottom:1px solid var(--bor);}
 .table-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--txd);}
 .table-scroll{overflow-x:auto;}
-.data-table{width:100%;border-collapse:collapse;font-size:13px;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;min-width:1200px;}
 .data-table th{text-align:left;padding:9px 10px;font-size:10px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;background:var(--sur2);border-bottom:1px solid var(--bor);white-space:nowrap;}
-.data-table td{padding:10px 10px;border-bottom:1px solid var(--bor);vertical-align:middle;}
+.data-table td{padding:10px 10px;border-bottom:1px solid var(--bor);vertical-align:middle;white-space:nowrap;}
+.data-table td.wrap{white-space:normal;}
 .data-table tr:last-child td{border-bottom:none;}
 .data-table tr:hover td{background:rgba(45,142,255,.03);}
 
@@ -152,7 +153,7 @@
 <div class="app-shell"><div class="main-content"><div class="page">
 
   <!-- ÜST BAR -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 20px;flex-wrap:wrap;gap:12px;">
     <div class="breadcrumb">
       <a href="index.html" data-i18n="nav_home">Ana Sayfa</a><span>/</span>
       <a href="devreler.html" data-i18n="nav_active_circuits">Aktif Devreler</a><span>/</span>
@@ -163,7 +164,6 @@
       <button class="btn-outline" onclick="history.back()" data-i18n="btn_back">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Geri
       </button>
-      <button class="btn-outline" onclick="spoolEkleBaslat()" data-i18n="dv_add_spool">+ Spool Ekle</button>
       <button class="btn-outline" onclick="etiketModalAc()" style="border-color:rgba(124,58,237,.4);color:var(--leg);" data-i18n="dv_labels_btn">&#127991; Etiketler</button>
       <button class="btn-outline" onclick="exportModalAc()" data-i18n="dv_export_btn">&#11015; Aktar</button>
       <button class="btn-outline" id="btnDurdur" onclick="durdurModalAc()" style="border-color:rgba(229,62,62,.35);color:var(--re);" data-i18n="sp_btn_stop">&#9646;&#9646; Durdur</button>
@@ -267,7 +267,8 @@
         <div class="table-title"><span data-i18n="dv_spool_list">Spool Listesi</span> <span id="ddSpoolCount" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
         <div style="display:flex;gap:8px;">
           <button class="btn-sm" onclick="spoolEkleBaslat()" data-i18n="dv_add_spool">+ Spool Ekle</button>
-          <label class="btn-sm" style="cursor:pointer;" data-i18n="sp_excel_import">
+          <button class="btn-sm" onclick="sablonIndir()" title="Bos spool sablonu indir">&#128196; Sablon</button>
+          <label class="btn-sm" style="cursor:pointer;" title="Excel'den spool aktar">
             &#128229; Excel
             <input type="file" accept=".xlsx,.xls,.csv" onchange="spoolExcelImport(event)" style="display:none;">
           </label>
@@ -853,13 +854,13 @@ function setText(id, val) { const el=document.getElementById(id); if(el) el.text
 function statGuncelle() {
   const aktif = SPOOLS.filter(s=>!s.iptal);
   setText('ddStatSpool', aktif.length + ' ' + tv('dv_unit_spool','spool'));
-  setText('ddStatAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
+  setText('ddStatAgirlik', Math.round(toplumAgirlik()).toLocaleString('tr-TR')+' kg');
   setText('ddStatMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddStatYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
   setText('ddStatTermin', DEVRE.terminTarihi||tv('sp_alist_none','Belirlenmemis'));
   setText('ddSpoolCount', aktif.length+' '+tv('dv_records','kayit'));
   setText('ddGenelSpoolSayi', aktif.length+' '+tv('dv_unit_spool','spool'));
-  setText('ddGenelAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
+  setText('ddGenelAgirlik', Math.round(toplumAgirlik()).toLocaleString('tr-TR')+' kg');
   setText('ddGenelMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddGenelYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
 }
@@ -922,10 +923,10 @@ function renderTable() {
     const d = DURUM_CFG[s.durum] || {cls:'sb-waiting',text:s.durumText||s.durum};
     const stl = s.stopped ? 'opacity:.55;' : '';
     const globalIdx = (_page-1)*_perPage + i + 1;
-    return `<tr style="${stl}" onclick="navigateToSpool('${esc(s.spoolNo)}')" style="cursor:pointer;">
+    return `<tr style="${stl}cursor:pointer;" onclick="navigateToSpool('${esc(s.spoolNo)}')">
       <td style="color:var(--txd);font-size:12px;">${globalIdx}</td>
-      <td style="font-size:12px;color:var(--txm);">${esc(s.pipeline)||'--'}</td>
-      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ac);">${esc(s.spoolNo)}</span></td>
+      <td style="font-size:12px;color:var(--txm);" onclick="event.stopPropagation();navigateToSpool('${esc(s.spoolNo)}')" title="${esc(s.pipeline)}">${esc(s.pipeline)||'--'}</td>
+      <td onclick="event.stopPropagation();navigateToSpool('${esc(s.spoolNo)}')"><span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ac);text-decoration:underline;text-underline-offset:3px;">${esc(s.spoolNo)}</span></td>
       <td style="font-size:12px;color:var(--txm);">${esc(s.cap)||'--'}</td>
       <td style="font-size:12px;color:var(--txm);">${esc(s.agirlik)||'--'}</td>
       <td style="font-size:12px;">${esc(s.malzeme)||'--'}</td>
@@ -1182,7 +1183,60 @@ function sevkiyataGonderModal(){ _gonderAc('sevk'); }
 function spoolKKGonder(spoolNo)  { _gonderAc('kk',spoolNo); }
 function spoolSevkGonder(spoolNo){ _gonderAc('sevk',spoolNo); }
 
+function _spoolBitmis(s) {
+  // Spool tamamlanmış sayılır: durum 'done' VEYA tüm adımlar 1
+  if(s.durum==='done') return true;
+  if(s.adimlar && s.adimlar.length>0 && s.adimlar.every(v=>v===1)) return true;
+  return false;
+}
+
 function _gonderAc(tip, tek) {
+  const aktif = SPOOLS.filter(s=>!s.stopped&&!s.iptal);
+
+  // Bitmemiş spool kontrolü (tek spool seçiminde atla)
+  if(!tek) {
+    const bitmemis = aktif.filter(s=>!_spoolBitmis(s));
+    if(bitmemis.length > 0) {
+      const uyariId = 'gonderUyariModal';
+      let uyari = document.getElementById(uyariId);
+      if(!uyari) {
+        uyari = document.createElement('div');
+        uyari.id = uyariId;
+        uyari.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:3100;display:flex;align-items:center;justify-content:center;padding:20px;';
+        document.body.appendChild(uyari);
+      }
+      const renk = tip==='kk'?'var(--leg)':'var(--ac)';
+      const baslik = tip==='kk'?tv('sp_btn_qc','KK Gonder'):tv('sp_btn_shipment','Sevkiyat');
+      uyari.innerHTML = `<div style="background:var(--sur);border:1px solid var(--bor);border-radius:18px;width:100%;max-width:460px;box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--bor);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;">${bitmemis.length} Bitmemis Spool Var</div>
+        </div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
+          <div style="font-size:13px;color:var(--txm);line-height:1.6;">
+            Asagidaki spoollar henuz tamamlanmamis. Yine de <strong style="color:${renk};">${baslik}</strong> islemine devam etmek istiyor musunuz?
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;max-height:140px;overflow-y:auto;">
+            ${bitmemis.map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--sur2);border-radius:8px;font-size:12px;">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--ac);">${esc(s.spoolNo)}</span>
+              <span style="color:var(--txd);">${esc(s.pipeline||'')}</span>
+              <span class="status-badge sb-${s.durum||'waiting'}" style="margin-left:auto;font-size:10px;">${esc(s.durumText||s.durum||'Bekliyor')}</span>
+            </div>`).join('')}
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px;">
+            <button onclick="document.getElementById('gonderUyariModal').style.display='none'" class="btn-outline" style="flex:1;">Iptal</button>
+            <button onclick="document.getElementById('gonderUyariModal').style.display='none';_gonderAcDevam('${tip}');" class="btn-primary" style="flex:2;background:${renk};">Yine de Devam Et</button>
+          </div>
+        </div>
+      </div>`;
+      uyari.style.display='flex';
+      return;
+    }
+  }
+  _gonderAcDevam(tip, tek);
+}
+
+function _gonderAcDevam(tip, tek) {
   _gonderTip = tip;
   _gonderSecili = {};
   const aktif = SPOOLS.filter(s=>!s.stopped&&!s.iptal);
@@ -1191,13 +1245,14 @@ function _gonderAc(tip, tek) {
   const onayla = document.getElementById('gonderOnayla');
   const bilgi = document.getElementById('gonderBilgi');
   if(tip==='kk') {
-    if(title) title.textContent='Kalite Kontrole Gonder'; if(title) title.style.color='var(--leg)';
-    if(onayla) { onayla.style.background='var(--leg)'; onayla.textContent='KK Listesine Ekle'; }
+    if(title) { title.textContent=tv('dv_kk_modal_title','Kalite Kontrole Gonder'); title.style.color='var(--leg)'; }
+    if(onayla) { onayla.style.background='var(--leg)'; onayla.textContent=tv('dv_kk_modal_btn','KK Listesine Ekle'); }
+    if(bilgi) bilgi.textContent=tv('dv_kk_modal_info','Secili spooller kalite kontrol listesine eklenecek.');
   } else {
-    if(title) title.textContent='Sevkiyata Gonder'; if(title) title.style.color='var(--ac)';
-    if(onayla) { onayla.style.background='var(--ac)'; onayla.textContent='Sevkiyata Ekle'; }
+    if(title) { title.textContent=tv('dv_sevk_modal_title','Sevkiyata Gonder'); title.style.color='var(--ac)'; }
+    if(onayla) { onayla.style.background='var(--ac)'; onayla.textContent=tv('dv_sevk_modal_btn','Sevkiyata Ekle'); }
+    if(bilgi) bilgi.textContent=tv('dv_sevk_modal_info','Secili spooller sevkiyat listesine eklenecek.');
   }
-  if(bilgi) bilgi.textContent = tip==='kk' ? 'Secili spooller kalite kontrol listesine eklenecek.' : 'Secili spooller sevkiyat listesine eklenecek.';
   gonderListesiRender();
   document.getElementById('gonderModal').style.display='flex';
 }
@@ -1419,25 +1474,57 @@ function renderIslemler() {
   }).join('');
 }
 
+// ── TARİH FORMAT ────────────────────────────────────────────────
+function tarihFormat(d) {
+  if(!d) return '—';
+  try {
+    var dt = d instanceof Date ? d : new Date(d);
+    if(isNaN(dt)) return String(d);
+    var gun = String(dt.getDate()).padStart(2,'0');
+    var ay  = String(dt.getMonth()+1).padStart(2,'0');
+    var yil = dt.getFullYear();
+    return gun+'/'+ay+'/'+yil;
+  } catch(e){ return String(d); }
+}
+function bugunTarih() {
+  var d=new Date();
+  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+}
+
 // ── EXPORT ──────────────────────────────────────────────────────
 function exportModalAc() { document.getElementById('exportModal').style.display='flex'; }
 function exportModalKapat() { document.getElementById('exportModal').style.display='none'; }
 function exportExcel() {
   exportModalKapat();
+  if(typeof XLSX === 'undefined') { showToast('Excel kutuphanesi yuklenemedi','error'); return; }
   try {
     const wb = XLSX.utils.book_new();
-    const spoolRows = [['#','Pipeline No','Spool No','Cap','Agirlik','Malzeme','Kalite','Yuzey','Durum','Alistirma']];
-    SPOOLS.filter(s=>!s.iptal).forEach((s,i)=>{ spoolRows.push([i+1,s.pipeline,s.spoolNo,s.cap,s.agirlik,s.malzeme,s.kalite,s.yuzey,s.durumText||s.durum,s.alistirma||'—']); });
+    // Spool listesi
+    const spoolRows = [['#','Pipeline No','Spool No','Cap','Agirlik (kg)','Malzeme','Kalite','Yuzey','Durum','Alistirma','Bukum','Kesim','Markalama','Test']];
+    SPOOLS.filter(s=>!s.iptal).forEach((s,i)=>{
+      spoolRows.push([
+        i+1, s.pipeline||'', s.spoolNo||'', s.cap||'', s.agirlik||'',
+        s.malzeme||'', s.kalite||'', s.yuzey||'',
+        s.stopped?'Durduruldu':(s.durumText||s.durum||''),
+        s.alistirma||'',
+        s.bukum?(s.bukum.tamamlanan+'/'+s.bukum.toplam):'',
+        s.kesim?(s.kesim.tamamlanan+'/'+s.kesim.toplam):'',
+        s.markalama?(s.markalama.tamamlanan+'/'+s.markalama.toplam):'',
+        s.test?(s.test.tamamlanan+'/'+s.test.toplam):''
+      ]);
+    });
     const ws1 = XLSX.utils.aoa_to_sheet(spoolRows);
-    ws1['!cols']=[4,14,8,10,12,12,8,8,18,10].map(w=>({wch:w}));
+    ws1['!cols']=[4,16,10,10,12,14,8,8,16,10,8,8,10,8].map(w=>({wch:w}));
     XLSX.utils.book_append_sheet(wb,ws1,'Spool Listesi');
+    // Malzeme listesi
     const malz = birlesikMalzeme();
-    const malzRows=[['#','Tur','Aciklama','Malzeme','Kalite','Cap','Et','Toplam Uzunluk','Adet','Sertifika','Spooller']];
+    const malzRows=[['#','Tur','Aciklama','Malzeme','Kalite','Cap (mm)','Et (mm)','Toplam Uzunluk (mm)','Adet','Sertifika','Spooller']];
     malz.forEach((m,i)=>{ malzRows.push([i+1,m.tur,m.aciklama,m.malzeme,m.kalite,m.cap,m.et||'',m.tur==='boru'?m.uzunluk_toplam:'',m.tur==='fitting'?m.adet_toplam:'',m.sertifika?'EVET':'',m.spooller.join(', ')]); });
     const ws2 = XLSX.utils.aoa_to_sheet(malzRows);
-    ws2['!cols']=[4,8,20,12,8,8,6,14,6,8,16].map(w=>({wch:w}));
+    ws2['!cols']=[4,8,20,12,8,8,6,18,6,8,16].map(w=>({wch:w}));
     XLSX.utils.book_append_sheet(wb,ws2,'Malzeme Listesi');
-    XLSX.writeFile(wb,(DEVRE.devre||'Devre')+'_'+new Date().toLocaleDateString('tr-TR').replace(/\./g,'-')+'.xlsx');
+    const dosyaAd = (DEVRE.devre||'Devre')+'_'+bugunTarih().replace(/\//g,'-')+'.xlsx';
+    XLSX.writeFile(wb, dosyaAd);
     showToast('Excel indirildi','success');
   } catch(err){ showToast('Excel hatasi: '+err.message,'error'); }
 }
@@ -1447,12 +1534,13 @@ function exportPdf() {
   const spoolSatirlar = SPOOLS.filter(s=>!s.iptal).map((s,i)=>`
     <tr>
       <td>${i+1}</td>
-      <td style="font-weight:700;color:#2D8EFF;">${s.spoolNo}</td>
-      <td style="color:#666;">${s.pipeline}</td>
-      <td>${s.cap}</td><td>${s.agirlik}</td><td>${s.malzeme}</td><td>${s.yuzey}</td>
+      <td style="font-weight:700;color:#2D8EFF;">${s.spoolNo||''}</td>
+      <td style="color:#666;">${s.pipeline||''}</td>
+      <td>${s.cap||''}</td><td>${s.agirlik||''}</td><td>${s.malzeme||''}</td><td>${s.yuzey||''}</td>
       <td>${s.alistirma||'—'}</td>
-      <td><span style="padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;background:${s.stopped?'#fee2e2':'#dbeafe'};color:${s.stopped?'#b91c1c':'#1d4ed8'};">${s.durumText||s.durum}</span></td>
+      <td><span style="padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;background:${s.stopped?'#fee2e2':'#dbeafe'};color:${s.stopped?'#b91c1c':'#1d4ed8'};">${s.stopped?'Durduruldu':(s.durumText||s.durum||'')}</span></td>
     </tr>`).join('');
+  const tarih = bugunTarih();
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${d.isEmri||''} — ${d.devre||''}</title>
   <style>
   body{font-family:Arial,sans-serif;font-size:11px;color:#1e293b;margin:0;padding:10mm;}
@@ -1462,22 +1550,20 @@ function exportPdf() {
   th{background:#f1f5f9;padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#475569;border-bottom:1px solid #e2e8f0;}
   td{padding:6px 8px;border-bottom:1px solid #f1f5f9;vertical-align:middle;}
   tr:nth-child(even) td{background:#f8fafc;}
-  .sec{font-size:13px;font-weight:700;color:#1e3a5f;margin:20px 0 6px;border-bottom:2px solid #2D8EFF;padding-bottom:4px;}
   .bar{background:#1e3a5f;color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-radius:6px;}
   .bar button{border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;}
   @media print{.bar{display:none;}}
   @page{size:A4 landscape;margin:8mm}
-</head><body>
+  </style></head><body>
   <div class="bar">
-    <span>&#128196; ${d.gemi||''} / ${d.devre||''} — ${new Date().toLocaleDateString('tr-TR')}</span>
+    <span>&#128196; ${d.gemi||''} / ${d.devre||''} — ${tarih}</span>
     <div style="display:flex;gap:6px;">
       <button onclick="window.close()" style="background:rgba(255,255,255,.2);color:#fff;">Kapat</button>
       <button onclick="window.print()" style="background:#fff;color:#1e3a5f;font-weight:700;">Yazdir / PDF</button>
     </div>
   </div>
   <h1>${d.gemi||''} — ${d.devre||''}</h1>
-  <div class="meta">Is Emri: ${d.isEmri||'—'} | Tersane: ${d.tersane||'—'} | Zone: ${d.zone||'—'} | Tarih: ${new Date().toLocaleDateString('tr-TR')}</div>
-  <div class="sec">Spool Listesi</div>
+  <div class="meta">Is Emri: ${d.isEmri||'—'} | Tersane: ${d.tersane||'—'} | Zone: ${d.zone||'—'} | Tarih: ${tarih}</div>
   <table><thead><tr><th>#</th><th>Spool</th><th>Pipeline</th><th>Cap</th><th>Agirlik</th><th>Malzeme</th><th>Yuzey</th><th>Alistirma</th><th>Durum</th></tr></thead>
   <tbody>${spoolSatirlar}</tbody></table>
   </body></html>`;
@@ -1487,7 +1573,62 @@ function exportPdf() {
   showToast('PDF onizlemesi acildi','success');
 }
 
-// ── QR ÇİZ ──────────────────────────────────────────────────────
+// ── EXCEL IMPORT ────────────────────────────────────────────────
+function spoolExcelImport(event) {
+  const file = event.target.files[0]; if(!file) return;
+  if(typeof XLSX === 'undefined') { showToast('Excel kutuphanesi yuklenemedi — sayfayi yenileyip tekrar deneyin','error'); event.target.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data,{type:'array'});
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+      let added = 0, skip = 0;
+      rows.forEach(row=>{
+        // Birden fazla olası kolon adı destekle
+        const spoolNo = String(row['Spool No']||row['spoolNo']||row['SPOOL NO']||row['Spool']||'').trim();
+        if(!spoolNo){ skip++; return; }
+        if(SPOOLS.find(s=>s.spoolNo===spoolNo)){ skip++; return; }
+        SPOOLS.push({
+          idx: SPOOLS.length+1,
+          pipeline: String(row['Pipeline No']||row['pipeline']||row['PIPELINE NO']||'').trim(),
+          spoolNo,
+          cap:      String(row['Cap']||row['cap']||row['CAP']||row['Dis Cap']||'').trim(),
+          agirlik:  String(row['Agirlik']||row['agirlik']||row['Ağırlık']||row['Weight']||'').trim(),
+          malzeme:  String(row['Malzeme']||row['malzeme']||row['Material']||'').trim(),
+          kalite:   String(row['Kalite']||row['kalite']||row['Grade']||'').trim(),
+          yuzey:    String(row['Yuzey']||row['yuzey']||row['Surface']||'').trim(),
+          durum:'waiting', durumText:'Bekliyor',
+          adimlar:[0,0,0,0,0,0], sonIslem:null, alistirma:null,
+          bukum:{toplam:0,tamamlanan:0}, kesim:{toplam:0,tamamlanan:0},
+          markalama:{toplam:0,tamamlanan:0}, test:{toplam:0,tamamlanan:0},
+          durduruldu:'YOK', stopped:false, iptal:false
+        });
+        added++;
+      });
+      renderTable(); statGuncelle();
+      const msg = added+' spool eklendi'+(skip?' ('+skip+' atlandı)':'');
+      showToast(msg, added>0?'success':'info');
+    } catch(err){ showToast('Excel okunamadi: '+err.message,'error'); }
+    event.target.value='';
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ── EXCEL ŞABLON ────────────────────────────────────────────────
+function sablonIndir() {
+  if(typeof XLSX === 'undefined') { showToast('Excel kutuphanesi yuklenemedi','error'); return; }
+  try {
+    const wb = XLSX.utils.book_new();
+    const baslik = ['Pipeline No','Spool No','Cap','Agirlik','Malzeme','Kalite','Yuzey'];
+    const ornek  = ['M100-317-01-P2','S01','323,9 mm','490,09 kg','PASLANMAZ','316L','ASIT'];
+    const ws = XLSX.utils.aoa_to_sheet([baslik, ornek]);
+    ws['!cols'] = [16,10,10,12,14,8,8].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, ws, 'Spool Sablonu');
+    XLSX.writeFile(wb, 'AresPipe_Spool_Sablonu.xlsx');
+    showToast('Sablon indirildi','success');
+  } catch(err){ showToast('Sablon hatasi: '+err.message,'error'); }
+}
 function qrCiz(canvas, data) {
   const ctx = canvas.getContext('2d'), s=3, size=96;
   ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size); ctx.fillStyle='#111';
