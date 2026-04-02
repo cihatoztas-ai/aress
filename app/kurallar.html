@@ -262,9 +262,12 @@
     • Yeni karar verilince hangi kurala ekleneceğini belirt<br>
     • M-09 basamak snapshot kuralını her Supabase konuşmasında hatırlat — kritik<br><br>
     <strong style="color:var(--tx);">Mevcut durum:</strong><br>
-    • Tamamlanan: tanimlar.html ✅ &nbsp; bukum.html (yapısal) ✅ &nbsp; spool_detay.html ✅ (D-01+G-01 tam)<br>
-    • Sıradaki: devre_detay.html<br>
-    • Dil: TR/EN/AR aktif · ares-layout.js #lang-toggle CSS fix bekliyor &nbsp;• Supabase: Henüz kurulmadı
+    • Tamamlanan: tanimlar.html ✅ &nbsp; bukum.html (yapısal) ✅ &nbsp; spool_detay.html ✅ &nbsp; devre_detay_sayfasi.html ✅ (kapsamlı revizyon)<br>
+    • Sıradaki: devreler.html<br>
+    • Dil: Inline _I18N sistemi · MutationObserver · dış JSON gerekmez · ares-layout.js #lang-toggle CSS fix bekliyor<br>
+    • Yeni kurallar: R-02 (büyük değişiklik protokolü) · F-02 (min 12px font)<br>
+    • Teknik: tarihFormat() helper · _spoolBitmis() · getAdimLabels() lazy · HTML yapısı blank-line'sız<br>
+    • Supabase: Henüz kurulmadı
   </div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
@@ -576,10 +579,12 @@
   <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02</div><div class="kural-detay-aciklama">Yapısal düzeltme yapıldı.</div></div>
   <hr class="sartname-divider">
   <div style="font-size:10px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen Değişiklikler</div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">D-01</span><span class="bekleyen-aciklama">Dil desteği yok. data-i18n + t() + _onLangChange eklenecek.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">D-01</span><span class="bekleyen-aciklama">Dil desteği yok. Inline _I18N + MutationObserver sistemi kullanılacak (dış JSON gerekmez).</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">F-01</span><span class="bekleyen-aciklama">Filtre barı eski yapıda. Sol aksiyon + sağ filtreler düzenine alınacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">F-02</span><span class="bekleyen-aciklama">Font boyutları kontrol edilmeli — 12px altı tüm metinler standartlaştırılacak.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">P-01</span><span class="bekleyen-aciklama">Pagination yok. 25 satır/sayfa eklenecek.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">L-01</span><span class="bekleyen-aciklama">Büküm tamamlandığında _log() çağrısı yok.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">tarihFormat()</span><span class="bekleyen-aciklama">Tarihler gg/aa/yyyy formatına alınmalı.</span></div>
 </div></div>
 
 <div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
@@ -596,21 +601,46 @@
   <div style="font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Uygulanan Kurallar</div>
   <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02 · L-01 · L-03 · M-09 · D-01 · K-01</div><div class="kural-detay-aciklama">Tüm kurallar uygulandı. esc() + tv() eklendi. 144 data-i18n attribute. lang/en.json + lang/ar.json 187 key. _onLangChange tüm render fonksiyonlarını çağırıyor. JS syntax OK.</div></div>
   <hr class="sartname-divider">
+  <div style="font-size:10px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen Değişiklikler (R-03 — Yeni Standartlar)</div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">F-02</span><span class="bekleyen-aciklama">Font boyutları kontrol edilmeli — 10px/11px badge ve meta metinler 12px'e çıkarılacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">tarihFormat()</span><span class="bekleyen-aciklama">Tarih gösterimi gg/aa/yyyy formatına alınmalı — tarihFormat() helper eklenerek tüm tarihler standartlaştırılacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">D-01 Inline</span><span class="bekleyen-aciklama">Dil sistemi external JSON yerine inline _I18N + MutationObserver'a geçirilmeli — lang/en.json + lang/ar.json deploy sorununu ortadan kaldırır.</span></div>
+  <hr class="sartname-divider">
   <div style="font-size:10px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen (Supabase Sonrası)</div>
   <div class="bekleyen-item"><span class="bekleyen-kural">NOT-02</span><span class="bekleyen-aciklama">QR gerçek kod üretimi — Supabase + mobil uygulama ile gelecek.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">HEAT</span><span class="bekleyen-aciklama">Heat no → devre malzeme listesiyle senkronizasyon (Supabase şeması gerektiriyor).</span></div>
-  <div style="font-size:12px;color:var(--gr);margin-top:8px;">✅ D-01 tam uygulandı. Bekleyen değişiklik yok.</div>
 </div></div>
 
-<div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
-  <div class="sartname-icon" style="background:rgba(45,142,255,.12);">🔌</div>
-  <div class="sartname-meta"><div class="sartname-baslik">Devre Detay <span class="durum-badge d-revizyon" style="font-size:10px;vertical-align:middle;">→ Sırada</span></div><div class="sartname-dosya">devre_detay.html</div></div>
-  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+<div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(22,163,110,.12);">🔌</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Devre Detay <span class="durum-badge d-tamam" style="font-size:10px;vertical-align:middle;">✓ Tamamlandı</span></div><div class="sartname-dosya">devre_detay_sayfasi.html</div></div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-guncellendi">GÜNCELLENDİ</span><span class="sartname-arrow">▼</span></div>
 </div><div class="sartname-body">
-  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Bir devreye ait tüm spoolların listesi, genel ilerleme durumu ve devre bazlı log özeti.</div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_devreler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_spooller</code></div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Çıktı</div><div class="sartname-deger">Spool listesi, ilerleme yüzdesi, log özeti, heat no toplu görünümü</div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Zorunlu Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01 · B-03 · F-01 · P-01 · T-01 · L-03 · D-01</span></div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Dosya Adı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">devre_detay_sayfasi.html</code> — orijinal ad korundu (spool_detay breadcrumb linki buna bağlı)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Bir devreye ait tüm spoolların listesi, genel ilerleme durumu, malzeme listesi, dökümanlar ve devre bazlı log.</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_aktif_devre</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_aktif_spool</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_devre_log_{id}</code></div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Sekmeler</div><div class="sartname-deger">Spool Listesi · Genel Bilgiler (+ Dökümanlar entegre) · Malzeme Listesi · İşlem Kayıtları</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Header</div><div class="sartname-deger">TERSANE / GEMİ — DEVRE — ZONE formatı · İş emri sağda ayrı kutu (32px) · Tarih gg/aa/yyyy</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Uygulanan Kurallar</div>
+  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02 · L-01 · D-01 · P-01 · T-01 · F-02 · K-01 · R-02</div><div class="kural-detay-aciklama">
+    esc() + tv() · Inline çeviri (_I18N gömülü, dış JSON gerekmez) · MutationObserver dil takibi · 78 data-i18n ·
+    Pipeline nowrap + min-width:1200px yatay scroll · Stat kartlar yeniden tasarlandı (ikon sol, yazı sağ) ·
+    Dökümanlar sekmesi → Genel Bilgiler altına alındı · KK/Sevkiyat bitmemiş spool uyarı modalı ·
+    Excel export/import fix + şablon indirme · Tarih gg/aa/yyyy formatı · F-02 min 12px ·
+    Badge renkleri light tema için düzeltildi · K-01 syntax OK · R-02 parça parça uygulandı.
+  </div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:11px;font-weight:800;color:var(--txd);text-transform:uppercase;margin-bottom:8px;">Teknik Notlar</div>
+  <div style="font-size:12px;color:var(--txm);line-height:2;">
+    • <strong>Dil:</strong> Inline _I18N objesi — lang/ar.json, lang/en.json deploy gerekmez. _getLang() → MutationObserver.<br>
+    • <strong>HTML yapısı:</strong> &lt;div class="app-shell"&gt;&lt;div class="main-content"&gt;&lt;div class="page"&gt; tek satırda, boşluksuz.<br>
+    • <strong>Tarih:</strong> tarihFormat() helper — gg/aa/yyyy. Tüm tarihler bu fonksiyondan geçer.<br>
+    • <strong>Export:</strong> XLSX undefined kontrolü · Tüm spool alanları explicit alınır · bugunTarih() kullanır.<br>
+    • <strong>KK/Sevk uyarı:</strong> _spoolBitmis() → durum=done veya tüm adımlar 1. Tek spool için atlanır.
+  </div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;color:var(--gr);margin-top:8px;">✅ Bekleyen değişiklik yok. Supabase geçişinde URL param + DB sorgusu ile güncellenecek.</div>
 </div></div>
 
 <div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
@@ -660,8 +690,30 @@
   </div>
 </div>
 
-<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">7</div><div style="flex:1;"><div class="aksiyon-baslik">devre_detay.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Spool listesi, ilerleme yüzdesi, devre bazlı log, heat no toplu görünüm + D-01+G-01 protokolü tam uygulanacak</div></div><span class="durum-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">→ Sırada</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Devre detay sonrası · D-01+G-01 protokolü tam uygulanacak</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">7</div><div style="flex:1;"><div class="aksiyon-baslik">devre_detay_sayfasi.html — Kapsamlı Revizyon (R-02, çok oturum)</div><div class="aksiyon-aciklama">
+  CSS/layout fix · syos_→ares_ · D-01 inline (_I18N gömülü, MutationObserver) · G-01 · P-01 · T-01 · F-02 (min 12px) ·
+  Header: TERSANE / GEMİ—DEVRE—ZONE · İş emri kutu tasarımı · Stat kartlar yeniden tasarlandı ·
+  Dökümanlar → Genel Bilgiler altına · KK/Sevk bitmemiş uyarısı · Excel export/import/şablon fix ·
+  tarihFormat() gg/aa/yyyy · Badge renkleri light tema · K-01 OK
+</div></div><span class="durum-badge d-tamam">✓</span></div>
+
+<div style="font-size:11px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">⚙️ Sıradakiler</div>
+
+<div style="background:rgba(45,142,255,.06);border:1px solid rgba(45,142,255,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:var(--txm);">
+  <strong style="color:var(--ac);">📋 Her Sayfa İçin Standart D-01 + G-01 Protokolü</strong><br>
+  <div style="margin-top:6px;line-height:2.2;">
+    1. <strong>esc()</strong> + <strong>tv()</strong> + <strong>_I18N</strong> bloğunu script'in <em>en tepesine</em> ekle (use strict'ten hemen sonra)<br>
+    2. Tüm HTML statik metinlerine <code>data-i18n</code> / <code>data-i18n-placeholder</code> ekle<br>
+    3. JS render fonksiyonlarında hardcoded string'leri <code>tv(key, 'TR fallback')</code> ile sar<br>
+    4. <code>_onLangChange(lang)</code>'i tüm render + <code>_applyI18n()</code> çağıracak şekilde güncelle<br>
+    5. <strong>_I18N</strong> objesine en + ar key'lerini ekle (dış JSON gerekmez — inline gömülü)<br>
+    6. MutationObserver ile html element attribute değişimini yakala<br>
+    7. K-01 syntax kontrolü yap · <strong>R-02: her parça ayrı çalışma</strong><br>
+    ⚠️ <strong>ADIM_LABELS gibi sabitler lazy olmalı</strong> — <code>const ADIM_LABELS=[tv(...)]</code> değil, <code>function getAdimLabels(){return [tv(...)]}</code>
+  </div>
+</div>
+
+<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Tüm aktif devreleri listeler · B-01 · B-03 · F-01 · P-01 · T-01 · D-01 · G-01 · R-02 protokolü</div></div><span class="durum-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">→ Sırada</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">9</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html tam revizyon</div><div class="aksiyon-aciklama">D-01 (tv()+data-i18n) + F-01 (filtre barı) + P-01 (pagination) + L-01 (log kaydı) + G-01 (esc())</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">10</div><div style="flex:1;"><div class="aksiyon-baslik">markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01 + G-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">ares-layout.js — #lang-toggle CSS fix</div><div class="aksiyon-aciklama">injectGlobalCSS() içine ekle: #lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</div></div><span class="durum-badge d-revizyon">⚠ Bekliyor</span></div>
@@ -854,6 +906,96 @@ done
             <div style="color:var(--re);font-weight:700;margin-bottom:4px;">❌ Hemen Çözülür</div>
             <div style="color:var(--txm);line-height:2;">Sayfa çalışmıyor / crash<br>Yanlış veri yazılıyor<br>Güvenlik açığı (G-01/02)<br>Kritik iş akışı hatası</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- R-02 -->
+    <div class="kural-kart cl-ac">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">R-02</span>
+        <span class="kural-baslik">Büyük Değişiklik Protokolü</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Bir sayfada <strong>3+ farklı kural kategorisi</strong> değiştirilecekse, önce değişiklikler parçalara bölünür ve liste onaylanır. Sonra parça parça uygulanır. Her parça kendi K-01 syntax kontrolünü geçmeden bir sonrakine geçilmez.</div>
+        <div class="etki-baslik">İş Akışı</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+          <div style="background:var(--sur2);border-left:3px solid var(--ac);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Başlamadan önce →</strong> "Bu sayfada ne yapacağız?" sorusunu sor. Değişiklikleri parçalara böl, her parçayı listele, onay al.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Her parça sonunda →</strong> K-01 syntax kontrolü çalıştır. ✅ geçtikten sonra dosyayı çıkar, bir sonraki parçaya geç.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--warn);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Parça boyutu →</strong> CSS / Layout · Dil / D-01 · Güvenlik / G-01 · İşlevsellik (P-01, T-01 vb.) — her biri ayrı parça.
+          </div>
+        </div>
+        <div style="background:rgba(45,142,255,.06);border:1px solid rgba(45,142,255,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--txm);margin-top:8px;">
+          💡 Bu kural sayesinde: eksik kalan şeyler azalır, hata ayıklaması kolaylaşır, her parça test edilebilir hale gelir.
+        </div>
+      </div>
+    </div>
+
+    <!-- F-02 -->
+    <div class="kural-kart cl-warn">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">F-02</span>
+        <span class="kural-baslik">Minimum Font Boyutu</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Kullanıcının okuması gereken hiçbir metin <strong>12px'in altına</strong> inemez. Bu kural tüm sayfalarda zorunludur.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;font-size:12px;">
+          <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:8px;padding:10px 12px;">
+            <div style="color:var(--gr);font-weight:700;margin-bottom:6px;">✅ İzin Verilen</div>
+            <div style="color:var(--txm);line-height:2.2;">
+              Tablo <code>td</code> → min 12px<br>
+              Tablo <code>th</code> → min 12px<br>
+              Badge / mini-badge → 12px<br>
+              Stat kart label → 11-12px<br>
+              Meta / tarih bilgisi → 12px
+            </div>
+          </div>
+          <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:10px 12px;">
+            <div style="color:var(--re);font-weight:700;margin-bottom:6px;">❌ Yasak</div>
+            <div style="color:var(--txm);line-height:2.2;">
+              font-size: 9px<br>
+              font-size: 10px<br>
+              font-size: 11px (okunabilir metinlerde)<br>
+              <em style="color:var(--txd);">İstisna: QR kod içi, print CSS</em>
+            </div>
+          </div>
+        </div>
+        <div style="background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--txm);">
+          💡 <strong>Kontrol:</strong> Sayfa tesliminden önce <code>grep "font-size:[89]px\|font-size:1[01]px" sayfa.html</code> ile tara. QR ve print CSS satırlarını hariç tut.
+        </div>
+      </div>
+    </div>
+
+    <!-- R-03 -->
+    <div class="kural-kart cl-gr">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">R-03</span>
+        <span class="kural-baslik">Program Bütünlüğü — Çapraz Sayfa Kontrolü</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Bir sayfada yeni teknik standart veya kural oluşturulduğunda, oturum kapanmadan önce tüm tamamlanmış sayfalar gözden geçirilir ve ilgili şartname kartlarına <strong>"Bekleyen Değişiklikler"</strong> notu düşülür. Hiçbir şey atlanmaz, program bütünlüğü korunur.</div>
+        <div class="etki-baslik">İş Akışı</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Yeni standart oluşunca →</strong> "Bu değişiklik hangi diğer sayfalarda da yapılmalı?" sorusunu sor.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--ac);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Her etkilenen sayfa için →</strong> Şartname kartı "Bekleyen" bölümüne kural kodu + kısa açıklama ekle.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--warn);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Sayfa sırasına gelince →</strong> R-01 devreye girer: önce bekleyen listesi uygulanır, sonra asıl iş yapılır.
+          </div>
+        </div>
+        <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--txm);margin-top:8px;">
+          💡 Supabase geçişinde özellikle kritik — bir şema değişikliği tüm sayfaları etkileyebilir. Bu küçük adım ilerleyen sayfalarda büyük zaman kazandırır.
         </div>
       </div>
     </div>
