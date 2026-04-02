@@ -207,10 +207,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div class="sh-kimlik">
     <div class="sh-no" id="shNo">--</div>
     <div class="sh-id-row">
-      <div class="sh-id">Spool ID: <span id="shId">--</span></div>
+      <div class="sh-id"><span data-i18n="sp_spool_id">Spool ID:</span> <span id="shId">--</span></div>
       <div class="sh-id" style="cursor:pointer;border-color:rgba(45,142,255,.3);color:var(--ac);" onclick="qrModalAc()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
-        QR & Uyarılar
+        <span data-i18n="sp_qr_btn">QR & Uyarılar</span>
       </div>
     </div>
   </div>
@@ -260,8 +260,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
     <!-- SOL: Fotoğraf -->
     <div style="border:1px solid var(--bor);border-left:3px solid var(--ac);border-radius:12px;overflow:hidden;">
       <div class="kart-head" style="background:var(--sur);border-bottom:1px solid var(--bor);">
-        <span class="kart-baslik">📷 Fotoğraf Albümü <span id="fotoCnt" style="font-weight:400;opacity:.7;"></span></span>
-        <button class="btn btn-ac btn-sm" onclick="fotoEkle()">+ Fotoğraf Ekle</button>
+        <span class="kart-baslik"><span data-i18n="sp_photo_album">📷 Fotoğraf Albümü</span> <span id="fotoCnt" style="font-weight:400;opacity:.7;"></span></span>
+        <button class="btn btn-ac btn-sm" onclick="fotoEkle()" data-i18n="sp_add_photo">+ Fotoğraf Ekle</button>
       </div>
       <div class="photo-wrap" style="border:none;border-radius:0;">
         <div class="photo-outer" id="photoOuter">
@@ -278,7 +278,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
         </div>
         <div class="photo-empty" id="photoEmpty" style="display:none;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>Henüz fotoğraf eklenmemiş</span>
+          <span data-i18n="sp_no_photos">Henüz fotoğraf eklenmemiş</span>
         </div>
       </div>
     </div>
@@ -291,29 +291,29 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
         <!-- KK -->
         <div class="bilgi-kutu cl-leg" style="min-height:72px;">
-          <div class="bk-label">✓ Kalite Kontrol</div>
+          <div class="bk-label" data-i18n="sp_kk_label">✓ Kalite Kontrol</div>
           <div class="bk-val" id="bkKKNo">—</div>
           <div class="bk-alt" id="bkKKTarih">Henüz davet yok</div>
         </div>
 
         <!-- Sevkiyat -->
         <div class="bilgi-kutu cl-ac" style="min-height:72px;">
-          <div class="bk-label">🚚 Sevkiyat</div>
+          <div class="bk-label" data-i18n="sp_sev_label">🚚 Sevkiyat</div>
           <div class="bk-val" id="bkSevkNo">—</div>
           <div class="bk-alt" id="bkSevkTarih">Henüz sevk yok</div>
         </div>
 
         <!-- Sertifika -->
         <div class="bilgi-kutu cl-warn" id="bkSertKutu" style="min-height:72px;">
-          <div class="bk-label">📋 Sertifika</div>
+          <div class="bk-label" data-i18n="sp_sert_label">📋 Sertifika</div>
           <div id="bkSertIcerik" style="font-size:12px;color:var(--txd);margin-top:4px;">Sertifikalı malzeme yok</div>
         </div>
 
         <!-- Alıştırma -->
         <div class="bilgi-kutu cl-warn" id="bkAlistKutu" style="min-height:72px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-            <div class="bk-label" style="margin:0;">⚡ Alıştırma</div>
-            <button id="alistirmaBtn" onclick="alistirmaEdit()" style="display:none;background:none;border:none;font-size:11px;color:var(--ac);cursor:pointer;font-family:'Barlow',sans-serif;">değiştir</button>
+            <div class="bk-label" style="margin:0;" data-i18n="sp_alist_label">⚡ Alıştırma</div>
+            <button id="alistirmaBtn" onclick="alistirmaEdit()" style="display:none;background:none;border:none;font-size:11px;color:var(--ac);cursor:pointer;font-family:'Barlow',sans-serif;" data-i18n="sp_change_btn">değiştir</button>
           </div>
           <div id="bkAlistVal"></div>
           <div id="bkAlistForm" style="display:none;margin-top:7px;">
@@ -322,7 +322,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
               <button onclick="alistirmaSet('KISMI')" style="flex:1;padding:4px;border-radius:7px;border:1px solid rgba(217,119,6,.4);background:rgba(217,119,6,.08);color:var(--warn);font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;">KISMI</button>
               <button onclick="alistirmaSet('YOK')" style="flex:1;padding:4px;border-radius:7px;border:1px solid rgba(22,163,110,.4);background:rgba(22,163,110,.08);color:var(--gr);font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;">YOK</button>
             </div>
-            <button onclick="alistirmaFormKapat()" style="width:100%;margin-top:4px;padding:3px;border-radius:6px;border:1px solid var(--bor);background:transparent;color:var(--txd);font-size:10px;cursor:pointer;font-family:'Barlow',sans-serif;">iptal</button>
+            <button onclick="alistirmaFormKapat()" style="width:100%;margin-top:4px;padding:3px;border-radius:6px;border:1px solid var(--bor);background:transparent;color:var(--txd);font-size:10px;cursor:pointer;font-family:'Barlow',sans-serif;" data-i18n="sp_cancel">iptal</button>
           </div>
           <div id="bkAlistNot" style="font-size:10px;color:var(--txd);margin-top:4px;line-height:1.4;"></div>
         </div>
@@ -332,25 +332,25 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
       <!-- Alt: Üretim Özeti — tam genişlik, 4 eşit hücre -->
       <div class="bilgi-kutu cl-leg" style="padding:0;overflow:hidden;flex:1;">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--bor);">
-          <span class="bk-label" style="margin:0;">📊 Üretim Özeti</span>
-          <button class="btn btn-sm" onclick="diModalAc()" style="font-size:10px;height:22px;padding:0 8px;">✎ Güncelle</button>
+          <span class="bk-label" style="margin:0;" data-i18n="sp_prod_summary">📊 Üretim Özeti</span>
+          <button class="btn btn-sm" onclick="diModalAc()" style="font-size:10px;height:22px;padding:0 8px;" data-i18n="sp_update_btn">✎ Güncelle</button>
         </div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
           <div style="padding:14px 8px;text-align:center;border-right:1px solid var(--bor);">
             <div id="diKg" style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--leg);">—</div>
-            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;">İmalat kg</div>
+            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;" data-i18n="sp_di_fab_kg">İmalat kg</div>
           </div>
           <div style="padding:14px 8px;text-align:center;border-right:1px solid var(--bor);">
             <div id="diImalat" style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--leg);">—</div>
-            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;">İmalat di</div>
+            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;" data-i18n="sp_di_fab_di">İmalat di</div>
           </div>
           <div style="padding:14px 8px;text-align:center;border-right:1px solid var(--bor);">
             <div id="diArgon" style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--leg);">—</div>
-            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;">Argon di</div>
+            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;" data-i18n="sp_di_argon">Argon di</div>
           </div>
           <div style="padding:14px 8px;text-align:center;">
             <div id="diGazalti" style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--leg);">—</div>
-            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;">Gazaltı di</div>
+            <div style="font-size:9px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;" data-i18n="sp_di_gazalti">Gazaltı di</div>
           </div>
         </div>
       </div>
@@ -361,19 +361,19 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <!-- İŞLEM KARTLARI: Kesim + Büküm + Markalama + Test -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
     <div class="proc-kart cl-re">
-      <div class="proc-head"><div class="proc-title">✂️ Kesim <span class="proc-dot" id="kesimDot"></span></div><button class="btn btn-sm" onclick="kesimModalAc()">+ Ekle</button></div>
+      <div class="proc-head"><div class="proc-title"><span data-i18n="sp_cutting">✂️ Kesim</span> <span class="proc-dot" id="kesimDot"></span></div><button class="btn btn-sm" onclick="kesimModalAc()" data-i18n="sp_add_btn">+ Ekle</button></div>
       <div id="kesimListe"><div style="font-size:12px;color:var(--txd);">Henüz kesim eklenmemiş</div></div>
     </div>
     <div class="proc-kart cl-warn">
-      <div class="proc-head"><div class="proc-title">🔄 Büküm <span class="proc-dot" id="bukumDot"></span></div><button class="btn btn-sm" onclick="bukumModalAc()">+ Ekle</button></div>
+      <div class="proc-head"><div class="proc-title"><span data-i18n="sp_bending">🔄 Büküm</span> <span class="proc-dot" id="bukumDot"></span></div><button class="btn btn-sm" onclick="bukumModalAc()" data-i18n="sp_add_btn">+ Ekle</button></div>
       <div id="bukumListe"><div style="font-size:12px;color:var(--txd);">Henüz büküm eklenmemiş</div></div>
     </div>
     <div class="proc-kart cl-leg">
-      <div class="proc-head"><div class="proc-title">🏷️ Markalama <span class="proc-dot" id="markDot"></span></div><button class="btn btn-sm" onclick="markModalAc()">+ Ekle</button></div>
+      <div class="proc-head"><div class="proc-title"><span data-i18n="sp_marking">🏷️ Markalama</span> <span class="proc-dot" id="markDot"></span></div><button class="btn btn-sm" onclick="markModalAc()" data-i18n="sp_add_btn">+ Ekle</button></div>
       <div id="markListe"><div style="font-size:12px;color:var(--txd);">Henüz markalama eklenmemiş</div></div>
     </div>
     <div class="proc-kart cl-ac">
-      <div class="proc-head"><div class="proc-title">🧪 Testler <span class="proc-dot" id="testDot"></span></div><span style="font-size:10px;color:var(--txd);font-style:italic;">Test sayfasından otomatik gelir</span></div>
+      <div class="proc-head"><div class="proc-title"><span data-i18n="sp_tests">🧪 Testler</span> <span class="proc-dot" id="testDot"></span></div><span style="font-size:10px;color:var(--txd);font-style:italic;" data-i18n="sp_tests_auto">Test sayfasından otomatik gelir</span></div>
       <div id="testListe"><div style="font-size:12px;color:var(--txd);">Bu devreye henüz test atanmamış</div></div>
     </div>
   </div>
@@ -381,21 +381,21 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <!-- NOTLAR -->
   <div class="kart cl-leg" style="padding:14px 16px;margin-bottom:14px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <span class="kart-baslik">📌 Notlar <span style="font-size:10px;font-weight:400;opacity:.8;">— QR okutulduğunda personele gösterilir</span></span>
+      <span class="kart-baslik"><span data-i18n="sp_notes_label">📌 Notlar</span> <span style="font-size:10px;font-weight:400;opacity:.8;" data-i18n="sp_notes_qr_info">— QR okutulduğunda personele gösterilir</span></span>
       <span id="notSayisi" style="font-size:12px;color:var(--txd);">0 not</span>
     </div>
     <div id="notListesi" style="margin-bottom:10px;max-height:200px;overflow-y:auto;"></div>
     <div style="display:flex;gap:8px;align-items:flex-end;">
-      <textarea id="notInput" placeholder="Yeni not..." rows="2" class="fi" style="resize:none;line-height:1.4;flex:1;"></textarea>
-      <button class="btn btn-ac" onclick="notEkle()" style="height:auto;padding:8px 14px;align-self:stretch;">+ Ekle</button>
+      <textarea id="notInput" placeholder="Yeni not..." rows="2" class="fi" style="resize:none;line-height:1.4;flex:1;" data-i18n-placeholder="sp_note_placeholder"></textarea>
+      <button class="btn btn-ac" onclick="notEkle()" style="height:auto;padding:8px 14px;align-self:stretch;" data-i18n="sp_add_btn">+ Ekle</button>
     </div>
   </div>
 
   <!-- BELGELER -->
   <div class="tablo-kart cl-gr">
     <div class="tablo-head">
-      <span class="tablo-baslik">📄 Belgeler <span id="belCnt" style="font-weight:400;opacity:.7;"></span></span>
-      <button class="btn btn-ac btn-sm" onclick="belgeModalAc()">+ Belge Ekle</button>
+      <span class="tablo-baslik"><span data-i18n="sp_docs_label">📄 Belgeler</span> <span id="belCnt" style="font-weight:400;opacity:.7;"></span></span>
+      <button class="btn btn-ac btn-sm" onclick="belgeModalAc()" data-i18n="sp_add_doc">+ Belge Ekle</button>
     </div>
     <div id="belgeListe" style="padding:4px 0;"></div>
   </div>
@@ -405,7 +405,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <div class="tab-panel" id="tabMalzeme">
   <div class="tablo-kart cl-warn">
     <div class="tablo-head">
-      <span class="tablo-baslik">📦 Malzeme Listesi <span id="malzemeCnt" style="font-weight:400;opacity:.7;"></span></span>
+      <span class="tablo-baslik"><span data-i18n="sp_tab_material">📦 Malzeme Listesi</span> <span id="malzemeCnt" style="font-weight:400;opacity:.7;"></span></span>
     </div>
     <div class="tablo-scroll">
       <table class="data-tablo">
@@ -449,11 +449,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
           <tr id="addTrigger">
             <td colspan="13">
               <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-                <button onclick="newRowAc()" style="flex:1;min-width:100px;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;background:none;border:1px dashed var(--bor);border-radius:8px;color:var(--txd);font-size:13px;cursor:pointer;" onmouseover="this.style.borderColor='var(--ac)';this.style.color='var(--ac)'" onmouseout="this.style.borderColor='var(--bor)';this.style.color='var(--txd)'">+ Malzeme Ekle</button>
+                <button onclick="newRowAc()" style="flex:1;min-width:100px;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;background:none;border:1px dashed var(--bor);border-radius:8px;color:var(--txd);font-size:13px;cursor:pointer;" onmouseover="this.style.borderColor='var(--ac)';this.style.color='var(--ac)'" onmouseout="this.style.borderColor='var(--bor)';this.style.color='var(--txd)'" data-i18n="sp_add_material">+ Malzeme Ekle</button>
                 <label style="display:flex;align-items:center;gap:5px;padding:8px 12px;background:none;border:1px dashed var(--bor);border-radius:8px;color:var(--txd);font-size:13px;cursor:pointer;white-space:nowrap;" onmouseover="this.style.borderColor='var(--gr)';this.style.color='var(--gr)'" onmouseout="this.style.borderColor='var(--bor)';this.style.color='var(--txd)'">
-                  📥 Excel Import<input type="file" accept=".xlsx,.xls,.csv" onchange="excelImport(event)" style="display:none;">
+                  <span data-i18n="sp_excel_import">📥 Excel Import</span><input type="file" accept=".xlsx,.xls,.csv" onchange="excelImport(event)" style="display:none;">
                 </label>
-                <button onclick="excelSablon()" style="display:flex;align-items:center;gap:5px;padding:8px 12px;background:none;border:1px dashed var(--bor);border-radius:8px;color:var(--txd);font-size:13px;cursor:pointer;white-space:nowrap;" onmouseover="this.style.borderColor='var(--ac)';this.style.color='var(--ac)'" onmouseout="this.style.borderColor='var(--bor)';this.style.color='var(--txd)'">📄 Şablon İndir</button>
+                <button onclick="excelSablon()" style="display:flex;align-items:center;gap:5px;padding:8px 12px;background:none;border:1px dashed var(--bor);border-radius:8px;color:var(--txd);font-size:13px;cursor:pointer;white-space:nowrap;" onmouseover="this.style.borderColor='var(--ac)';this.style.color='var(--ac)'" onmouseout="this.style.borderColor='var(--bor)';this.style.color='var(--txd)'" data-i18n="sp_template_download">📄 Şablon İndir</button>
               </div>
             </td>
           </tr>
@@ -467,8 +467,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <div class="tab-panel" id="tabLog">
   <div class="tablo-kart cl-ac">
     <div class="tablo-head">
-      <span class="tablo-baslik">🕐 İşlem Kayıtları <span id="logCnt" style="font-weight:400;opacity:.7;"></span></span>
-      <button class="btn btn-sm" onclick="logNotEkle()">+ Not Ekle</button>
+      <span class="tablo-baslik"><span data-i18n="sp_tab_log">🕐 İşlem Kayıtları</span> <span id="logCnt" style="font-weight:400;opacity:.7;"></span></span>
+      <button class="btn btn-sm" onclick="logNotEkle()" data-i18n="sp_add_log_note">+ Not Ekle</button>
     </div>
     <div class="tablo-scroll">
       <table class="data-tablo">
@@ -499,7 +499,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <div class="mov" id="qrModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:480px;">
     <div class="mhead">
-      <span class="mtitle">📱 QR & Personel Uyarıları</span>
+      <span class="mtitle" data-i18n="sp_qr_modal_title">📱 QR & Personel Uyarıları</span>
       <button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button>
     </div>
     <div class="mbody" style="padding:16px;">
@@ -516,17 +516,17 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
               <span id="qrModalId" style="font-size:10px;font-weight:700;background:rgba(124,58,237,.1);color:var(--leg);padding:2px 8px;border-radius:6px;border:1px solid rgba(124,58,237,.2);"></span>
             </div>
             <div style="display:flex;gap:6px;">
-              <button class="btn btn-ac btn-sm" onclick="qrYazdir()">🖨️ Yazdır</button>
-              <button class="btn btn-sm" onclick="qrIndir()">⬇ İndir</button>
+              <button class="btn btn-ac btn-sm" onclick="qrYazdir()" data-i18n="sp_qr_print">🖨️ Yazdır</button>
+              <button class="btn btn-sm" onclick="qrIndir()" data-i18n="sp_qr_download">⬇ İndir</button>
             </div>
           </div>
         </div>
       </div>
-      <div style="font-size:10px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;" data-i18n="sp_qr_personnel_label">
         📋 Personel QR Okutunca Görecekleri
       </div>
       <div id="qrOnizleme" style="display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;"></div>
-      <div style="margin-top:10px;padding:8px 12px;background:var(--sur2);border-radius:8px;font-size:11px;color:var(--txd);">
+      <div style="margin-top:10px;padding:8px 12px;background:var(--sur2);border-radius:8px;font-size:11px;color:var(--txd);" data-i18n="sp_qr_hint">
         💡 Uyarıları değiştirmek için Genel sekmesindeki notlar ve alıştırma ayarını kullanın.
       </div>
     </div>
@@ -536,117 +536,117 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <!-- DURDUR MODAL -->
 <div class="mov" id="durdurModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox">
-    <div class="mhead"><span class="mtitle">⏸ Spool Durdur</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_stop_title">⏸ Spool Durdur</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
-      <div class="fg"><label class="fl">Sebep *</label><select class="fi" id="durdurSebep"><option value="">Seçin...</option><option>Revizyon Bekleniyor</option><option>Malzeme Bekleniyor</option><option>Teknik Çizim Değişikliği</option><option>Diğer</option></select></div>
-      <div class="fg"><label class="fl">Açıklama *</label><textarea class="fi" id="durdurAciklama" rows="3" placeholder="Detaylı açıklama..."></textarea></div>
+      <div class="fg"><label class="fl" data-i18n="sp_modal_stop_reason">Sebep *</label><select class="fi" id="durdurSebep"><option value="">Seçin...</option><option data-i18n="sp_stop_opt1">Revizyon Bekleniyor</option><option data-i18n="sp_stop_opt2">Malzeme Bekleniyor</option><option data-i18n="sp_stop_opt3">Teknik Çizim Değişikliği</option><option data-i18n="sp_stop_opt4">Diğer</option></select></div>
+      <div class="fg"><label class="fl" data-i18n="sp_modal_stop_desc">Açıklama *</label><textarea class="fi" id="durdurAciklama" rows="3" placeholder="Detaylı açıklama..." data-i18n-placeholder="sp_modal_stop_placeholder"></textarea></div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-re" onclick="durdurKaydet()">Durdur</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-re" onclick="durdurKaydet()" data-i18n="sp_btn_stop">Durdur</button></div>
   </div>
 </div>
 
 <!-- DÜZENLE MODAL -->
 <div class="mov" id="duzenleModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:540px;">
-    <div class="mhead"><span class="mtitle">✎ Spool Düzenle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_edit_title">✎ Spool Düzenle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="fg"><label class="fl">Pipeline No</label><input class="fi" id="ed_pip" placeholder="M100-317-01-P2"></div>
-        <div class="fg"><label class="fl">Spool No *</label><input class="fi" id="ed_sno" placeholder="S02"></div>
-        <div class="fg"><label class="fl">Dış Çap</label><input class="fi" id="ed_cap" placeholder="114,3 mm"></div>
-        <div class="fg"><label class="fl">Et Kalınlığı</label><input class="fi" id="ed_et" placeholder="4,50 mm"></div>
-        <div class="fg"><label class="fl">Ağırlık (kg)</label><input class="fi" id="ed_agr" placeholder="26,82 kg"></div>
-        <div class="fg"><label class="fl">Yüzey İşlemi</label><select class="fi" id="ed_yuz"><option value="">Seçin...</option><option>Galvaniz</option><option>Asit</option><option>Siyah</option><option>Epoksi</option></select></div>
-        <div class="fg"><label class="fl">Malzeme</label><select class="fi" id="ed_malz"><option value="">Seçin...</option><option>Çelik</option><option>Paslanmaz</option><option>Bakır</option><option>Alüminyum</option></select></div>
-        <div class="fg"><label class="fl">Kalite / Standart</label><input class="fi" id="ed_kal" placeholder="St37, 316L, A106-B"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_spool_no_label">Spool No *</label><input class="fi" id="ed_sno" placeholder="S02"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_stat_diameter">Dış Çap</label><input class="fi" id="ed_cap" placeholder="114,3 mm"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_stat_thickness">Et Kalınlığı</label><input class="fi" id="ed_et" placeholder="4,50 mm"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_weight_label">Ağırlık (kg)</label><input class="fi" id="ed_agr" placeholder="26,82 kg"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_stat_surface">Yüzey İşlemi</label><select class="fi" id="ed_yuz"><option value="">Seçin...</option><option>Galvaniz</option><option>Asit</option><option>Siyah</option><option>Epoksi</option></select></div>
+        <div class="fg"><label class="fl" data-i18n="sp_stat_material">Malzeme</label><select class="fi" id="ed_malz"><option value="">Seçin...</option><option>Çelik</option><option>Paslanmaz</option><option>Bakır</option><option>Alüminyum</option></select></div>
+        <div class="fg"><label class="fl" data-i18n="sp_quality_label">Kalite / Standart</label><input class="fi" id="ed_kal" placeholder="St37, 316L, A106-B"></div>
       </div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="duzenleKaydet()">Kaydet</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="duzenleKaydet()" data-i18n="sp_save_btn">Kaydet</button></div>
   </div>
 </div>
 
 <!-- KESİM MODAL -->
 <div class="mov" id="kesimModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:500px;">
-    <div class="mhead"><span class="mtitle">✂️ Kesim Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_cut_title">✂️ Kesim Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <input type="hidden" id="km_eid">
-      <div class="fg"><label class="fl">Malzeme *</label><select class="fi" id="km_malz" onchange="kmMalzInfo()"></select></div>
+      <div class="fg"><label class="fl" data-i18n="sp_material_label">Malzeme *</label><select class="fi" id="km_malz" onchange="kmMalzInfo()"></select></div>
       <div id="km_info" style="margin-bottom:12px;padding:6px 10px;background:var(--sur2);border-radius:7px;border:1px solid var(--bor);font-size:12px;color:var(--txm);min-height:24px;"></div>
-      <div class="fg"><label class="fl">Kesim Uzunluğu (mm) *</label><input class="fi" id="km_olcu" type="number" placeholder="1250" style="font-size:16px;font-weight:700;"></div>
+      <div class="fg"><label class="fl" data-i18n="sp_cut_length_label">Kesim Uzunluğu (mm) *</label><input class="fi" id="km_olcu" type="number" placeholder="1250" style="font-size:16px;font-weight:700;"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="fg"><label class="fl">A Ucu</label><select class="fi" id="km_ucA"><option value="duz">Düz</option><option value="kaynak">Kaynak Ağzı</option><option value="yiv">Yiv</option><option value="dis">Diş</option><option value="bukum">Büküm Borusu</option></select></div>
-        <div class="fg"><label class="fl">B Ucu</label><select class="fi" id="km_ucB"><option value="duz">Düz</option><option value="kaynak">Kaynak Ağzı</option><option value="yiv">Yiv</option><option value="dis">Diş</option><option value="bukum">Büküm Borusu</option></select></div>
+        <div class="fg"><label class="fl" data-i18n="sp_end_a">A Ucu</label><select class="fi" id="km_ucA"><option value="duz" data-i18n="sp_uc_duz">Düz</option><option value="kaynak" data-i18n="sp_uc_kaynak">Kaynak Ağzı</option><option value="yiv" data-i18n="sp_uc_yiv">Yiv</option><option value="dis" data-i18n="sp_uc_dis">Diş</option><option value="bukum" data-i18n="sp_uc_bukum">Büküm Borusu</option></select></div>
+        <div class="fg"><label class="fl" data-i18n="sp_end_b">B Ucu</label><select class="fi" id="km_ucB"><option value="duz" data-i18n="sp_uc_duz">Düz</option><option value="kaynak" data-i18n="sp_uc_kaynak">Kaynak Ağzı</option><option value="yiv" data-i18n="sp_uc_yiv">Yiv</option><option value="dis" data-i18n="sp_uc_dis">Diş</option><option value="bukum" data-i18n="sp_uc_bukum">Büküm Borusu</option></select></div>
       </div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="kesimKaydet()">Kaydet</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="kesimKaydet()" data-i18n="sp_save_btn">Kaydet</button></div>
   </div>
 </div>
 
 <!-- BÜKÜM MODAL -->
 <div class="mov" id="bukumModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:460px;">
-    <div class="mhead"><span class="mtitle">🔄 Büküm Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_bend_title">🔄 Büküm Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
-      <div class="fg"><label class="fl">Malzeme *</label><select class="fi" id="bm_malz" onchange="bmMalzInfo()"></select></div>
+      <div class="fg"><label class="fl" data-i18n="sp_material_label">Malzeme *</label><select class="fi" id="bm_malz" onchange="bmMalzInfo()"></select></div>
       <div id="bm_info" style="margin-bottom:12px;padding:6px 10px;background:var(--sur2);border-radius:7px;border:1px solid var(--bor);font-size:12px;color:var(--txm);min-height:24px;"></div>
-      <div class="fg"><label class="fl">Kesim Uzunluğu (mm) *</label><input class="fi" id="bm_olcu" type="number" placeholder="2400" style="font-size:16px;font-weight:700;"></div>
-      <div style="font-size:11px;color:var(--txd);margin-top:-8px;margin-bottom:12px;">Kesim listesine de "Büküm Borusu" olarak eklenecek.</div>
+      <div class="fg"><label class="fl" data-i18n="sp_cut_length_label">Kesim Uzunluğu (mm) *</label><input class="fi" id="bm_olcu" type="number" placeholder="2400" style="font-size:16px;font-weight:700;"></div>
+      <div style="font-size:11px;color:var(--txd);margin-top:-8px;margin-bottom:12px;" data-i18n="sp_bend_note">Kesim listesine de "Büküm Borusu" olarak eklenecek.</div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="bukumKaydet()">Kaydet</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="bukumKaydet()" data-i18n="sp_save_btn">Kaydet</button></div>
   </div>
 </div>
 
 <!-- MARKALAMA MODAL -->
 <div class="mov" id="markModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:460px;">
-    <div class="mhead"><span class="mtitle">🏷️ Markalama Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_mark_title">🏷️ Markalama Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <div class="fg">
-        <label class="fl">Markalama Tipi</label>
+        <label class="fl" data-i18n="sp_mark_type_label">Markalama Tipi</label>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
-          <label style="cursor:pointer;"><input type="radio" name="mTip" value="otomatik" checked style="display:none;"><div class="mark-tip aktif" data-v="otomatik">Otomatik</div></label>
-          <label style="cursor:pointer;"><input type="radio" name="mTip" value="plaka" style="display:none;"><div class="mark-tip" data-v="plaka">Plaka</div></label>
-          <label style="cursor:pointer;"><input type="radio" name="mTip" value="manuel" style="display:none;"><div class="mark-tip" data-v="manuel">Manuel</div></label>
+          <label style="cursor:pointer;"><input type="radio" name="mTip" value="otomatik" checked style="display:none;"><div class="mark-tip aktif" data-v="otomatik" data-i18n="sp_mark_auto">Otomatik</div></label>
+          <label style="cursor:pointer;"><input type="radio" name="mTip" value="plaka" style="display:none;"><div class="mark-tip" data-v="plaka" data-i18n="sp_mark_plaka">Plaka</div></label>
+          <label style="cursor:pointer;"><input type="radio" name="mTip" value="manuel" style="display:none;"><div class="mark-tip" data-v="manuel" data-i18n="sp_mark_manuel">Manuel</div></label>
         </div>
       </div>
-      <div id="mOtomatikSec" class="fg"><label class="fl">Malzeme</label><select class="fi" id="mm_malz"></select></div>
-      <div id="mPlakaInfo" style="display:none;padding:10px 12px;background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.25);border-radius:10px;font-size:12px;color:var(--txm);">Spool malzemesi otomatik atanır. Malzeme seçimi gerekmez.</div>
-      <div id="mManuelInfo" style="display:none;padding:10px 12px;background:rgba(100,116,139,.07);border:1px solid rgba(100,116,139,.2);border-radius:10px;font-size:12px;color:var(--txm);">Serbest markalama. Malzeme seçimi gerekmez.</div>
+      <div id="mOtomatikSec" class="fg"><label class="fl" data-i18n="sp_material_label">Malzeme</label><select class="fi" id="mm_malz"></select></div>
+      <div id="mPlakaInfo" style="display:none;padding:10px 12px;background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.25);border-radius:10px;font-size:12px;color:var(--txm);" data-i18n="sp_mark_plaka_info">Spool malzemesi otomatik atanır. Malzeme seçimi gerekmez.</div>
+      <div id="mManuelInfo" style="display:none;padding:10px 12px;background:rgba(100,116,139,.07);border:1px solid rgba(100,116,139,.2);border-radius:10px;font-size:12px;color:var(--txm);" data-i18n="sp_mark_manuel_info">Serbest markalama. Malzeme seçimi gerekmez.</div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="markKaydet()">Listeye Ekle</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="markKaydet()" data-i18n="sp_add_to_list_btn">Listeye Ekle</button></div>
   </div>
 </div>
 
 <!-- DIA-INCH MODAL -->
 <div class="mov" id="diModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:400px;">
-    <div class="mhead"><span class="mtitle">📊 Üretim Özeti Güncelle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_di_title">📊 Üretim Özeti Güncelle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="fg"><label class="fl">İmalat Ağırlığı (kg)</label><input class="fi" type="number" id="di_kg" placeholder="0"></div>
-        <div class="fg"><label class="fl">İmalat Dia-Inch</label><input class="fi" type="number" id="di_imalat" placeholder="0"></div>
-        <div class="fg"><label class="fl">Argon Dia-Inch</label><input class="fi" type="number" id="di_argon" placeholder="0"></div>
-        <div class="fg"><label class="fl">Gazaltı Dia-Inch</label><input class="fi" type="number" id="di_gazalti" placeholder="0"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_di_fab_kg_label">İmalat Ağırlığı (kg)</label><input class="fi" type="number" id="di_kg" placeholder="0"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_di_fab_di_label">İmalat Dia-Inch</label><input class="fi" type="number" id="di_imalat" placeholder="0"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_di_argon_label">Argon Dia-Inch</label><input class="fi" type="number" id="di_argon" placeholder="0"></div>
+        <div class="fg"><label class="fl" data-i18n="sp_di_gazalti_label">Gazaltı Dia-Inch</label><input class="fi" type="number" id="di_gazalti" placeholder="0"></div>
       </div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="diKaydet()">Kaydet</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="diKaydet()" data-i18n="sp_save_btn">Kaydet</button></div>
   </div>
 </div>
 
 <!-- BELGE MODAL -->
 <div class="mov" id="belgeModal" onclick="if(event.target===this)this.style.display='none'">
   <div class="mbox" style="max-width:440px;">
-    <div class="mhead"><span class="mtitle">📄 Belge Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
+    <div class="mhead"><span class="mtitle" data-i18n="sp_modal_doc_title">📄 Belge Ekle</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <div class="fg">
-        <label id="belgeDosyaLbl" for="belgeDosyaI" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border:2px dashed var(--bor);border-radius:10px;cursor:pointer;font-size:13px;color:var(--txd);" onmouseenter="this.style.borderColor='var(--ac)'" onmouseleave="this.style.borderColor='var(--bor)'">📁 Dosya seç</label>
+        <label id="belgeDosyaLbl" for="belgeDosyaI" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border:2px dashed var(--bor);border-radius:10px;cursor:pointer;font-size:13px;color:var(--txd);" onmouseenter="this.style.borderColor='var(--ac)'" onmouseleave="this.style.borderColor='var(--bor)'" data-i18n="sp_doc_file_label">📁 Dosya seç</label>
         <input type="file" id="belgeDosyaI" style="display:none;" onchange="belgeDosyaSec(this)">
       </div>
-      <div class="fg"><label class="fl">Belge Adı *</label><input class="fi" id="belgeAd" type="text"></div>
-      <div class="fg"><label class="fl">Tür *</label><select class="fi" id="belgeTur"><option value="">Seçin...</option><option value="izometri">İzometri Çizimi</option><option value="sertifika">Sertifika</option><option value="prosedur">Prosedür</option><option value="diger">Diğer</option></select></div>
+      <div class="fg"><label class="fl" data-i18n="sp_doc_name_label">Belge Adı *</label><input class="fi" id="belgeAd" type="text"></div>
+      <div class="fg"><label class="fl" data-i18n="sp_doc_type_label">Tür *</label><select class="fi" id="belgeTur"><option value="">Seçin...</option><option value="izometri" data-i18n="sp_doc_type_iso">İzometri Çizimi</option><option value="sertifika" data-i18n="sp_doc_type_cert">Sertifika</option><option value="prosedur" data-i18n="sp_doc_type_proc">Prosedür</option><option value="diger" data-i18n="sp_doc_type_other">Diğer</option></select></div>
     </div>
-    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" onclick="belgeKaydet()">Ekle</button></div>
+    <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'" data-i18n="sp_cancel_btn">İptal</button><button class="btn btn-ac" onclick="belgeKaydet()" data-i18n="sp_add_btn">Ekle</button></div>
   </div>
 </div>
 
@@ -656,7 +656,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
     <div class="mhead"><span class="mtitle" id="gmBaslik">Gönder</span><button class="mclose" onclick="this.closest('.mov').style.display='none'">✕</button></div>
     <div class="mbody">
       <div id="gmBilgi" style="background:var(--sur2);border:1px solid var(--bor);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--txm);"></div>
-      <div class="fg"><label class="fl">Not (opsiyonel)</label><textarea class="fi" id="gmNot" rows="2"></textarea></div>
+      <div class="fg"><label class="fl" data-i18n="sp_optional_note">Not (opsiyonel)</label><textarea class="fi" id="gmNot" rows="2"></textarea></div>
     </div>
     <div class="mfoot"><button class="btn" onclick="this.closest('.mov').style.display='none'">İptal</button><button class="btn btn-ac" id="gmBtn" onclick="gonderKaydet()">Gönder</button></div>
   </div>
@@ -708,6 +708,8 @@ function T(id){return document.getElementById(id);}
 function txc(id,v){var e=T(id);if(e)e.textContent=v||'--';}
 // G-01: XSS sanitizer — kullanıcı verisini HTML'e yazmadan önce kaçır
 function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+// D-01: Çeviri yardımcısı — t() bulamazsa Türkçe fallback döner
+function tv(key,tr){var v=window.t?window.t(key):key;return(v===key)?tr:v;}
 function toast(msg,tip){
   var old=document.querySelector('.toast');if(old)old.remove();
   var t=document.createElement('div');
@@ -718,7 +720,11 @@ function toast(msg,tip){
   document.body.appendChild(t);
   setTimeout(function(){t.remove();},3000);
 }
-function ucLabel(v){return {duz:'Düz',kaynak:'Kaynak Ağzı',yiv:'Yiv',dis:'Diş',bukum:'Büküm Borusu'}[v]||v||'--';}
+function ucLabel(v){
+  var m={duz:'sp_uc_duz',kaynak:'sp_uc_kaynak',yiv:'sp_uc_yiv',dis:'sp_uc_dis',bukum:'sp_uc_bukum'};
+  var tr={duz:'Düz',kaynak:'Kaynak Ağzı',yiv:'Yiv',dis:'Diş',bukum:'Büküm Borusu'};
+  return m[v]?tv(m[v],tr[v]||v):(v||'--');
+}
 function bugun(){return new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function logEkle(islem,ac){LOGLAR.unshift({tarih:bugun(),islem:islem,kullanici:'Admin',ac:ac||''});renderLog();}
 function malzemeOpts(secili){
@@ -734,8 +740,8 @@ function yukle(){
   txc('bcDevre',SP._devre); txc('bcSpool',SP.spoolNo);
   txc('stCap',SP.cap); txc('stKal',SP.kalinlik);
   txc('stAgr',SP.agirlik); txc('stYuzey',SP.yuzey); txc('stMalz',SP.malzeme);
-  txc('bkKKNo',SP.kkNo||'—'); txc('bkKKTarih',SP.kkTarih?'Tarih: '+SP.kkTarih:'Henüz davet yok');
-  txc('bkSevkNo',SP.sevkNo||'—'); txc('bkSevkTarih',SP.sevkTarih?'Tarih: '+SP.sevkTarih:'Henüz sevk yok');
+  txc('bkKKNo',SP.kkNo||'—'); txc('bkKKTarih',SP.kkTarih?tv('sp_invite_date','Tarih:')+' '+SP.kkTarih:tv('sp_no_invite','Henüz davet yok'));
+  txc('bkSevkNo',SP.sevkNo||'—'); txc('bkSevkTarih',SP.sevkTarih?tv('sp_ship_date','Tarih:')+' '+SP.sevkTarih:tv('sp_no_shipment','Henüz sevk yok'));
   if(SP.stopped){var b=T('durdurBand');if(b)b.style.display='flex';txc('durdurAciklamaEl',SP.durdurmaAciklama);}
   renderAlistirma(SP.alistirma||null);
   renderDiainch();
@@ -743,14 +749,15 @@ function yukle(){
 
 // ── TRACKER ───────────────────────────────────────────────────
 var STAGES=['Ön İmalat','İmalat','Kaynak','Ön Kontrol','KK','Sevkiyat'];
+var STAGE_KEYS=['sp_stage_pre','sp_stage_fab','sp_stage_weld','sp_stage_inspect','sp_stage_qc','sp_stage_ship'];
 var CHIPS=[
-  {t:'Henüz başlanmadı',c:'var(--txd)',bg:'var(--sur2)'},
-  {t:'Ön imalat aşamasında',c:'var(--ac)',bg:'rgba(45,142,255,.10)'},
-  {t:'İmalat aşamasında',c:'var(--ac)',bg:'rgba(45,142,255,.10)'},
-  {t:'Kaynak işleminde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
-  {t:'Ön kontrolde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
-  {t:'Kalite kontrolde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
-  {t:'Sevk edildi',c:'var(--gr)',bg:'rgba(22,163,110,.10)'},
+  {t:'sp_chip_not_started',tr:'Henüz başlanmadı',c:'var(--txd)',bg:'var(--sur2)'},
+  {t:'sp_chip_pre',tr:'Ön imalat aşamasında',c:'var(--ac)',bg:'rgba(45,142,255,.10)'},
+  {t:'sp_chip_fab',tr:'İmalat aşamasında',c:'var(--ac)',bg:'rgba(45,142,255,.10)'},
+  {t:'sp_chip_weld',tr:'Kaynak işleminde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
+  {t:'sp_chip_inspect',tr:'Ön kontrolde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
+  {t:'sp_chip_qc',tr:'Kalite kontrolde',c:'var(--warn)',bg:'rgba(217,119,6,.10)'},
+  {t:'sp_chip_shipped',tr:'Sevk edildi',c:'var(--gr)',bg:'rgba(22,163,110,.10)'},
 ];
 function renderTracker(){
   var cont=T('trackerStages');if(!cont)return;
@@ -760,12 +767,13 @@ function renderTracker(){
     var idx=i+1,done=idx<cur,aktif=idx===cur;
     var cls='tracker-stage'+(done?' ts-done':'')+(aktif?' ts-active':'');
     var inner=done?'<svg class="tracker-check" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="var(--gr)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':'<div class="tracker-inner"></div>';
-    var html='<div class="'+cls+'"><div class="tracker-ring">'+inner+'</div><div class="tracker-label">'+s+'</div></div>';
+    var lbl=tv(STAGE_KEYS[i],s);
+    var html='<div class="'+cls+'"><div class="tracker-ring">'+inner+'</div><div class="tracker-label">'+esc(lbl)+'</div></div>';
     cont.innerHTML+=html;
   });
   var cd=CHIPS[Math.min(cur,6)];
   var chip=T('trackerChip');
-  if(chip){chip.style.background=cd.bg;chip.style.color=cd.c;chip.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+cd.c+';display:inline-block;margin-right:6px;"></span>'+cd.t;}
+  if(chip){chip.style.background=cd.bg;chip.style.color=cd.c;chip.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+cd.c+';display:inline-block;margin-right:6px;"></span>'+esc(tv(cd.t,cd.tr));}
 }
 
 // ── FOTOĞRAF ──────────────────────────────────────────────────
@@ -856,30 +864,30 @@ function qrIndir(){toast('QR indirme - ileride eklenecek (NOT-02)','info');}
 function renderQrOnizleme(){
   var el=T('qrOnizleme');if(!el)return;
   var html='';
-  if(SP.stopped) html+='<div class="qr-satir" style="background:rgba(229,62,62,.09);border:1px solid rgba(229,62,62,.28);">⛔ <div style="font-size:11px;color:var(--re);font-weight:700;">SPOOL DURDURULMUŞTUR — Yöneticiye başvurun</div></div>';
-  if(SP.alistirma==='VAR') html+='<div class="qr-satir" style="background:rgba(229,62,62,.07);border:1px solid rgba(229,62,62,.22);">⚡ <div style="font-size:11px;color:var(--re);font-weight:700;">ALAŞTIRMA VAR — Kaynatılmaz, önce sahada alaştırılacak</div></div>';
-  else if(SP.alistirma==='KISMI') html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">⚡ <div style="font-size:11px;color:var(--warn);font-weight:700;">ALAŞTIRMA KISMI — Bazı parçalar sahada alaştırılacak</div></div>';
+  if(SP.stopped) html+='<div class="qr-satir" style="background:rgba(229,62,62,.09);border:1px solid rgba(229,62,62,.28);">⛔ <div style="font-size:11px;color:var(--re);font-weight:700;">'+tv('sp_qr_stopped','SPOOL DURDURULMUŞTUR — Yöneticiye başvurun')+'</div></div>';
+  if(SP.alistirma==='VAR') html+='<div class="qr-satir" style="background:rgba(229,62,62,.07);border:1px solid rgba(229,62,62,.22);">⚡ <div style="font-size:11px;color:var(--re);font-weight:700;">'+tv('sp_qr_alloy_var','ALAŞTIRMA VAR — Kaynatılmaz, önce sahada alaştırılacak')+'</div></div>';
+  else if(SP.alistirma==='KISMI') html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">⚡ <div style="font-size:11px;color:var(--warn);font-weight:700;">'+tv('sp_qr_alloy_kismi','ALAŞTIRMA KISMI — Bazı parçalar sahada alaştırılacak')+'</div></div>';
   var sertli=MALZEME.filter(function(m){return m.sert;});
   if(sertli.length){
     var kodlar=sertli.map(function(m){return esc(m.kod);}).join(', ');
-    html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">🏆 <div><div style="font-size:11px;color:var(--warn);font-weight:700;">SERTİFİKALI MALZEME: '+sertli.length+' kalem</div><div style="font-size:10px;color:var(--txm);margin-top:2px;">'+kodlar+'</div></div></div>';
+    html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">🏆 <div><div style="font-size:11px;color:var(--warn);font-weight:700;">'+tv('sp_qr_cert','SERTİFİKALI MALZEME')+': '+sertli.length+' '+tv('sp_items_unit','kalem')+'</div><div style="font-size:10px;color:var(--txm);margin-top:2px;">'+kodlar+'</div></div></div>';
   }
   NOTLAR.forEach(function(n){html+='<div class="qr-satir" style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.18);">📌 <div style="font-size:11px;color:var(--tx);">'+esc(n.metin)+'</div></div>';});
-  if(!html) html='<div style="text-align:center;padding:14px 0;color:var(--txd);font-size:12px;">Gösterilecek uyarı yok</div>';
+  if(!html) html='<div style="text-align:center;padding:14px 0;color:var(--txd);font-size:12px;">'+tv('sp_qr_no_alerts','Gösterilecek uyarı yok')+'</div>';
   el.innerHTML=html;
 }
 
 // ── ALAŞTIRMA ─────────────────────────────────────────────────
 var ALIST_CFG={
-  VAR:{c:'var(--re)',bg:'rgba(229,62,62,.10)',bor:'rgba(229,62,62,.3)',not:'Kaynak yapılmayacak parça var — önce sahada alaştırılacak.'},
-  KISMI:{c:'var(--warn)',bg:'rgba(217,119,6,.10)',bor:'rgba(217,119,6,.3)',not:'Kısmen sahada alaştırılacak, geri kalan kaynatılacak.'},
-  YOK:{c:'var(--gr)',bg:'rgba(22,163,110,.10)',bor:'rgba(22,163,110,.3)',not:'Komple kaynatılacak.'},
+  VAR:{c:'var(--re)',bg:'rgba(229,62,62,.10)',bor:'rgba(229,62,62,.3)',not:'sp_alist_var_note',tr:'Kaynak yapılmayacak parça var — önce sahada alaştırılacak.'},
+  KISMI:{c:'var(--warn)',bg:'rgba(217,119,6,.10)',bor:'rgba(217,119,6,.3)',not:'sp_alist_kismi_note',tr:'Kısmen sahada alaştırılacak, geri kalan kaynatılacak.'},
+  YOK:{c:'var(--gr)',bg:'rgba(22,163,110,.10)',bor:'rgba(22,163,110,.3)',not:'sp_alist_yok_note',tr:'Komple kaynatılacak.'},
 };
 function renderAlistirma(val){
   var k=T('bkAlistKutu'),v=T('bkAlistVal'),n=T('bkAlistNot'),btn=T('alistirmaBtn');
   if(!k)return;
-  if(!val){k.style.borderLeftColor='var(--txd)';k.style.borderLeftStyle='dashed';if(v)v.innerHTML='<span style="font-size:16px;font-weight:800;color:var(--txd);">— —</span>';if(n)n.textContent='Belirlenmedi';if(btn)btn.style.display='inline';}
-  else{var cfg=ALIST_CFG[val]||ALIST_CFG.YOK;k.style.borderLeftColor=cfg.c;k.style.borderLeftStyle='solid';if(v)v.innerHTML='<span style="font-size:20px;font-weight:800;color:'+cfg.c+';">'+val+'</span>';if(n)n.textContent=cfg.not;if(btn)btn.style.display='inline';}
+  if(!val){k.style.borderLeftColor='var(--txd)';k.style.borderLeftStyle='dashed';if(v)v.innerHTML='<span style="font-size:16px;font-weight:800;color:var(--txd);">— —</span>';if(n)n.textContent=tv('sp_alist_none','Belirlenmedi');if(btn)btn.style.display='inline';}
+  else{var cfg=ALIST_CFG[val]||ALIST_CFG.YOK;k.style.borderLeftColor=cfg.c;k.style.borderLeftStyle='solid';if(v)v.innerHTML='<span style="font-size:20px;font-weight:800;color:'+cfg.c+';">'+esc(val)+'</span>';if(n)n.textContent=tv(cfg.not,cfg.tr);if(btn)btn.style.display='inline';}
 }
 function alistirmaEdit(){var f=T('bkAlistForm'),b=T('alistirmaBtn');if(f)f.style.display='block';if(b)b.style.display='none';}
 function alistirmaFormKapat(){var f=T('bkAlistForm'),b=T('alistirmaBtn');if(f)f.style.display='none';if(b)b.style.display='inline';}
@@ -888,8 +896,8 @@ function alistirmaSet(v){SP.alistirma=v;alistirmaFormKapat();renderAlistirma(v);
 // ── NOTLAR ────────────────────────────────────────────────────
 function renderNotlar(){
   var el=T('notListesi'),cnt=T('notSayisi');if(!el)return;
-  if(cnt)cnt.textContent=NOTLAR.length+' not';
-  if(!NOTLAR.length){el.innerHTML='<div style="font-size:12px;color:var(--txd);">Henüz not eklenmemiş</div>';return;}
+  if(cnt)cnt.textContent=NOTLAR.length+' '+tv('sp_notes_unit','not');
+  if(!NOTLAR.length){el.innerHTML='<div style="font-size:12px;color:var(--txd);">'+tv('sp_no_notes','Henüz not eklenmemiş')+'</div>';return;}
   el.innerHTML=NOTLAR.map(function(n){return'<div class="not-item"><div class="not-text">'+esc(n.metin)+'</div><div class="not-meta">'+esc(n.kisi)+' — '+esc(n.tarih)+'</div><button class="not-del" onclick="notSil('+esc(n.id)+')">✕</button></div>';}).join('');
   renderQrOnizleme();
 }
@@ -918,8 +926,8 @@ function diKaydet(){
 // ── MALZEME ───────────────────────────────────────────────────
 function renderMalzeme(){
   var body=T('malzemeBody'),cnt=T('malzemeCnt');if(!body)return;
-  if(cnt)cnt.textContent=MALZEME.length+' kalem';
-  if(!MALZEME.length){body.innerHTML='<tr><td colspan="13" style="text-align:center;color:var(--txd);padding:16px;">Henüz malzeme eklenmemiş</td></tr>';return;}
+  if(cnt)cnt.textContent=MALZEME.length+' '+tv('sp_items_unit','kalem');
+  if(!MALZEME.length){body.innerHTML='<tr><td colspan="13" style="text-align:center;color:var(--txd);padding:16px;">'+tv('sp_no_materials','Henüz malzeme eklenmemiş')+'</td></tr>';return;}
   body.innerHTML=MALZEME.map(function(m,i){
     return'<tr><td style="color:var(--txd);">'+(i+1)+'</td><td><strong>'+esc(m.kod)+'</strong></td><td>'+esc(m.ac)+'</td><td style="color:var(--txm);">'+esc(m.malz)+'</td><td style="color:var(--ac);font-weight:700;">'+esc(m.kal)+'</td><td>'+esc(m.cap)+'</td><td>'+esc(m.et)+'</td><td>'+esc(m.boy)+'</td><td style="text-align:center;font-weight:600;">'+esc(m.adet)+'</td><td>'+esc(m.agr)+'</td><td style="font-family:monospace;font-size:12px;color:var(--txm);">'+(m.heat?esc(m.heat):'—')+'</td><td style="text-align:center;"><input type="checkbox"'+(m.sert?' checked':'')+'data-mid="'+esc(m.id)+'" onchange="sertToggle(this.dataset.mid,this.checked)" style="width:14px;height:14px;accent-color:var(--gr);cursor:pointer;"></td><td><button data-eid="'+esc(m.id)+'" onclick="malzSil(this.dataset.eid)" class="ctx ctx-re" title="Sil">✕</button></td></tr>';
   }).join('');
@@ -991,9 +999,9 @@ function dotGuncelle(id,liste,doneKey){
 function renderKesimler(){
   dotGuncelle('kesimDot',KESIMLER,'kesildi');
   var el=T('kesimListe'),tbl=T('kesimTablo');
-  var html=KESIMLER.length?KESIMLER.map(function(k){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(k.kesildi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+esc(k.ad)+'</div><div style="font-size:12px;color:var(--txm);">'+esc(k.olcu)+' mm — A:'+esc(ucLabel(k.ucA))+' B:'+esc(ucLabel(k.ucB))+'</div></div><div style="display:flex;gap:3px;">'+(k.kesildi?'':'<button data-eid="'+esc(k.id)+'" onclick="kesimTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz kesim eklenmemiş</div>';
+  var html=KESIMLER.length?KESIMLER.map(function(k){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(k.kesildi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+esc(k.ad)+'</div><div style="font-size:12px;color:var(--txm);">'+esc(k.olcu)+' mm — A:'+esc(ucLabel(k.ucA))+' B:'+esc(ucLabel(k.ucB))+'</div></div><div style="display:flex;gap:3px;">'+(k.kesildi?'':'<button data-eid="'+esc(k.id)+'" onclick="kesimTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">'+tv('sp_no_cuts','Henüz kesim eklenmemiş')+'</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=KESIMLER.length?KESIMLER.map(function(k){return'<tr><td style="font-weight:600;">'+esc(k.ad)+'</td><td>'+esc(k.olcu)+' mm</td><td>'+esc(ucLabel(k.ucA))+'</td><td>'+esc(ucLabel(k.ucB))+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(k.kesildi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(k.kesildi?'Kesildi':'Kesilecek')+'</span></td><td style="color:var(--txd);">—</td><td><button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txd);padding:16px;">Henüz kesim eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=KESIMLER.length?KESIMLER.map(function(k){return'<tr><td style="font-weight:600;">'+esc(k.ad)+'</td><td>'+esc(k.olcu)+' mm</td><td>'+esc(ucLabel(k.ucA))+'</td><td>'+esc(ucLabel(k.ucB))+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(k.kesildi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+tv(k.kesildi?'sp_cut_done':'sp_cut_pending',k.kesildi?'Kesildi':'Kesilecek')+'</span></td><td style="color:var(--txd);">—</td><td><button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txd);padding:16px;">'+tv('sp_no_cuts','Henüz kesim eklenmemiş')+'</td></tr>';
 }
 function kesimModalAc(){
   var km=T('km_malz');if(km)km.innerHTML=malzemeOpts('');T('km_eid').value='';var ko=T('km_olcu');if(ko)ko.value='';kmMalzInfo();T('kesimModal').style.display='flex';
@@ -1013,9 +1021,9 @@ function kesimSil(id){var k=KESIMLER.find(function(x){return x.id===id;});if(k&&
 function renderBukumler(){
   dotGuncelle('bukumDot',BUKUMLER,'bukuldumu');
   var el=T('bukumListe'),tbl=T('bukumTablo');
-  var html=BUKUMLER.length?BUKUMLER.map(function(b){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(b.bukuldumu?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(b.ad)+'</div><div style="font-size:12px;color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</div></div><div style="display:flex;gap:3px;">'+(b.bukuldumu?'':'<button data-eid="'+esc(b.id)+'" onclick="bukumTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz büküm eklenmemiş</div>';
+  var html=BUKUMLER.length?BUKUMLER.map(function(b){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(b.bukuldumu?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(b.ad)+'</div><div style="font-size:12px;color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</div></div><div style="display:flex;gap:3px;">'+(b.bukuldumu?'':'<button data-eid="'+esc(b.id)+'" onclick="bukumTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">'+tv('sp_no_bends','Henüz büküm eklenmemiş')+'</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=BUKUMLER.length?BUKUMLER.map(function(b){return'<tr><td style="font-weight:600;">'+esc(b.ad)+'</td><td style="color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(b.bukuldumu?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(b.bukuldumu?'Büküldü':'Bükülecek')+'</span></td><td><button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz büküm eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=BUKUMLER.length?BUKUMLER.map(function(b){return'<tr><td style="font-weight:600;">'+esc(b.ad)+'</td><td style="color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(b.bukuldumu?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+tv(b.bukuldumu?'sp_bend_done':'sp_bend_pending',b.bukuldumu?'Büküldü':'Bükülecek')+'</span></td><td><button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">'+tv('sp_no_bends','Henüz büküm eklenmemiş')+'</td></tr>';
 }
 function bukumModalAc(){var bm=T('bm_malz');if(bm)bm.innerHTML=malzemeOpts('');var bo=T('bm_olcu');if(bo)bo.value='';bmMalzInfo();T('bukumModal').style.display='flex';}
 function bmMalzInfo(){var s=T('bm_malz');if(!s)return;var m=MALZEME.find(function(x){return x.id===s.value;});var i=T('bm_info');if(i)i.innerHTML=m?('<strong>'+esc(m.malz)+'</strong> — <span style="color:var(--ac);">'+esc(m.kal)+'</span> — '+esc(m.cap)):'Malzeme seçin';}
@@ -1034,10 +1042,10 @@ function bukumSil(id){var b=BUKUMLER.find(function(x){return x.id===id;});if(b&&
 function renderMarkalar(){
   dotGuncelle('markDot',MARKALAR,'markalandi');
   var el=T('markListe'),tbl=T('markTablo');
-  var tipLabel={otomatik:'Otomatik',plaka:'Plaka',manuel:'Manuel'};
-  var html=MARKALAR.length?MARKALAR.map(function(m){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(m.markalandi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(m.ad)+'</div><div style="font-size:11px;margin-top:3px;"><span style="padding:1px 7px;border-radius:8px;font-weight:600;background:rgba(124,58,237,.1);color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</span></div></div><div style="display:flex;gap:3px;">'+(m.markalandi?'':'<button data-eid="'+esc(m.id)+'" onclick="markTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz markalama eklenmemiş</div>';
+  var tipLabel={otomatik:tv('sp_mark_auto','Otomatik'),plaka:tv('sp_mark_plaka','Plaka'),manuel:tv('sp_mark_manuel','Manuel')};
+  var html=MARKALAR.length?MARKALAR.map(function(m){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(m.markalandi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(m.ad)+'</div><div style="font-size:11px;margin-top:3px;"><span style="padding:1px 7px;border-radius:8px;font-weight:600;background:rgba(124,58,237,.1);color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</span></div></div><div style="display:flex;gap:3px;">'+(m.markalandi?'':'<button data-eid="'+esc(m.id)+'" onclick="markTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">'+tv('sp_no_marks','Henüz markalama eklenmemiş')+'</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=MARKALAR.length?MARKALAR.map(function(m){return'<tr><td style="font-weight:600;">'+esc(m.ad)+'</td><td style="color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(m.markalandi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(m.markalandi?'Markalandı':'Markalanacak')+'</span></td><td><button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz markalama eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=MARKALAR.length?MARKALAR.map(function(m){return'<tr><td style="font-weight:600;">'+esc(m.ad)+'</td><td style="color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(m.markalandi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+tv(m.markalandi?'sp_mark_done':'sp_mark_pending',m.markalandi?'Markalandı':'Markalanacak')+'</span></td><td><button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">'+tv('sp_no_marks','Henüz markalama eklenmemiş')+'</td></tr>';
 }
 function markModalAc(){var mm=T('mm_malz');if(mm)mm.innerHTML=malzemeOpts('');var r=document.querySelector('input[name="mTip"][value="otomatik"]');if(r)r.checked=true;markTipGuncelle();T('markModal').style.display='flex';}
 function markTipGuncelle(){
@@ -1061,18 +1069,22 @@ function markSil(id){var m=MARKALAR.find(function(x){return x.id===id;});if(m&&c
 
 // ── TESTLER ───────────────────────────────────────────────────
 function renderTestler(){
-  var durumCfg={bekliyor:{c:'var(--warn)',etiket:'Bekliyor'},tamir:{c:'#f97316',etiket:'Tamir'},tamamlandi:{c:'var(--gr)',etiket:'Tamamlandı'}};
+  var durumCfg={
+    bekliyor:{c:'var(--warn)',etiket:tv('sp_test_waiting','Bekliyor')},
+    tamir:{c:'#f97316',etiket:tv('sp_test_repair','Tamir')},
+    tamamlandi:{c:'var(--gr)',etiket:tv('sp_test_done','Tamamlandı')}
+  };
   var dt=T('testDot');
   if(dt){if(!TESTLER.length)dt.style.background='var(--txd)';else if(TESTLER.every(function(t){return t.durum==='tamamlandi';}))dt.style.background='var(--gr)';else if(TESTLER.some(function(t){return t.durum==='tamir';}))dt.style.background='#f97316';else dt.style.background='var(--warn)';}
   var el=T('testListe');if(!el)return;
-  el.innerHTML=TESTLER.length?TESTLER.map(function(t){var c=durumCfg[t.durum]||durumCfg.bekliyor;return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+c.c+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(t.ad)+'<span style="font-size:10px;color:var(--txd);background:var(--sur2);padding:1px 6px;border-radius:5px;border:1px solid var(--bor);margin-left:6px;">'+esc(t.no)+'</span></div>'+(t.tarih?'<div style="font-size:11px;color:var(--txd);">'+esc(t.tarih)+'</div>':'')+'<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.05);color:'+c.c+';">'+esc(c.etiket)+'</span></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Bu devreye henüz test atanmamış</div>';
+  el.innerHTML=TESTLER.length?TESTLER.map(function(t){var c=durumCfg[t.durum]||durumCfg.bekliyor;return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+c.c+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(t.ad)+'<span style="font-size:10px;color:var(--txd);background:var(--sur2);padding:1px 6px;border-radius:5px;border:1px solid var(--bor);margin-left:6px;">'+esc(t.no)+'</span></div>'+(t.tarih?'<div style="font-size:11px;color:var(--txd);">'+esc(t.tarih)+'</div>':'')+'<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.05);color:'+c.c+';">'+esc(c.etiket)+'</span></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">'+tv('sp_no_tests','Bu devreye henüz test atanmamış')+'</div>';
 }
 
 // ── LOG ───────────────────────────────────────────────────────
 function renderLog(){
   var body=T('logBody'),cnt=T('logCnt');if(!body)return;
-  if(cnt)cnt.textContent=LOGLAR.length+' kayıt';
-  if(!LOGLAR.length){body.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">İşlem kaydı yok</td></tr>';return;}
+  if(cnt)cnt.textContent=LOGLAR.length+' '+tv('sp_logs_unit','kayıt');
+  if(!LOGLAR.length){body.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">'+tv('sp_no_logs','İşlem kaydı yok')+'</td></tr>';return;}
   body.innerHTML=LOGLAR.map(function(l,i){
     return'<tr style="'+(i%2===0?'':'background:rgba(255,255,255,.015)')+'"><td style="color:var(--txd);font-size:12px;white-space:nowrap;">'+esc(l.tarih)+'</td><td><strong>'+esc(l.islem)+'</strong></td><td style="color:var(--txm);font-size:12px;">'+esc(l.kullanici)+'</td><td style="color:var(--txm);font-size:12px;">'+esc(l.ac)+'</td></tr>';
   }).join('');
@@ -1084,7 +1096,7 @@ function logNotEkle(){
 // ── BELGELER ─────────────────────────────────────────────────
 function renderBelgeler(){
   var el1=T('belgeListe'),el2=T('belgeListe2'),cnt=T('belCnt'),cnt2=T('belCnt2');
-  var html=BELGELER.length?BELGELER.map(function(b){return'<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bor);"><div style="width:32px;height:32px;border-radius:7px;background:rgba(22,163,110,.12);border:1px solid rgba(22,163,110,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gr);flex-shrink:0;">'+esc(b.dosya.split('.').pop().toUpperCase().slice(0,3)||'DOC')+'</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(b.ad)+'</div><div style="font-size:11px;color:var(--txd);">'+esc(b.dosya)+' — '+esc(b.tarih)+'</div></div><button data-eid="'+esc(b.id)+'" onclick="belgeSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></div>';}).join(''):'<div style="padding:16px;text-align:center;color:var(--txd);font-size:12px;">Henüz belge eklenmemiş</div>';
+  var html=BELGELER.length?BELGELER.map(function(b){return'<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bor);"><div style="width:32px;height:32px;border-radius:7px;background:rgba(22,163,110,.12);border:1px solid rgba(22,163,110,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gr);flex-shrink:0;">'+esc(b.dosya.split('.').pop().toUpperCase().slice(0,3)||'DOC')+'</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(b.ad)+'</div><div style="font-size:11px;color:var(--txd);">'+esc(b.dosya)+' — '+esc(b.tarih)+'</div></div><button data-eid="'+esc(b.id)+'" onclick="belgeSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></div>';}).join(''):'<div style="padding:16px;text-align:center;color:var(--txd);font-size:12px;">'+tv('sp_no_docs','Henüz belge eklenmemiş')+'</div>';
   if(cnt)cnt.textContent=BELGELER.length?BELGELER.length+' belge':'';
   if(cnt2)cnt2.textContent=BELGELER.length?BELGELER.length+' belge':'';
   if(el1)el1.innerHTML=html;if(el2)el2.innerHTML=html;
