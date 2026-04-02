@@ -183,5 +183,7 @@
   "sp_doc_type_cert": "شهادة",
   "sp_doc_type_proc": "إجراء",
   "sp_doc_type_other": "أخرى",
-  "sp_optional_note": "ملاحظة (اختياري)"
+  "sp_optional_note": "ملاحظة (اختياري)",
+  "sp_add_btn": "+ إضافة",
+  "sp_add_btn_short": "إضافة"
 }

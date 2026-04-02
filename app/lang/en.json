@@ -183,5 +183,7 @@
   "sp_doc_type_cert": "Certificate",
   "sp_doc_type_proc": "Procedure",
   "sp_doc_type_other": "Other",
-  "sp_optional_note": "Note (optional)"
+  "sp_optional_note": "Note (optional)",
+  "sp_add_btn": "+ Add",
+  "sp_add_btn_short": "Add"
 }
