@@ -262,9 +262,9 @@
     • Yeni karar verilince hangi kurala ekleneceğini belirt<br>
     • M-09 basamak snapshot kuralını her Supabase konuşmasında hatırlat — kritik<br><br>
     <strong style="color:var(--tx);">Mevcut durum:</strong><br>
-    • Tamamlanan: tanimlar.html ✅ &nbsp; bukum.html (yapısal) ✅ &nbsp; spool_detay.html ✅<br>
+    • Tamamlanan: tanimlar.html ✅ &nbsp; bukum.html (yapısal) ✅ &nbsp; spool_detay.html ✅ (D-01+G-01 tam)<br>
     • Sıradaki: devre_detay.html<br>
-    • Dil: TR/EN/AR aktif &nbsp;• Supabase: Henüz kurulmadı
+    • Dil: TR/EN/AR aktif · ares-layout.js #lang-toggle CSS fix bekliyor &nbsp;• Supabase: Henüz kurulmadı
   </div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
@@ -383,13 +383,50 @@
   <span class="kural-baslik">Dil Desteği — TR / EN / AR</span>
   <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-guncellendi">GÜNCELLENDİ</span><span class="kural-arrow">▼</span></div>
 </div><div class="kural-body">
-  <div class="kural-aciklama">Statik metinlerde <code style="background:var(--sur2);padding:1px 4px;border-radius:3px;font-size:11px;">data-i18n</code> zorunlu. JS render'da <code style="background:var(--sur2);padding:1px 4px;border-radius:3px;font-size:11px;">t()</code>. <strong>_onLangChange hook veriYukle'den SONRA tanımlanır.</strong></div>
+  <div class="kural-aciklama">Her sayfa için <strong>3 katman</strong> uygulanır. Hiçbiri atlanamaz.</div>
+
+  <div class="etki-baslik">Katman 1 — Statik HTML (data-i18n)</div>
   <div class="kod-blok">
-    <span class="e">// HTML</span><br>
-    &lt;div <span class="k">data-i18n</span>=<span class="v">"tanim_baslik"</span>&gt;Tanımlar&lt;/div&gt;<br><br>
-    <span class="e">// JS</span><br>
-    veriYukle();<br>
-    window.<span class="k">_onLangChange</span> = function() { tabloRender(AKTİF_TAB); };
+    <span class="e">// Tüm statik metin elementlerine zorunlu</span><br>
+    &lt;button <span class="k">data-i18n</span>=<span class="v">"sp_add_btn"</span>&gt;+ Ekle&lt;/button&gt;<br>
+    &lt;label <span class="k">data-i18n</span>=<span class="v">"th_material"</span>&gt;Malzeme&lt;/label&gt;<br>
+    &lt;input <span class="k">data-i18n-placeholder</span>=<span class="v">"sp_note_placeholder"</span>&gt;
+  </div>
+
+  <div class="etki-baslik">Katman 2 — JS Render (tv() helper)</div>
+  <div class="kod-blok">
+    <span class="e">// Her sayfanın script bloğuna ekle — esc()'den hemen sonra</span><br>
+    function <span class="k">tv</span>(key, tr) {<br>
+    &nbsp;&nbsp;var v = window.t ? window.t(key) : key;<br>
+    &nbsp;&nbsp;return (v === key) ? tr : v;<br>
+    }<br><br>
+    <span class="e">// Render fonksiyonlarında kullanım:</span><br>
+    tv(<span class="v">'sp_no_cuts'</span>, <span class="v">'Henüz kesim eklenmemiş'</span>)<br>
+    tv(<span class="v">'sp_cut_done'</span>, <span class="v">'Kesildi'</span>)
+  </div>
+
+  <div class="etki-baslik">Katman 3 — _onLangChange</div>
+  <div class="kod-blok">
+    <span class="e">// Tüm render fonksiyonlarını çağırmalı — sadece yukle() yetmez</span><br>
+    window.<span class="k">_onLangChange</span> = function() {<br>
+    &nbsp;&nbsp;yukle(); renderTracker(); renderFotolar();<br>
+    &nbsp;&nbsp;renderKesimler(); renderBukumler(); renderMarkalar();<br>
+    &nbsp;&nbsp;renderTestler(); renderMalzeme(); renderNotlar();<br>
+    &nbsp;&nbsp;renderLog(); renderBelgeler(); renderQR();<br>
+    };
+  </div>
+
+  <div class="etki-baslik">lang/ Dosya Yönetimi</div>
+  <div class="kod-blok">
+    <span class="e">// lang/en.json + lang/ar.json — her sayfa için key'ler eklenir</span><br>
+    <span class="e">// Sayfa prefix: sp_ (spool), dv_ (devre), bk_ (bukum), cmn_ (ortak)</span><br>
+    <span class="k">"sp_no_cuts"</span>: <span class="v">"No cuts added yet"</span>,<br>
+    <span class="k">"sp_cut_done"</span>: <span class="v">"Cut"</span>
+  </div>
+
+  <div style="background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--re);font-weight:600;margin-top:10px;">
+    ⚠ ares-layout.js'e #lang-toggle CSS fix eklenmeli (gece modu görünürlük):<br>
+    <code style="font-size:11px;color:var(--txm);">#lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</code>
   </div>
 </div></div>
 </div>
@@ -545,8 +582,8 @@
   <div class="bekleyen-item"><span class="bekleyen-kural">L-01</span><span class="bekleyen-aciklama">Büküm tamamlandığında _log() çağrısı yok.</span></div>
 </div></div>
 
-<div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
-  <div class="sartname-icon" style="background:rgba(45,142,255,.12);">📦</div>
+<div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(22,163,110,.12);">📦</div>
   <div class="sartname-meta"><div class="sartname-baslik">Spool Detay <span class="durum-badge d-tamam" style="font-size:10px;vertical-align:middle;">✓ Tamamlandı</span></div><div class="sartname-dosya">spool_detay.html</div></div>
   <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-guncellendi">GÜNCELLENDİ</span><span class="sartname-arrow">▼</span></div>
 </div><div class="sartname-body">
@@ -557,14 +594,12 @@
   <div class="sartname-row"><div class="sartname-etiket">Sekmeler</div><div class="sartname-deger">Genel Bilgiler · Malzeme Listesi · İşlem Kayıtları</div></div>
   <hr class="sartname-divider">
   <div style="font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Uygulanan Kurallar</div>
-  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02 · L-01 · L-03 · M-09</div><div class="kural-detay-aciklama">Tüm cl-* sınıfları, flash prevention, log sistemi, basamak tracker uygulandı.</div></div>
+  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02 · L-01 · L-03 · M-09 · D-01 · K-01</div><div class="kural-detay-aciklama">Tüm kurallar uygulandı. esc() + tv() eklendi. 144 data-i18n attribute. lang/en.json + lang/ar.json 187 key. _onLangChange tüm render fonksiyonlarını çağırıyor. JS syntax OK.</div></div>
   <hr class="sartname-divider">
   <div style="font-size:10px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen (Supabase Sonrası)</div>
   <div class="bekleyen-item"><span class="bekleyen-kural">NOT-02</span><span class="bekleyen-aciklama">QR gerçek kod üretimi — Supabase + mobil uygulama ile gelecek.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">HEAT</span><span class="bekleyen-aciklama">Heat no → devre malzeme listesiyle senkronizasyon (Supabase şeması gerektiriyor).</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural" style="color:var(--re);">D-01</span><span class="bekleyen-aciklama">Statik metinlerde data-i18n eksik — dil değişince çevrilmiyor (R-01)</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural" style="color:var(--re);">D-01</span><span class="bekleyen-aciklama">Dil toggle TR/EN/AR yazısı gece modunda görünmüyor — lang-code span renk (R-01)</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">D-01</span><span class="bekleyen-aciklama">Tam dil desteği (data-i18n) — şu an Türkçe sabit.</span></div>
+  <div style="font-size:12px;color:var(--gr);margin-top:8px;">✅ D-01 tam uygulandı. Bekleyen değişiklik yok.</div>
 </div></div>
 
 <div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
@@ -609,20 +644,37 @@
 <div class="aksiyon-item"><div class="aksiyon-no">3</div><div style="flex:1;"><div class="aksiyon-baslik">tanimlar.html</div><div class="aksiyon-aciklama">B-01~03, F-01, P-01, T-01, D-01, M-09, G-01~02 tam uygulandı</div></div><span class="durum-badge d-tamam">✓</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">4</div><div style="flex:1;"><div class="aksiyon-baslik">Dil Sistemi TR / EN / AR</div><div class="aksiyon-aciklama">ares-layout.js dil yöneticisi, _onLangChange hook, 3 dil paketi</div></div><span class="durum-badge d-tamam">✓</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">5</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html yapısal düzeltme</div><div class="aksiyon-aciklama">Flash prevention, theme fix, yanıp sönme düzeltildi</div></div><span class="durum-badge d-tamam">✓</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">6</div><div style="flex:1;"><div class="aksiyon-baslik">spool_detay.html</div><div class="aksiyon-aciklama">Fotoğraf galerisi (Swiper+lightbox), basamak tracker, malzeme listesi (Excel import), kesim/büküm/markalama, QR uyarı sistemi, dia-inch özeti, durdurma, KK/sevk</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">6</div><div style="flex:1;"><div class="aksiyon-baslik">spool_detay.html — Yapısal + D-01 + G-01 Tam</div><div class="aksiyon-aciklama">Fotoğraf galerisi, basamak tracker, malzeme, kesim/büküm/markalama, QR sistemi · esc() + tv() + 144 data-i18n · lang/en+ar 187 key</div></div><span class="durum-badge d-tamam">✓</span></div>
+
 <div style="font-size:11px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">⚙️ Sıradakiler</div>
-<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">7</div><div style="flex:1;"><div class="aksiyon-baslik">devre_detay.html</div><div class="aksiyon-aciklama">Spool listesi, ilerleme yüzdesi, devre bazlı log, heat no toplu görünüm</div></div><span class="durum-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">→ Sırada</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html</div><div class="aksiyon-aciklama">Devre detay sonrası</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">9</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html & markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
+
+<div style="background:rgba(45,142,255,.06);border:1px solid rgba(45,142,255,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:var(--txm);">
+  <strong style="color:var(--ac);">📋 Her Sayfa İçin Standart D-01 + G-01 Protokolü</strong><br>
+  <div style="margin-top:6px;line-height:2.2;">
+    1. <strong>esc()</strong> + <strong>tv()</strong> helper'larını script bloğuna ekle<br>
+    2. Tüm HTML statik metinlerine <code>data-i18n</code> / <code>data-i18n-placeholder</code> ekle<br>
+    3. JS render fonksiyonlarında hardcoded string'leri <code>tv(key, 'TR fallback')</code> ile sar<br>
+    4. <code>_onLangChange</code>'i tüm render fonksiyonlarını çağıracak şekilde güncelle<br>
+    5. <code>lang/en.json</code> + <code>lang/ar.json</code>'a sayfa prefix'li key'ler ekle<br>
+    6. K-01 syntax kontrolü yap
+  </div>
+</div>
+
+<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">7</div><div style="flex:1;"><div class="aksiyon-baslik">devre_detay.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Spool listesi, ilerleme yüzdesi, devre bazlı log, heat no toplu görünüm + D-01+G-01 protokolü tam uygulanacak</div></div><span class="durum-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">→ Sırada</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Devre detay sonrası · D-01+G-01 protokolü tam uygulanacak</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">9</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html tam revizyon</div><div class="aksiyon-aciklama">D-01 (tv()+data-i18n) + F-01 (filtre barı) + P-01 (pagination) + L-01 (log kaydı) + G-01 (esc())</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">10</div><div style="flex:1;"><div class="aksiyon-baslik">markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01 + G-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">ares-layout.js — #lang-toggle CSS fix</div><div class="aksiyon-aciklama">injectGlobalCSS() içine ekle: #lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</div></div><span class="durum-badge d-revizyon">⚠ Bekliyor</span></div>
+
 <div style="font-size:11px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">🗄️ Supabase Aşaması</div>
-<div class="aksiyon-item"><div class="aksiyon-no">10</div><div style="flex:1;"><div class="aksiyon-baslik">Sistem kurgusu netleştir</div><div class="aksiyon-aciklama">Modüller, kullanıcı akışları, işlem basamakları listesi</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">Sistem kurgusu netleştir</div><div class="aksiyon-aciklama">Modüller, kullanıcı akışları, işlem basamakları listesi</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
 <div class="aksiyon-item" style="border-color:rgba(229,62,62,.4);background:rgba(229,62,62,.03);">
   <div class="aksiyon-no" style="color:var(--re);">⚠</div>
   <div style="flex:1;"><div class="aksiyon-baslik" style="color:var(--re);">M-09 Basamak Snapshot — KRİTİK</div><div class="aksiyon-aciklama">Supabase şemasında ilk ele alınacak. ATLANAMAZ.</div></div>
   <span class="badge-kritik">⚠ KRİTİK</span>
 </div>
-<div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">Veritabanı şeması tasarla</div><div class="aksiyon-aciklama">Tablo yapıları, ilişkiler, tenant_id, RLS kuralları</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">Super Admin Paneli</div><div class="aksiyon-aciklama">Supabase kurulduktan sonra</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">13</div><div style="flex:1;"><div class="aksiyon-baslik">Veritabanı şeması tasarla</div><div class="aksiyon-aciklama">Tablo yapıları, ilişkiler, tenant_id, RLS kuralları</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">14</div><div style="flex:1;"><div class="aksiyon-baslik">Super Admin Paneli</div><div class="aksiyon-aciklama">Supabase kurulduktan sonra</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
 </div>
 
 <!-- ══ KULLANIM KILAVUZLARI ══ -->
