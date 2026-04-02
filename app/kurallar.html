@@ -645,12 +645,23 @@
 
 <div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
   <div class="sartname-icon" style="background:rgba(45,142,255,.12);">📋</div>
-  <div class="sartname-meta"><div class="sartname-baslik">Aktif Devreler <span class="durum-badge d-yapilmadi" style="font-size:10px;vertical-align:middle;">— Yapılmadı</span></div><div class="sartname-dosya">devreler.html</div></div>
-  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+  <div class="sartname-meta"><div class="sartname-baslik">Aktif Devreler <span class="durum-badge d-tamam" style="font-size:10px;vertical-align:middle;">✓ Tamamlandı</span></div><div class="sartname-dosya">devreler.html</div></div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-guncellendi">GÜNCELLENDİ</span><span class="sartname-arrow">▼</span></div>
 </div><div class="sartname-body">
-  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Atölyedeki tüm aktif devreleri listeler, proje/tersane/durum bazlı filtreler sunar.</div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_devreler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:11px;">ares_projeler</code></div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Zorunlu Kurallar</div><div class="sartname-deger"><span class="tag tag-ac">B-01 · B-03 · F-01 · P-01 · T-01 · D-01</span></div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Atölyedeki tüm aktif devreleri listeler. Tersane/proje/malzeme/durum filtresi, yıldız sistemi, malzeme/çap donut grafikleri, Excel/PDF export.</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_aktif_devre</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_devre_oncelik</code> (yıldız localStorage)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Çap Dağılımı</div><div class="sartname-deger">Her devrenin <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">caps[]</code> array'inden aggregate — DN sırasıyla (DN40→DN400). Supabase'de spool tablosundan sorgulanacak.</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:10px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Uygulanan Kurallar</div>
+  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-03 · G-01 · D-01 · P-01 · T-01 · F-02 · K-01 · R-02</div><div class="kural-detay-aciklama">
+    ares_ key'leri · esc() DOM-based · showToast createElement · Inline _I18N (70 key, dr_ prefix) · MutationObserver ·
+    33 data-i18n · DURUM_MAP → tv() getter · tarihFormat() gg/aa/yyyy · Ağırlık Math.round() ·
+    F-02 badge/donut/th → 12px (sort ok işaretleri 9px — F-02 istisnası: sembol, okunacak metin değil) ·
+    T-01: 6 sütun sıralama (İş Emri, Gemi, Devre, Ağırlık, İlerleme, Durum) ·
+    K-01 syntax OK · R-02 3 parça
+  </div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;color:var(--gr);margin-top:8px;">✅ Bekleyen değişiklik yok. Supabase geçişinde caps[] → spool tablosundan aggregate sorgu ile gelecek.</div>
 </div></div>
 </div>
 
@@ -713,7 +724,7 @@
   </div>
 </div>
 
-<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Tüm aktif devreleri listeler · B-01 · B-03 · F-01 · P-01 · T-01 · D-01 · G-01 · R-02 protokolü</div></div><span class="durum-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">→ Sırada</span></div>
+<div class="aksiyon-item" style="border-color:rgba(45,142,255,.4);"><div class="aksiyon-no">8</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Yeni Sayfa</div><div class="aksiyon-aciklama">B-03 · G-01 · D-01 inline · F-02 · T-01 (6 sütun) · P-01 · tarihFormat() · caps[] çap dağılımı · K-01 OK</div></div><span class="durum-badge d-tamam">✓</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">9</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html tam revizyon</div><div class="aksiyon-aciklama">D-01 (tv()+data-i18n) + F-01 (filtre barı) + P-01 (pagination) + L-01 (log kaydı) + G-01 (esc())</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">10</div><div style="flex:1;"><div class="aksiyon-baslik">markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01 + G-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">ares-layout.js — #lang-toggle CSS fix</div><div class="aksiyon-aciklama">injectGlobalCSS() içine ekle: #lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</div></div><span class="durum-badge d-revizyon">⚠ Bekliyor</span></div>
@@ -968,7 +979,12 @@ done
           </div>
         </div>
         <div style="background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--txm);">
-          💡 <strong>Kontrol:</strong> Sayfa tesliminden önce <code>grep "font-size:[89]px\|font-size:1[01]px" sayfa.html</code> ile tara. QR ve print CSS satırlarını hariç tut.
+          💡 <strong>Kontrol:</strong> Sayfa tesliminden önce <code>grep "font-size:[89]px\|font-size:1[01]px" sayfa.html</code> ile tara. Aşağıdaki istisnalar hariç tut:
+          <div style="margin-top:6px;line-height:2;">
+            • <strong>QR kod içi</strong> — sınırlı alan, farklı ortam<br>
+            • <strong>Print / PDF CSS</strong> — <code>@media print</code> veya inline PDF HTML string'leri<br>
+            • <strong>Sort ok işaretleri (↕ ↑ ↓)</strong> — 9px olabilir, sembol, okunacak metin değil
+          </div>
         </div>
       </div>
     </div>
@@ -981,21 +997,31 @@ done
         <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
       </div>
       <div class="kural-body">
-        <div class="kural-aciklama">Bir sayfada yeni teknik standart veya kural oluşturulduğunda, oturum kapanmadan önce tüm tamamlanmış sayfalar gözden geçirilir ve ilgili şartname kartlarına <strong>"Bekleyen Değişiklikler"</strong> notu düşülür. Hiçbir şey atlanmaz, program bütünlüğü korunur.</div>
+        <div class="kural-aciklama">Bir sayfada yeni teknik standart veya kural oluşturulduğunda iki şey yapılır: <strong>(1)</strong> O andan itibaren yapılan tüm yeni sayfalarda standart <strong>anında ve zorunlu</strong> olarak uygulanır. <strong>(2)</strong> Daha önce tamamlanmış sayfaların şartname kartlarına "Bekleyen Değişiklikler" notu düşülür, sıraları gelince uygulanır. Böylece hiçbir şey atlanmaz ve program bütünlüğü korunur.</div>
         <div class="etki-baslik">İş Akışı</div>
         <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
-          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
-            <strong style="color:var(--tx);">Yeni standart oluşunca →</strong> "Bu değişiklik hangi diğer sayfalarda da yapılmalı?" sorusunu sor.
+          <div style="background:var(--sur2);border-left:3px solid var(--re);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Yeni standart oluşunca →</strong> "Bu kural hangi sayfalara uygulanmalı?" sorusunu sor. Yeni sayfalarda: <strong style="color:var(--re);">anında uygula, bekleme.</strong>
           </div>
-          <div style="background:var(--sur2);border-left:3px solid var(--ac);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
-            <strong style="color:var(--tx);">Her etkilenen sayfa için →</strong> Şartname kartı "Bekleyen" bölümüne kural kodu + kısa açıklama ekle.
+          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Eski tamamlanmış sayfalar için →</strong> Şartname kartı "Bekleyen" bölümüne kural kodu + kısa açıklama ekle. R-01 ile sırası gelince uygulanır.
           </div>
           <div style="background:var(--sur2);border-left:3px solid var(--warn);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
-            <strong style="color:var(--tx);">Sayfa sırasına gelince →</strong> R-01 devreye girer: önce bekleyen listesi uygulanır, sonra asıl iş yapılır.
+            <strong style="color:var(--tx);">Yeni sayfa çalışması başlarken →</strong> Kurallar listesini baştan tara — bellekte olmayan kural olabilir. Şartname kartını oluştur ve uygulanan kuralları yaz.
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:8px 0;">
+          <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:8px;padding:10px 12px;">
+            <div style="color:var(--gr);font-weight:700;margin-bottom:4px;">✅ Doğru</div>
+            <div style="color:var(--txm);line-height:2;">F-02 kuralı çıktı<br>→ Devam eden devreler.html'e anında uygulandı<br>→ spool_detay bekleyenlerine eklendi<br>→ bukum bekleyenlerine eklendi</div>
+          </div>
+          <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:10px 12px;">
+            <div style="color:var(--re);font-weight:700;margin-bottom:4px;">❌ Yanlış</div>
+            <div style="color:var(--txm);line-height:2;">F-02 kuralı çıktı<br>→ Sadece eski sayfaların bekleyenine eklendi<br>→ devreler.html'de atlandı<br>→ Sonra geri dönmek gerekti</div>
           </div>
         </div>
         <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--txm);margin-top:8px;">
-          💡 Supabase geçişinde özellikle kritik — bir şema değişikliği tüm sayfaları etkileyebilir. Bu küçük adım ilerleyen sayfalarda büyük zaman kazandırır.
+          💡 Kural belliyse bekleme yoktur. Yeni sayfada atlanan her kural = ileride geri dönme maliyeti. Supabase geçişinde özellikle kritik.
         </div>
       </div>
     </div>
