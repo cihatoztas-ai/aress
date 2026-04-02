@@ -562,6 +562,8 @@
   <div style="font-size:10px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen (Supabase Sonrası)</div>
   <div class="bekleyen-item"><span class="bekleyen-kural">NOT-02</span><span class="bekleyen-aciklama">QR gerçek kod üretimi — Supabase + mobil uygulama ile gelecek.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">HEAT</span><span class="bekleyen-aciklama">Heat no → devre malzeme listesiyle senkronizasyon (Supabase şeması gerektiriyor).</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural" style="color:var(--re);">D-01</span><span class="bekleyen-aciklama">Statik metinlerde data-i18n eksik — dil değişince çevrilmiyor (R-01)</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural" style="color:var(--re);">D-01</span><span class="bekleyen-aciklama">Dil toggle TR/EN/AR yazısı gece modunda görünmüyor — lang-code span renk (R-01)</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">D-01</span><span class="bekleyen-aciklama">Tam dil desteği (data-i18n) — şu an Türkçe sabit.</span></div>
 </div></div>
 
@@ -767,7 +769,45 @@ done
       </div>
     </div>
 
+
+
+    <!-- R-01 -->
+    <div class="kural-kart cl-leg">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">R-01</span>
+        <span class="kural-baslik">Birikimli Düzeltme Protokolü</span>
+        <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Küçük sorunlar ve eksiklikler için ayrı sohbet açılmaz. Her sayfa için şartname kartında <strong>"Düzeltme Listesi"</strong> tutulur. O sayfada herhangi bir çalışma yapılırken liste otomatik uygulanır ve temizlenir.</div>
+        <div class="ornek-label">İş Akışı</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+          <div style="background:var(--sur2);border-left:3px solid var(--leg);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Sorun fark edilince →</strong> Ayrı sohbet açma. İlgili sayfanın şartname kartı "Düzeltme Listesi"ne ekle.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Sayfa üzerinde çalışma başlarken →</strong> Önce düzeltme listesine bak, hepsini uygula, sonra asıl işi yap, listeyi temizle.
+          </div>
+          <div style="background:var(--sur2);border-left:3px solid var(--ac);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);line-height:1.8;">
+            <strong style="color:var(--tx);">Birden fazla sayfayı etkileyen sorun →</strong> Her sayfanın şartname kartına ayrı ayrı eklenir, sırası gelince uygulanır.
+          </div>
+        </div>
+        <div class="ornek-label">Listeye Eklenir / Eklenmez</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:6px 0;">
+          <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:8px;padding:8px 12px;">
+            <div style="color:var(--gr);font-weight:700;margin-bottom:4px;">✅ Listeye Eklenir</div>
+            <div style="color:var(--txm);line-height:2;">Dil toggle görünüm sorunu<br>data-i18n eksikliği (D-01)<br>Renk / layout küçük düzeltme<br>Eksik log kaydı</div>
+          </div>
+          <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:8px 12px;">
+            <div style="color:var(--re);font-weight:700;margin-bottom:4px;">❌ Hemen Çözülür</div>
+            <div style="color:var(--txm);line-height:2;">Sayfa çalışmıyor / crash<br>Yanlış veri yazılıyor<br>Güvenlik açığı (G-01/02)<br>Kritik iş akışı hatası</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 
 
   <!-- ══ KULLANIM KILAVUZU ══ -->

@@ -163,6 +163,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 .t-er{border-left:3px solid var(--re);}
 .t-info{border-left:3px solid var(--ac);}
 @keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+/* D-01 — lang-code gece modu fix */
+[data-theme=dark] .lang-code,[data-theme=dark] .lang-label{color:var(--tx)!important;}
+[data-theme=dark] .topbar-lang-btn,[data-theme=dark] .lang-toggle{color:var(--txm)!important;}
 /* MARK TIP */
 .mark-tip{text-align:center;padding:10px 6px;border-radius:10px;border:2px solid var(--bor);background:var(--sur2);font-size:12px;font-weight:600;color:var(--txm);cursor:pointer;transition:all .15s;}
 .mark-tip.aktif{border-color:var(--ac);background:rgba(45,142,255,.08);color:var(--tx);}
@@ -175,16 +178,16 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
-  <a href="index.html">Ana Sayfa</a><span>/</span>
-  <a href="devreler.html">Aktif Devreler</a><span>/</span>
+  <a href="index.html" data-i18n="nav_home">Ana Sayfa</a><span>/</span>
+  <a href="devreler.html" data-i18n="nav_active_circuits">Aktif Devreler</a><span>/</span>
   <a href="devre_detay_sayfasi.html" id="bcDevre">--</a><span>/</span>
   <span class="cur" id="bcSpool">--</span>
   <div style="margin-left:auto;display:flex;gap:8px;">
-    <button class="btn btn-sm" onclick="history.back()">← Geri</button>
-    <button class="btn btn-sm" onclick="duzenleAc()">✎ Düzenle</button>
-    <button class="btn btn-sm btn-leg" onclick="kkGonder()">✓ Kalite Kontrole</button>
-    <button class="btn btn-sm" style="border-color:rgba(45,142,255,.4);color:var(--ac);" onclick="sevkGonder()">🚚 Sevkiyata</button>
-    <button class="btn btn-sm btn-re" onclick="durdurAc()">⏸ Durdur</button>
+    <button class="btn btn-sm" onclick="history.back()" data-i18n="btn_back">← Geri</button>
+    <button class="btn btn-sm" onclick="duzenleAc()" data-i18n="btn_edit">✎ Düzenle</button>
+    <button class="btn btn-sm btn-leg" onclick="kkGonder()" data-i18n="sp_btn_qc">✓ Kalite Kontrole</button>
+    <button class="btn btn-sm" style="border-color:rgba(45,142,255,.4);color:var(--ac);" onclick="sevkGonder()" data-i18n="sp_btn_shipment">🚚 Sevkiyata</button>
+    <button class="btn btn-sm btn-re" onclick="durdurAc()" data-i18n="sp_btn_stop">⏸ Durdur</button>
   </div>
 </div>
 
@@ -192,11 +195,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <div class="durdur-band" id="durdurBand" style="display:none;">
   <span style="font-size:18px;flex-shrink:0;">⛔</span>
   <div style="flex:1;">
-    <div style="font-size:13px;font-weight:700;color:var(--re);">Bu Spool Durdurulmuştur</div>
+    <div style="font-size:13px;font-weight:700;color:var(--re);" data-i18n="sp_stopped_title">Bu Spool Durdurulmuştur</div>
     <div style="font-size:12px;color:var(--txm);margin-top:3px;" id="durdurAciklamaEl">--</div>
-    <div style="font-size:11px;color:var(--txd);margin-top:5px;">QR okutulduğunda: <strong style="color:var(--re);">"Yöneticiye başvurun"</strong> · Kesim/büküm/markalama engellenmiştir.</div>
+    <div style="font-size:11px;color:var(--txd);margin-top:5px;" data-i18n="sp_stopped_qr_note">QR okutulduğunda: <strong style="color:var(--re);">"Yöneticiye başvurun"</strong> · Kesim/büküm/markalama engellenmiştir.</div>
   </div>
-  <button class="btn btn-sm" style="border-color:rgba(22,163,110,.4);color:var(--gr);flex-shrink:0;" onclick="durdurmaKaldir()">Durdurma Kaldır</button>
+  <button class="btn btn-sm" style="border-color:rgba(22,163,110,.4);color:var(--gr);flex-shrink:0;" onclick="durdurmaKaldir()" data-i18n="sp_stop_remove">Durdurma Kaldır</button>
 </div>
 
 <!-- SPOOL HEADER -->
@@ -217,23 +220,23 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <div class="stat-grid">
   <div class="stat-kart cl-ac">
     <div class="stat-ikon si-ac"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
-    <div><div class="stat-label">Dış Çap</div><div class="stat-val" id="stCap">--</div></div>
+    <div><div class="stat-label" data-i18n="sp_stat_diameter">Dış Çap</div><div class="stat-val" id="stCap">--</div></div>
   </div>
   <div class="stat-kart cl-ac">
     <div class="stat-ikon si-ac"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
-    <div><div class="stat-label">Et Kalınlığı</div><div class="stat-val" id="stKal">--</div></div>
+    <div><div class="stat-label" data-i18n="sp_stat_thickness">Et Kalınlığı</div><div class="stat-val" id="stKal">--</div></div>
   </div>
   <div class="stat-kart cl-re">
     <div class="stat-ikon si-re"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5"/></svg></div>
-    <div><div class="stat-label">Ağırlık</div><div class="stat-val" id="stAgr">--</div></div>
+    <div><div class="stat-label" data-i18n="sp_stat_weight">Ağırlık</div><div class="stat-val" id="stAgr">--</div></div>
   </div>
   <div class="stat-kart cl-gr">
     <div class="stat-ikon si-gr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
-    <div><div class="stat-label">Yüzey</div><div class="stat-val" id="stYuzey">--</div></div>
+    <div><div class="stat-label" data-i18n="sp_stat_surface">Yüzey</div><div class="stat-val" id="stYuzey">--</div></div>
   </div>
   <div class="stat-kart cl-warn">
     <div class="stat-ikon si-warn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-    <div><div class="stat-label">Malzeme</div><div class="stat-val" id="stMalz">--</div></div>
+    <div><div class="stat-label" data-i18n="sp_stat_material">Malzeme</div><div class="stat-val" id="stMalz">--</div></div>
   </div>
 </div>
 
@@ -245,9 +248,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
 <!-- SEKMELER -->
 <div class="tabs">
-  <button class="tab-btn active" data-tab="genel">📋 Genel Bilgiler</button>
-  <button class="tab-btn" data-tab="malzeme">📦 Malzeme Listesi</button>
-  <button class="tab-btn" data-tab="log">🕐 İşlem Kayıtları</button>
+  <button class="tab-btn active" data-tab="genel" data-i18n="sp_tab_general">📋 Genel Bilgiler</button>
+  <button class="tab-btn" data-tab="malzeme" data-i18n="sp_tab_material">📦 Malzeme Listesi</button>
+  <button class="tab-btn" data-tab="log" data-i18n="sp_tab_log">🕐 İşlem Kayıtları</button>
 </div>
 
 <!-- ══ GENEL BİLGİLER ══ -->
@@ -407,9 +410,19 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
     <div class="tablo-scroll">
       <table class="data-tablo">
         <thead><tr>
-          <th>#</th><th>Kod</th><th>Açıklama</th><th>Malzeme</th><th>Kalite</th>
-          <th>Dış Çap</th><th>Et (mm)</th><th>Boy</th><th>Adet</th>
-          <th>Ağırlık</th><th>Heat No</th><th>Sert.</th><th></th>
+          <th>#</th>
+          <th data-i18n="th_code">Kod</th>
+          <th data-i18n="th_desc">Açıklama</th>
+          <th data-i18n="th_material">Malzeme</th>
+          <th data-i18n="th_quality">Kalite</th>
+          <th data-i18n="th_diameter">Dış Çap</th>
+          <th data-i18n="th_thickness">Et (mm)</th>
+          <th data-i18n="th_length">Boy</th>
+          <th data-i18n="th_qty">Adet</th>
+          <th data-i18n="th_weight">Ağırlık</th>
+          <th data-i18n="th_heat">Heat No</th>
+          <th data-i18n="th_cert">Sert.</th>
+          <th></th>
         </tr></thead>
         <tbody id="malzemeBody"></tbody>
         <tfoot>
@@ -460,10 +473,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
     <div class="tablo-scroll">
       <table class="data-tablo">
         <thead><tr>
-          <th style="min-width:120px;">Tarih</th>
-          <th>İşlem</th>
-          <th style="min-width:120px;">Kullanıcı</th>
-          <th>Açıklama / Link</th>
+          <th style="min-width:120px;" data-i18n="th_date">Tarih</th>
+          <th data-i18n="th_operation">İşlem</th>
+          <th style="min-width:120px;" data-i18n="th_user">Kullanıcı</th>
+          <th data-i18n="th_detail">Açıklama / Link</th>
         </tr></thead>
         <tbody id="logBody"></tbody>
       </table>
@@ -693,11 +706,15 @@ var _lbIdx = 0;
 // ── YARDIMCI ──────────────────────────────────────────────────
 function T(id){return document.getElementById(id);}
 function txc(id,v){var e=T(id);if(e)e.textContent=v||'--';}
+// G-01: XSS sanitizer — kullanıcı verisini HTML'e yazmadan önce kaçır
+function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function toast(msg,tip){
   var old=document.querySelector('.toast');if(old)old.remove();
   var t=document.createElement('div');
   t.className='toast t-'+(tip||'ok');
-  t.innerHTML='<span>'+msg+'</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--txd);cursor:pointer;font-size:15px;margin-left:8px;">✕</button>';
+  var sp=document.createElement('span');sp.textContent=msg;
+  var cl=document.createElement('button');cl.textContent='✕';cl.setAttribute('style','background:none;border:none;color:var(--txd);cursor:pointer;font-size:15px;margin-left:8px;');cl.onclick=function(){this.parentElement.remove();};
+  t.appendChild(sp);t.appendChild(cl);
   document.body.appendChild(t);
   setTimeout(function(){t.remove();},3000);
 }
@@ -844,10 +861,10 @@ function renderQrOnizleme(){
   else if(SP.alistirma==='KISMI') html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">⚡ <div style="font-size:11px;color:var(--warn);font-weight:700;">ALAŞTIRMA KISMI — Bazı parçalar sahada alaştırılacak</div></div>';
   var sertli=MALZEME.filter(function(m){return m.sert;});
   if(sertli.length){
-    var kodlar=sertli.map(function(m){return m.kod;}).join(', ');
+    var kodlar=sertli.map(function(m){return esc(m.kod);}).join(', ');
     html+='<div class="qr-satir" style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);">🏆 <div><div style="font-size:11px;color:var(--warn);font-weight:700;">SERTİFİKALI MALZEME: '+sertli.length+' kalem</div><div style="font-size:10px;color:var(--txm);margin-top:2px;">'+kodlar+'</div></div></div>';
   }
-  NOTLAR.forEach(function(n){html+='<div class="qr-satir" style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.18);">📌 <div style="font-size:11px;color:var(--tx);">'+n.metin+'</div></div>';});
+  NOTLAR.forEach(function(n){html+='<div class="qr-satir" style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.18);">📌 <div style="font-size:11px;color:var(--tx);">'+esc(n.metin)+'</div></div>';});
   if(!html) html='<div style="text-align:center;padding:14px 0;color:var(--txd);font-size:12px;">Gösterilecek uyarı yok</div>';
   el.innerHTML=html;
 }
@@ -873,7 +890,7 @@ function renderNotlar(){
   var el=T('notListesi'),cnt=T('notSayisi');if(!el)return;
   if(cnt)cnt.textContent=NOTLAR.length+' not';
   if(!NOTLAR.length){el.innerHTML='<div style="font-size:12px;color:var(--txd);">Henüz not eklenmemiş</div>';return;}
-  el.innerHTML=NOTLAR.map(function(n){return'<div class="not-item"><div class="not-text">'+n.metin+'</div><div class="not-meta">'+n.kisi+' — '+n.tarih+'</div><button class="not-del" onclick="notSil('+n.id+')">✕</button></div>';}).join('');
+  el.innerHTML=NOTLAR.map(function(n){return'<div class="not-item"><div class="not-text">'+esc(n.metin)+'</div><div class="not-meta">'+esc(n.kisi)+' — '+esc(n.tarih)+'</div><button class="not-del" onclick="notSil('+esc(n.id)+')">✕</button></div>';}).join('');
   renderQrOnizleme();
 }
 function notEkle(){var i=T('notInput');var m=i?i.value.trim():'';if(!m){toast('Not boş olamaz','er');return;}NOTLAR.unshift({id:Date.now(),metin:m,kisi:'Admin',tarih:bugun()});i.value='';renderNotlar();}
@@ -904,7 +921,7 @@ function renderMalzeme(){
   if(cnt)cnt.textContent=MALZEME.length+' kalem';
   if(!MALZEME.length){body.innerHTML='<tr><td colspan="13" style="text-align:center;color:var(--txd);padding:16px;">Henüz malzeme eklenmemiş</td></tr>';return;}
   body.innerHTML=MALZEME.map(function(m,i){
-    return'<tr><td style="color:var(--txd);">'+(i+1)+'</td><td><strong>'+m.kod+'</strong></td><td>'+m.ac+'</td><td style="color:var(--txm);">'+m.malz+'</td><td style="color:var(--ac);font-weight:700;">'+m.kal+'</td><td>'+m.cap+'</td><td>'+m.et+'</td><td>'+m.boy+'</td><td style="text-align:center;font-weight:600;">'+m.adet+'</td><td>'+m.agr+'</td><td style="font-family:monospace;font-size:12px;color:var(--txm);">'+(m.heat||'—')+'</td><td style="text-align:center;"><input type="checkbox"'+(m.sert?' checked':'')+'data-mid="'+m.id+'" onchange="sertToggle(this.dataset.mid,this.checked)" style="width:14px;height:14px;accent-color:var(--gr);cursor:pointer;"></td><td><button data-eid="'+m.id+'" onclick="malzSil(this.dataset.eid)" class="ctx ctx-re" title="Sil">✕</button></td></tr>';
+    return'<tr><td style="color:var(--txd);">'+(i+1)+'</td><td><strong>'+esc(m.kod)+'</strong></td><td>'+esc(m.ac)+'</td><td style="color:var(--txm);">'+esc(m.malz)+'</td><td style="color:var(--ac);font-weight:700;">'+esc(m.kal)+'</td><td>'+esc(m.cap)+'</td><td>'+esc(m.et)+'</td><td>'+esc(m.boy)+'</td><td style="text-align:center;font-weight:600;">'+esc(m.adet)+'</td><td>'+esc(m.agr)+'</td><td style="font-family:monospace;font-size:12px;color:var(--txm);">'+(m.heat?esc(m.heat):'—')+'</td><td style="text-align:center;"><input type="checkbox"'+(m.sert?' checked':'')+'data-mid="'+esc(m.id)+'" onchange="sertToggle(this.dataset.mid,this.checked)" style="width:14px;height:14px;accent-color:var(--gr);cursor:pointer;"></td><td><button data-eid="'+esc(m.id)+'" onclick="malzSil(this.dataset.eid)" class="ctx ctx-re" title="Sil">✕</button></td></tr>';
   }).join('');
   sertGuncelle();
 }
@@ -974,14 +991,14 @@ function dotGuncelle(id,liste,doneKey){
 function renderKesimler(){
   dotGuncelle('kesimDot',KESIMLER,'kesildi');
   var el=T('kesimListe'),tbl=T('kesimTablo');
-  var html=KESIMLER.length?KESIMLER.map(function(k){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(k.kesildi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+k.ad+'</div><div style="font-size:12px;color:var(--txm);">'+k.olcu+' mm — A:'+ucLabel(k.ucA)+' B:'+ucLabel(k.ucB)+'</div></div><div style="display:flex;gap:3px;">'+(k.kesildi?'':'<button data-eid="'+k.id+'" onclick="kesimTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+k.id+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz kesim eklenmemiş</div>';
+  var html=KESIMLER.length?KESIMLER.map(function(k){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(k.kesildi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">'+esc(k.ad)+'</div><div style="font-size:12px;color:var(--txm);">'+esc(k.olcu)+' mm — A:'+esc(ucLabel(k.ucA))+' B:'+esc(ucLabel(k.ucB))+'</div></div><div style="display:flex;gap:3px;">'+(k.kesildi?'':'<button data-eid="'+esc(k.id)+'" onclick="kesimTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz kesim eklenmemiş</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=KESIMLER.length?KESIMLER.map(function(k){return'<tr><td style="font-weight:600;">'+k.ad+'</td><td>'+k.olcu+' mm</td><td>'+ucLabel(k.ucA)+'</td><td>'+ucLabel(k.ucB)+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(k.kesildi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(k.kesildi?'Kesildi':'Kesilecek')+'</span></td><td style="color:var(--txd);">—</td><td><button data-eid="'+k.id+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txd);padding:16px;">Henüz kesim eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=KESIMLER.length?KESIMLER.map(function(k){return'<tr><td style="font-weight:600;">'+esc(k.ad)+'</td><td>'+esc(k.olcu)+' mm</td><td>'+esc(ucLabel(k.ucA))+'</td><td>'+esc(ucLabel(k.ucB))+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(k.kesildi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(k.kesildi?'Kesildi':'Kesilecek')+'</span></td><td style="color:var(--txd);">—</td><td><button data-eid="'+esc(k.id)+'" onclick="kesimSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txd);padding:16px;">Henüz kesim eklenmemiş</td></tr>';
 }
 function kesimModalAc(){
   var km=T('km_malz');if(km)km.innerHTML=malzemeOpts('');T('km_eid').value='';var ko=T('km_olcu');if(ko)ko.value='';kmMalzInfo();T('kesimModal').style.display='flex';
 }
-function kmMalzInfo(){var s=T('km_malz');if(!s)return;var m=MALZEME.find(function(x){return x.id===s.value;});var i=T('km_info');if(i)i.innerHTML=m?('<strong>'+m.malz+'</strong> — <span style="color:var(--ac);font-weight:700;">'+m.kal+'</span> — '+m.cap+' — et: '+m.et):'Malzeme seçin';}
+function kmMalzInfo(){var s=T('km_malz');if(!s)return;var m=MALZEME.find(function(x){return x.id===s.value;});var i=T('km_info');if(i)i.innerHTML=m?('<strong>'+esc(m.malz)+'</strong> — <span style="color:var(--ac);font-weight:700;">'+esc(m.kal)+'</span> — '+esc(m.cap)+' — et: '+esc(m.et)):'Malzeme seçin';}
 function kesimKaydet(){
   var mId=(T('km_malz')||{}).value||'',olcu=String((T('km_olcu')||{}).value||'').trim();
   if(!olcu||isNaN(olcu)||+olcu<=0){toast('Geçerli uzunluk girin','er');return;}
@@ -996,12 +1013,12 @@ function kesimSil(id){var k=KESIMLER.find(function(x){return x.id===id;});if(k&&
 function renderBukumler(){
   dotGuncelle('bukumDot',BUKUMLER,'bukuldumu');
   var el=T('bukumListe'),tbl=T('bukumTablo');
-  var html=BUKUMLER.length?BUKUMLER.map(function(b){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(b.bukuldumu?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+b.ad+'</div><div style="font-size:12px;color:var(--ac);font-weight:700;">'+b.olcu+' mm</div></div><div style="display:flex;gap:3px;">'+(b.bukuldumu?'':'<button data-eid="'+b.id+'" onclick="bukumTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+b.id+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz büküm eklenmemiş</div>';
+  var html=BUKUMLER.length?BUKUMLER.map(function(b){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(b.bukuldumu?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(b.ad)+'</div><div style="font-size:12px;color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</div></div><div style="display:flex;gap:3px;">'+(b.bukuldumu?'':'<button data-eid="'+esc(b.id)+'" onclick="bukumTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz büküm eklenmemiş</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=BUKUMLER.length?BUKUMLER.map(function(b){return'<tr><td style="font-weight:600;">'+b.ad+'</td><td style="color:var(--ac);font-weight:700;">'+b.olcu+' mm</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(b.bukuldumu?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(b.bukuldumu?'Büküldü':'Bükülecek')+'</span></td><td><button data-eid="'+b.id+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz büküm eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=BUKUMLER.length?BUKUMLER.map(function(b){return'<tr><td style="font-weight:600;">'+esc(b.ad)+'</td><td style="color:var(--ac);font-weight:700;">'+esc(b.olcu)+' mm</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(b.bukuldumu?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(b.bukuldumu?'Büküldü':'Bükülecek')+'</span></td><td><button data-eid="'+esc(b.id)+'" onclick="bukumSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz büküm eklenmemiş</td></tr>';
 }
 function bukumModalAc(){var bm=T('bm_malz');if(bm)bm.innerHTML=malzemeOpts('');var bo=T('bm_olcu');if(bo)bo.value='';bmMalzInfo();T('bukumModal').style.display='flex';}
-function bmMalzInfo(){var s=T('bm_malz');if(!s)return;var m=MALZEME.find(function(x){return x.id===s.value;});var i=T('bm_info');if(i)i.innerHTML=m?('<strong>'+m.malz+'</strong> — <span style="color:var(--ac);">'+m.kal+'</span> — '+m.cap):'Malzeme seçin';}
+function bmMalzInfo(){var s=T('bm_malz');if(!s)return;var m=MALZEME.find(function(x){return x.id===s.value;});var i=T('bm_info');if(i)i.innerHTML=m?('<strong>'+esc(m.malz)+'</strong> — <span style="color:var(--ac);">'+esc(m.kal)+'</span> — '+esc(m.cap)):'Malzeme seçin';}
 function bukumKaydet(){
   var mId=(T('bm_malz')||{}).value||'',olcu=String((T('bm_olcu')||{}).value||'').trim();
   if(!olcu||isNaN(olcu)||+olcu<=0){toast('Geçerli uzunluk girin','er');return;}
@@ -1018,9 +1035,9 @@ function renderMarkalar(){
   dotGuncelle('markDot',MARKALAR,'markalandi');
   var el=T('markListe'),tbl=T('markTablo');
   var tipLabel={otomatik:'Otomatik',plaka:'Plaka',manuel:'Manuel'};
-  var html=MARKALAR.length?MARKALAR.map(function(m){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(m.markalandi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+m.ad+'</div><div style="font-size:11px;margin-top:3px;"><span style="padding:1px 7px;border-radius:8px;font-weight:600;background:rgba(124,58,237,.1);color:var(--leg);">'+(tipLabel[m.tip]||m.tip)+'</span></div></div><div style="display:flex;gap:3px;">'+(m.markalandi?'':'<button data-eid="'+m.id+'" onclick="markTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+m.id+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz markalama eklenmemiş</div>';
+  var html=MARKALAR.length?MARKALAR.map(function(m){return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(m.markalandi?'var(--gr)':'var(--re)')+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(m.ad)+'</div><div style="font-size:11px;margin-top:3px;"><span style="padding:1px 7px;border-radius:8px;font-weight:600;background:rgba(124,58,237,.1);color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</span></div></div><div style="display:flex;gap:3px;">'+(m.markalandi?'':'<button data-eid="'+esc(m.id)+'" onclick="markTamamla(this.dataset.eid)" class="ctx" style="border-color:rgba(22,163,110,.4);color:var(--gr);">✓</button>')+'<button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re">✕</button></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Henüz markalama eklenmemiş</div>';
   if(el)el.innerHTML=html;
-  if(tbl)tbl.innerHTML=MARKALAR.length?MARKALAR.map(function(m){return'<tr><td style="font-weight:600;">'+m.ad+'</td><td style="color:var(--leg);">'+(tipLabel[m.tip]||m.tip)+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(m.markalandi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(m.markalandi?'Markalandı':'Markalanacak')+'</span></td><td><button data-eid="'+m.id+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz markalama eklenmemiş</td></tr>';
+  if(tbl)tbl.innerHTML=MARKALAR.length?MARKALAR.map(function(m){return'<tr><td style="font-weight:600;">'+esc(m.ad)+'</td><td style="color:var(--leg);">'+esc(tipLabel[m.tip]||m.tip)+'</td><td><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;'+(m.markalandi?'background:rgba(22,163,110,.12);color:var(--gr);':'background:rgba(229,62,62,.12);color:var(--re);')+'">'+(m.markalandi?'Markalandı':'Markalanacak')+'</span></td><td><button data-eid="'+esc(m.id)+'" onclick="markSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">Henüz markalama eklenmemiş</td></tr>';
 }
 function markModalAc(){var mm=T('mm_malz');if(mm)mm.innerHTML=malzemeOpts('');var r=document.querySelector('input[name="mTip"][value="otomatik"]');if(r)r.checked=true;markTipGuncelle();T('markModal').style.display='flex';}
 function markTipGuncelle(){
@@ -1048,7 +1065,7 @@ function renderTestler(){
   var dt=T('testDot');
   if(dt){if(!TESTLER.length)dt.style.background='var(--txd)';else if(TESTLER.every(function(t){return t.durum==='tamamlandi';}))dt.style.background='var(--gr)';else if(TESTLER.some(function(t){return t.durum==='tamir';}))dt.style.background='#f97316';else dt.style.background='var(--warn)';}
   var el=T('testListe');if(!el)return;
-  el.innerHTML=TESTLER.length?TESTLER.map(function(t){var c=durumCfg[t.durum]||durumCfg.bekliyor;return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+c.c+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+t.ad+'<span style="font-size:10px;color:var(--txd);background:var(--sur2);padding:1px 6px;border-radius:5px;border:1px solid var(--bor);margin-left:6px;">'+t.no+'</span></div>'+(t.tarih?'<div style="font-size:11px;color:var(--txd);">'+t.tarih+'</div>':'')+'<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.05);color:'+c.c+';">'+c.etiket+'</span></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Bu devreye henüz test atanmamış</div>';
+  el.innerHTML=TESTLER.length?TESTLER.map(function(t){var c=durumCfg[t.durum]||durumCfg.bekliyor;return'<div style="padding:8px 0;border-bottom:1px solid var(--bor);display:flex;align-items:flex-start;gap:8px;"><div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+c.c+';"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+esc(t.ad)+'<span style="font-size:10px;color:var(--txd);background:var(--sur2);padding:1px 6px;border-radius:5px;border:1px solid var(--bor);margin-left:6px;">'+esc(t.no)+'</span></div>'+(t.tarih?'<div style="font-size:11px;color:var(--txd);">'+esc(t.tarih)+'</div>':'')+'<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.05);color:'+c.c+';">'+esc(c.etiket)+'</span></div></div>';}).join(''):'<div style="font-size:12px;color:var(--txd);">Bu devreye henüz test atanmamış</div>';
 }
 
 // ── LOG ───────────────────────────────────────────────────────
@@ -1057,7 +1074,7 @@ function renderLog(){
   if(cnt)cnt.textContent=LOGLAR.length+' kayıt';
   if(!LOGLAR.length){body.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:16px;">İşlem kaydı yok</td></tr>';return;}
   body.innerHTML=LOGLAR.map(function(l,i){
-    return'<tr style="'+(i%2===0?'':'background:rgba(255,255,255,.015)')+'"><td style="color:var(--txd);font-size:12px;white-space:nowrap;">'+l.tarih+'</td><td><strong>'+l.islem+'</strong></td><td style="color:var(--txm);font-size:12px;">'+l.kullanici+'</td><td style="color:var(--txm);font-size:12px;">'+l.ac+'</td></tr>';
+    return'<tr style="'+(i%2===0?'':'background:rgba(255,255,255,.015)')+'"><td style="color:var(--txd);font-size:12px;white-space:nowrap;">'+esc(l.tarih)+'</td><td><strong>'+esc(l.islem)+'</strong></td><td style="color:var(--txm);font-size:12px;">'+esc(l.kullanici)+'</td><td style="color:var(--txm);font-size:12px;">'+esc(l.ac)+'</td></tr>';
   }).join('');
 }
 function logNotEkle(){
@@ -1067,7 +1084,7 @@ function logNotEkle(){
 // ── BELGELER ─────────────────────────────────────────────────
 function renderBelgeler(){
   var el1=T('belgeListe'),el2=T('belgeListe2'),cnt=T('belCnt'),cnt2=T('belCnt2');
-  var html=BELGELER.length?BELGELER.map(function(b){return'<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bor);"><div style="width:32px;height:32px;border-radius:7px;background:rgba(22,163,110,.12);border:1px solid rgba(22,163,110,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gr);flex-shrink:0;">'+(b.dosya.split('.').pop().toUpperCase().slice(0,3)||'DOC')+'</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+b.ad+'</div><div style="font-size:11px;color:var(--txd);">'+b.dosya+' — '+b.tarih+'</div></div><button data-eid="'+b.id+'" onclick="belgeSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></div>';}).join(''):'<div style="padding:16px;text-align:center;color:var(--txd);font-size:12px;">Henüz belge eklenmemiş</div>';
+  var html=BELGELER.length?BELGELER.map(function(b){return'<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bor);"><div style="width:32px;height:32px;border-radius:7px;background:rgba(22,163,110,.12);border:1px solid rgba(22,163,110,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gr);flex-shrink:0;">'+esc(b.dosya.split('.').pop().toUpperCase().slice(0,3)||'DOC')+'</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(b.ad)+'</div><div style="font-size:11px;color:var(--txd);">'+esc(b.dosya)+' — '+esc(b.tarih)+'</div></div><button data-eid="'+esc(b.id)+'" onclick="belgeSil(this.dataset.eid)" class="ctx ctx-re btn-sm">✕</button></div>';}).join(''):'<div style="padding:16px;text-align:center;color:var(--txd);font-size:12px;">Henüz belge eklenmemiş</div>';
   if(cnt)cnt.textContent=BELGELER.length?BELGELER.length+' belge':'';
   if(cnt2)cnt2.textContent=BELGELER.length?BELGELER.length+' belge':'';
   if(el1)el1.innerHTML=html;if(el2)el2.innerHTML=html;
@@ -1117,13 +1134,13 @@ function duzenleKaydet(){
 function kkGonder(){
   _gonderTip='kk';var b=T('gmBtn');if(b){b.style.background='var(--leg)';b.textContent='Kalite Kontrole Gönder';}
   var t=T('gmBaslik');if(t){t.textContent='Kalite Kontrole Gönder';t.style.color='var(--leg)';}
-  var bi=T('gmBilgi');if(bi)bi.innerHTML='<strong>'+([SP._gemi,SP._devre,SP.spoolNo].filter(Boolean).join(' — '))+'</strong><br><span style="font-size:12px;color:var(--txd);">Bu spool kalite kontrol listesine eklenecek.</span>';
+  var bi=T('gmBilgi');if(bi){var no=[SP._gemi,SP._devre,SP.spoolNo].filter(Boolean).join(' — ');var noEl=document.createElement('strong');noEl.textContent=no;var infoEl=document.createElement('span');infoEl.style.cssText='font-size:12px;color:var(--txd);';infoEl.textContent='Bu spool kalite kontrol listesine eklenecek.';bi.textContent='';bi.appendChild(noEl);bi.appendChild(document.createElement('br'));bi.appendChild(infoEl);}
   var n=T('gmNot');if(n)n.value='';T('gonderModal').style.display='flex';
 }
 function sevkGonder(){
   _gonderTip='sevk';var b=T('gmBtn');if(b){b.style.background='var(--ac)';b.textContent='Sevkiyata Gönder';}
   var t=T('gmBaslik');if(t){t.textContent='Sevkiyata Gönder';t.style.color='var(--ac)';}
-  var bi=T('gmBilgi');if(bi)bi.innerHTML='<strong>'+([SP._gemi,SP._devre,SP.spoolNo].filter(Boolean).join(' — '))+'</strong><br><span style="font-size:12px;color:var(--txd);">Bu spool sevkiyata hazır listesine eklenecek.</span>';
+  var bi=T('gmBilgi');if(bi){var no=[SP._gemi,SP._devre,SP.spoolNo].filter(Boolean).join(' — ');var noEl=document.createElement('strong');noEl.textContent=no;var infoEl=document.createElement('span');infoEl.style.cssText='font-size:12px;color:var(--txd);';infoEl.textContent='Bu spool sevkiyata hazır listesine eklenecek.';bi.textContent='';bi.appendChild(noEl);bi.appendChild(document.createElement('br'));bi.appendChild(infoEl);}
   var n=T('gmNot');if(n)n.value='';T('gonderModal').style.display='flex';
 }
 function gonderKaydet(){
@@ -1164,7 +1181,12 @@ document.addEventListener('DOMContentLoaded',function(){
   renderBelgeler();
   renderQR();
   initTabs();
-  window._onLangChange=function(){yukle();};
+  window._onLangChange=function(){
+    yukle();
+    renderTracker();renderFotolar();renderKesimler();renderBukumler();
+    renderMarkalar();renderTestler();renderMalzeme();renderNotlar();
+    renderLog();renderBelgeler();renderQR();
+  };
   document.documentElement.style.visibility='';
 });
 </script>
