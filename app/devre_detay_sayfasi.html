@@ -1,15 +1,11 @@
 <!DOCTYPE html>
+<!-- BUILD: 2026-04-02T15:52:12.857Z -->
 <html lang="tr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Devre Detayı | AresPipe</title>
-<script>
-(function(){
-  var t=localStorage.getItem('syos_theme')||'dark';
-  document.documentElement.setAttribute('data-theme',t);
-})();
-</script>
+<script>(function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.visibility='hidden';})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
@@ -20,48 +16,16 @@
   --ac:#2D8EFF;--gr:#16a36e;--re:#e53e3e;--warn:#d97706;--leg:#7c3aed;
 }
 [data-theme="light-anthracite"]{
-  --bg:#f0f2f5;--sur:#ffffff;--sur2:#f4f6f8;--bor:#dde1e7;
-  --tx:#1a2233;--txm:#4a5568;--txd:#8a96a8;
-  --ac:#1a73e8;--gr:#0d8050;--re:#c0392b;--warn:#b7770d;--leg:#6200ea;
+  --bg:#d8dde4;--sur:#e4e9ef;--sur2:#d0d7e0;--bor:#bcc5d0;
+  --tx:#141e2b;--txm:#3a4f63;--txd:#637080;
 }
 
-/* === TOPBAR === */
-.sidebar.collapsed ~ .main-content .topbar-left{ display:flex; align-items:center; gap:12px; }
-.page{ padding-top:76px; } /* topbar yüksekliği + boşluk */
-
-.sidebar{ border-right:1px solid var(--bor); box-shadow:2px 0 8px rgba(0,0,0,.18); }
-
-/* === RESET === */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-height:100vh;}
-
-/* === APP SHELL === */
-.app-shell{display:flex;min-height:100vh;}
-.sidebar{width:220px;min-height:100vh;background:var(--sur);border-right:1px solid var(--bor);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:width .22s;overflow:hidden;}
-.sidebar.collapsed{width:56px;}
-.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 16px;height:56px;border-bottom:1px solid var(--bor);flex-shrink:0;overflow:hidden;white-space:nowrap;cursor:pointer;}
-.logo-mark{width:28px;height:28px;border-radius:7px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;flex-shrink:0;}
-.logo-text{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--tx);transition:opacity .15s;}
-.sidebar.collapsed .logo-text{opacity:0;pointer-events:none;}
-.sidebar-nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden;}
-.sidebar-footer{padding:10px 8px;border-top:1px solid var(--bor);flex-shrink:0;}
-.sidebar-toggle{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;border:1px solid var(--bor);background:var(--sur2);cursor:pointer;color:var(--txd);position:absolute;top:14px;right:-14px;z-index:201;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
-.sidebar-toggle:hover{border-color:var(--ac);color:var(--ac);}
-.sidebar-toggle svg{transition:transform .22s;}
-.sidebar.collapsed .sidebar-toggle svg{transform:rotate(180deg);}
-.main-content{margin-left:220px;transition:margin-left .22s;flex:1;min-width:0;}
-.sidebar.collapsed~.main-content{margin-left:56px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;text-decoration:none;color:var(--txm);font-size:14px;font-weight:500;white-space:nowrap;transition:background .15s,color .15s;margin-bottom:2px;overflow:hidden;position:relative;}
-.nav-item:hover{background:var(--sur2);color:var(--tx);}
-.nav-item.active{background:rgba(45,142,255,.12);color:var(--ac);font-weight:600;}
-.nav-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.nav-label{transition:opacity .15s;}
-.sidebar.collapsed .nav-label{opacity:0;}
-.sidebar.collapsed .nav-item:hover::after{content:attr(data-label);position:absolute;left:48px;top:50%;transform:translateY(-50%);background:var(--sur);border:1px solid var(--bor);color:var(--tx);font-size:13px;padding:5px 10px;border-radius:7px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:300;}
+/* === RESET (ares-layout.js global CSS'ini tamamlar) === */
+*{box-sizing:border-box;}
 
 /* === SAYFA === */
-.page{padding:24px 32px;max-width:1600px;margin:0 auto;}
-@media(max-width:768px){.page{padding:16px;}}
+.page{padding:24px 28px 60px;}
+@media(max-width:768px){.page{padding:16px 16px 40px;}}
 
 /* === BUTONLAR === */
 .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:36px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--txm);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif;}
@@ -162,15 +126,6 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 .toast-info{border-left:3px solid var(--ac);}
 @keyframes toastIn{from{transform:translateX(110%);opacity:0;}to{transform:translateX(0);opacity:1;}}
 
-/* === TİMELİNE === */
-.tl-item{display:flex;gap:12px;padding:12px 0;}
-.tl-dot-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:24px;}
-.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.tl-line{flex:1;width:1px;background:var(--bor);margin-top:4px;}
-.tl-body{flex:1;min-width:0;}
-.tl-title{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px;}
-.tl-meta{font-size:11px;color:var(--txd);}
-.tl-aciklama{font-size:12px;color:var(--txm);margin-top:4px;line-height:1.5;}
 
 /* === TEMA TOGGLE === */
 .tema-toggle{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9px;border:1px solid var(--bor);background:var(--sur2);color:var(--txd);font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .2s;width:100%;}
@@ -194,43 +149,29 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <script src="ares-layout.js"></script>
 </head>
 <body>
-<div class="app-shell">
-
-<div class="main-content">
-
-  <!-- TOPBAR -->
-  <div class="topbar" id="topbar">
-    <div class="topbar-left">
-      <div class="topbar-title" id="topbarTitle">Devre Detayi</div>
-    </div>
-    <div class="topbar-right">
-      <span id="topbarIsEmri" style="font-size:12px;color:var(--txd);"></span>
-      </div>
-  </div>
-
-<div class="page">
+<div class="app-shell"><div class="main-content"><div class="page">
 
   <!-- ÜST BAR -->
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
     <div class="breadcrumb">
-      <a href="index.html">Ana Sayfa</a><span>/</span>
-      <a href="devreler.html">Aktif Devreler</a><span>/</span>
+      <a href="index.html" data-i18n="nav_home">Ana Sayfa</a><span>/</span>
+      <a href="devreler.html" data-i18n="nav_active_circuits">Aktif Devreler</a><span>/</span>
       <a href="#" id="bcGemi">--</a><span>/</span>
       <span class="current" id="bcDevre">--</span>
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <button class="btn-outline" onclick="history.back()">
+      <button class="btn-outline" onclick="history.back()" data-i18n="btn_back">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Geri
       </button>
-      <button class="btn-outline" onclick="spoolEkleBaslat()">+ Spool Ekle</button>
-      <button class="btn-outline" onclick="etiketModalAc()" style="border-color:rgba(124,58,237,.4);color:var(--leg);">&#127991; Etiketler</button>
-      <button class="btn-outline" onclick="exportModalAc()">&#11015; Aktar</button>
-      <button class="btn-outline" id="btnDurdur" onclick="durdurModalAc()" style="border-color:rgba(229,62,62,.35);color:var(--re);">&#9646;&#9646; Durdur</button>
+      <button class="btn-outline" onclick="spoolEkleBaslat()" data-i18n="dv_add_spool">+ Spool Ekle</button>
+      <button class="btn-outline" onclick="etiketModalAc()" style="border-color:rgba(124,58,237,.4);color:var(--leg);" data-i18n="dv_labels_btn">&#127991; Etiketler</button>
+      <button class="btn-outline" onclick="exportModalAc()" data-i18n="dv_export_btn">&#11015; Aktar</button>
+      <button class="btn-outline" id="btnDurdur" onclick="durdurModalAc()" style="border-color:rgba(229,62,62,.35);color:var(--re);" data-i18n="sp_btn_stop">&#9646;&#9646; Durdur</button>
       <button class="btn-outline" onclick="kkGonderModal()" style="border-color:rgba(124,58,237,.4);color:var(--leg);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>KK Gonder
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span data-i18n="sp_btn_qc">KK Gonder</span>
       </button>
       <button class="btn-outline" onclick="sevkiyataGonderModal()" style="border-color:rgba(45,142,255,.4);color:var(--ac);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Sevkiyat
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span data-i18n="sp_btn_shipment">Sevkiyat</span>
       </button>
     </div>
   </div>
@@ -239,20 +180,20 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div class="durdur-banner" id="durdurBanner">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
     <div style="flex:1;min-width:0;">
-      <div style="font-size:13px;font-weight:700;color:var(--re);">Devre Durdurulmustur</div>
+      <div style="font-size:13px;font-weight:700;color:var(--re);" data-i18n="dv_circuit_stopped">Devre Durdurulmustur</div>
       <div style="font-size:12px;color:var(--txm);margin-top:3px;" id="bannerAciklama">--</div>
     </div>
-    <button onclick="durdurmaKaldir()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(22,163,110,.4);background:rgba(22,163,110,.08);color:var(--gr);font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;flex-shrink:0;">Durdurmayi Kaldir</button>
+    <button onclick="durdurmaKaldir()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(22,163,110,.4);background:rgba(22,163,110,.08);color:var(--gr);font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;flex-shrink:0;" data-i18n="sp_stop_remove">Durdurmayi Kaldir</button>
   </div>
 
   <!-- BASLIK -->
   <div style="margin-bottom:20px;">
-    <div style="font-size:12px;color:var(--txd);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Devre Detayi</div>
+    <div style="font-size:12px;color:var(--txd);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_circuit_detail">Devre Detayi</div>
     <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;">
       <h1 id="ddBaslik" style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:var(--ac);letter-spacing:1px;line-height:1;">--</h1>
       <div id="ddTersane" style="font-size:14px;color:var(--txd);font-weight:500;"></div>
       <div id="ddIsEmriBar" style="display:none;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);">
-        <span style="font-size:11px;font-weight:700;color:var(--leg);">IS EMRI</span>
+        <span style="font-size:11px;font-weight:700;color:var(--leg);" data-i18n="dv_is_emri_label">IS EMRI</span>
         <span id="ddIsEmriNo" style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--leg);"></span>
       </div>
     </div>
@@ -262,48 +203,48 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div class="stat-cards">
     <div class="stat-card cl-ac">
       <div class="stat-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-      <div><div class="stat-label">Toplam Spool</div><div class="stat-value" id="ddStatSpool">--</div></div>
+      <div><div class="stat-label" data-i18n="dv_stat_spools">Toplam Spool</div><div class="stat-value" id="ddStatSpool">--</div></div>
     </div>
     <div class="stat-card cl-re">
       <div class="stat-icon red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-      <div><div class="stat-label">Toplam Agirlik</div><div class="stat-value" id="ddStatAgirlik">--</div></div>
+      <div><div class="stat-label" data-i18n="dv_stat_weight">Toplam Agirlik</div><div class="stat-value" id="ddStatAgirlik">--</div></div>
     </div>
     <div class="stat-card cl-warn">
       <div class="stat-icon amber"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <div><div class="stat-label">Malzeme</div><div class="stat-value" id="ddStatMalzeme" style="font-size:16px;">--</div></div>
+      <div><div class="stat-label" data-i18n="sp_stat_material">Malzeme</div><div class="stat-value" id="ddStatMalzeme" style="font-size:16px;">--</div></div>
     </div>
     <div class="stat-card cl-gr">
       <div class="stat-icon green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
-      <div><div class="stat-label">Yuzey</div><div class="stat-value" id="ddStatYuzey" style="font-size:16px;">--</div></div>
+      <div><div class="stat-label" data-i18n="sp_stat_surface">Yuzey</div><div class="stat-value" id="ddStatYuzey" style="font-size:16px;">--</div></div>
     </div>
     <div class="stat-card cl-leg">
       <div class="stat-icon purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-      <div><div class="stat-label">Termin</div><div class="stat-value" id="ddStatTermin" style="font-size:15px;">--</div></div>
+      <div><div class="stat-label" data-i18n="dv_stat_deadline">Termin</div><div class="stat-value" id="ddStatTermin" style="font-size:15px;">--</div></div>
     </div>
   </div>
 
   <!-- SEVKİYAT BAR -->
   <div class="shipment-bar cl-ac">
     <div class="si-item">
-      <div class="si-label">KK Durumu</div>
-      <div class="si-value" id="ddBarKK">Bekliyor</div>
+      <div class="si-label" data-i18n="dv_bar_kk">KK Durumu</div>
+      <div class="si-value" id="ddBarKK" data-i18n="dv_status_waiting">Bekliyor</div>
     </div>
     <div class="si-div"></div>
     <div class="si-item">
-      <div class="si-label">Sevkiyat Durumu</div>
-      <div class="si-value" id="ddBarSevk">Sevk Edilmedi</div>
+      <div class="si-label" data-i18n="dv_bar_sevk">Sevkiyat Durumu</div>
+      <div class="si-value" id="ddBarSevk" data-i18n="dv_not_shipped">Sevk Edilmedi</div>
     </div>
     <div class="si-div"></div>
     <div class="si-item">
-      <div class="si-label">Tersane Is Emri</div>
+      <div class="si-label" data-i18n="dv_bar_tersane_isemri">Tersane Is Emri</div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <input id="tersaneIsEmriInput" type="text" placeholder="Tersane is emri girin..." style="background:var(--sur2);border:1px solid var(--bor);border-radius:7px;padding:5px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;width:180px;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')tersaneIsEmriKaydet()">
-        <button class="btn-sm" onclick="tersaneIsEmriKaydet()">Kaydet</button>
+        <input id="tersaneIsEmriInput" type="text" placeholder="Tersane is emri girin..." data-i18n-placeholder="dv_isemri_placeholder" style="background:var(--sur2);border:1px solid var(--bor);border-radius:7px;padding:5px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;width:180px;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')tersaneIsEmriKaydet()">
+        <button class="btn-sm" onclick="tersaneIsEmriKaydet()" data-i18n="sp_save_btn">Kaydet</button>
       </div>
     </div>
     <div class="si-div"></div>
     <div class="si-item">
-      <div class="si-label">Termin Tarihi</div>
+      <div class="si-label" data-i18n="dv_bar_deadline">Termin Tarihi</div>
       <div style="display:flex;align-items:center;gap:8px;">
         <input id="terminInput" type="date" style="background:var(--sur2);border:1px solid var(--bor);border-radius:7px;padding:5px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;" onchange="terminKaydet()" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'">
       </div>
@@ -312,21 +253,21 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
   <!-- SEKMELER -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="spooller">&#128230; Spool Listesi</button>
-    <button class="tab-btn" data-tab="genel">&#128203; Genel Bilgiler</button>
-    <button class="tab-btn" data-tab="malzeme">&#128297; Malzeme Listesi</button>
-    <button class="tab-btn" data-tab="dokumanlar">&#128196; Dokumanlar</button>
-    <button class="tab-btn" data-tab="islemler">&#128339; Islem Kayitlari</button>
+    <button class="tab-btn active" data-tab="spooller" data-i18n="dv_tab_spools">&#128230; Spool Listesi</button>
+    <button class="tab-btn" data-tab="genel" data-i18n="dv_tab_general">&#128203; Genel Bilgiler</button>
+    <button class="tab-btn" data-tab="malzeme" data-i18n="sp_tab_material">&#128297; Malzeme Listesi</button>
+    <button class="tab-btn" data-tab="dokumanlar" data-i18n="dv_tab_docs">&#128196; Dokumanlar</button>
+    <button class="tab-btn" data-tab="islemler" data-i18n="sp_tab_log">&#128339; Islem Kayitlari</button>
   </div>
 
   <!-- ═══ SPOOL LİSTESİ ═══ -->
   <div id="panelSpooller" class="tab-panel">
     <div class="table-wrapper cl-ac">
       <div class="table-header">
-        <div class="table-title">Spool Listesi <span id="ddSpoolCount" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
+        <div class="table-title"><span data-i18n="dv_spool_list">Spool Listesi</span> <span id="ddSpoolCount" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
         <div style="display:flex;gap:8px;">
-          <button class="btn-sm" onclick="spoolEkleBaslat()">+ Spool Ekle</button>
-          <label class="btn-sm" style="cursor:pointer;">
+          <button class="btn-sm" onclick="spoolEkleBaslat()" data-i18n="dv_add_spool">+ Spool Ekle</button>
+          <label class="btn-sm" style="cursor:pointer;" data-i18n="sp_excel_import">
             &#128229; Excel
             <input type="file" accept=".xlsx,.xls,.csv" onchange="spoolExcelImport(event)" style="display:none;">
           </label>
@@ -337,22 +278,22 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
           <thead>
             <tr>
               <th style="width:32px;">#</th>
-              <th>Pipeline No</th>
-              <th>Spool No</th>
-              <th>Cap</th>
-              <th>Agirlik</th>
-              <th>Malzeme</th>
-              <th>Kalite</th>
-              <th>Yuzey</th>
-              <th>Durum</th>
-              <th>Ilerleme</th>
-              <th>Son Islem</th>
-              <th>Alistirma</th>
-              <th>Bukum</th>
-              <th>Kesim</th>
-              <th>Markalama</th>
-              <th>Durdurulan</th>
-              <th>Test</th>
+              <th class="sort-th" data-sort="pipeline" onclick="sortBy('pipeline')" style="cursor:pointer;" data-i18n="dv_th_pipeline">Pipeline No <span class="sort-arrow" style="font-size:9px;opacity:.5;">↕</span></th>
+              <th class="sort-th" data-sort="spoolNo" onclick="sortBy('spoolNo')" style="cursor:pointer;" data-i18n="dv_th_spool">Spool No <span class="sort-arrow" style="font-size:9px;opacity:.5;">↕</span></th>
+              <th class="sort-th" data-sort="cap" onclick="sortBy('cap')" style="cursor:pointer;" data-i18n="sp_stat_diameter">Cap <span class="sort-arrow" style="font-size:9px;opacity:.5;">↕</span></th>
+              <th class="sort-th" data-sort="agirlik" onclick="sortBy('agirlik')" style="cursor:pointer;" data-i18n="sp_stat_weight">Agirlik <span class="sort-arrow" style="font-size:9px;opacity:.5;">↕</span></th>
+              <th data-i18n="sp_stat_material">Malzeme</th>
+              <th data-i18n="th_quality">Kalite</th>
+              <th data-i18n="sp_stat_surface">Yuzey</th>
+              <th class="sort-th" data-sort="durum" onclick="sortBy('durum')" style="cursor:pointer;" data-i18n="dv_th_status">Durum <span class="sort-arrow" style="font-size:9px;opacity:.5;">↕</span></th>
+              <th data-i18n="dv_th_progress">Ilerleme</th>
+              <th data-i18n="dv_th_last_op">Son Islem</th>
+              <th data-i18n="sp_alist_label">Alistirma</th>
+              <th data-i18n="sp_bending">Bukum</th>
+              <th data-i18n="sp_cutting">Kesim</th>
+              <th data-i18n="sp_marking">Markalama</th>
+              <th data-i18n="dv_th_stopped">Durdurulan</th>
+              <th data-i18n="sp_tests">Test</th>
               <th style="width:36px;"></th>
             </tr>
           </thead>
@@ -360,6 +301,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
           <tbody id="spoolEkleBody"></tbody>
         </table>
       </div>
+      <div id="spoolPagination" style="display:none;align-items:center;gap:10px;padding:10px 18px;border-top:1px solid var(--bor);"></div>
     </div>
   </div>
 
@@ -372,39 +314,39 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
         <div class="info-title">&#128203; Devre Bilgileri</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Tersane</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_tersane">Tersane</span>
             <span id="ddGenelTersane" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Gemi / Proje</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_ship">Gemi / Proje</span>
             <span id="ddGenelGemi" style="font-size:14px;font-weight:700;color:var(--ac);">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Devre No</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_circuit">Devre No</span>
             <span id="ddGenelDevre" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Zone / Sistem</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_zone">Zone / Sistem</span>
             <span id="ddGenelZone" style="font-size:14px;font-weight:600;color:var(--txm);">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Spool Sayisi</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_spool_count">Spool Sayisi</span>
             <span id="ddGenelSpoolSayi" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Toplam Agirlik</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_stat_weight">Toplam Agirlik</span>
             <span id="ddGenelAgirlik" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Malzeme</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="sp_stat_material">Malzeme</span>
             <span id="ddGenelMalzeme" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Yuzey</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="sp_stat_surface">Yuzey</span>
             <span id="ddGenelYuzey" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Is Emri No</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_work_order">Is Emri No</span>
             <span id="ddGenelIsEmri" style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--leg);">--</span>
           </div>
         </div>
@@ -415,26 +357,26 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
         <!-- KK -->
         <div class="info-card cl-leg">
-          <div class="info-title">&#10003; Kalite Kontrol Davetleri</div>
-          <div id="ddKKListe" style="font-size:13px;color:var(--txd);">Henuz KK daveti olusturulmamis</div>
+          <div class="info-title" data-i18n="dv_kk_title">&#10003; Kalite Kontrol Davetleri</div>
+          <div id="ddKKListe" style="font-size:13px;color:var(--txd);" data-i18n="dv_no_kk">Henuz KK daveti olusturulmamis</div>
         </div>
 
         <!-- Sevkiyat -->
         <div class="info-card cl-ac">
-          <div class="info-title">&#128667; Sevkiyatlar</div>
-          <div id="ddSevkiyatListe" style="font-size:13px;color:var(--txd);">Henuz sevkiyat gonderilmemis</div>
+          <div class="info-title" data-i18n="dv_sevk_title">&#128667; Sevkiyatlar</div>
+          <div id="ddSevkiyatListe" style="font-size:13px;color:var(--txd);" data-i18n="dv_no_sevk">Henuz sevkiyat gonderilmemis</div>
         </div>
 
         <!-- Notlar -->
         <div class="info-card cl-gr" style="flex:1;">
           <div class="info-title" style="display:flex;justify-content:space-between;align-items:center;">
-            <span>&#128204; Devre Notlari</span>
+            <span data-i18n="dv_notes_title">&#128204; Devre Notlari</span>
             <span id="genelNotCount" style="font-size:11px;font-weight:400;color:var(--txd);"></span>
           </div>
           <div id="genelNotListesi" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;max-height:180px;overflow-y:auto;"></div>
           <div style="display:flex;gap:8px;">
-            <input id="genelNotInput" type="text" placeholder="Not ekle..." style="flex:1;background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')addGenelNote()">
-            <button class="btn-primary" onclick="addGenelNote()" style="height:34px;padding:0 12px;font-size:13px;">+ Ekle</button>
+            <input id="genelNotInput" type="text" placeholder="Not ekle..." data-i18n-placeholder="dv_note_placeholder" style="flex:1;background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')addGenelNote()">
+            <button class="btn-primary" onclick="addGenelNote()" style="height:34px;padding:0 12px;font-size:13px;" data-i18n="sp_add_btn">+ Ekle</button>
           </div>
         </div>
       </div>
@@ -445,24 +387,24 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelMalzeme" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-warn">
       <div class="table-header">
-        <div class="table-title">Birlestik Malzeme Listesi <span id="mlKalem" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
+        <div class="table-title"><span data-i18n="dv_mat_combined">Birlestik Malzeme Listesi</span> <span id="mlKalem" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
         <div style="display:flex;gap:12px;font-size:12px;color:var(--txd);">
-          <span>Boru: <b id="mlBoru" style="color:var(--tx);">--</b></span>
-          <span>Fitting: <b id="mlFitting" style="color:var(--tx);">--</b></span>
-          <span>Sertifika: <b id="mlSertifika" style="color:var(--warn);">--</b></span>
+          <span><span data-i18n="dv_mat_pipe_label">Boru:</span> <b id="mlBoru" style="color:var(--tx);">--</b></span>
+          <span><span data-i18n="dv_mat_fitting_label">Fitting:</span> <b id="mlFitting" style="color:var(--tx);">--</b></span>
+          <span><span data-i18n="th_cert">Sertifika:</span> <b id="mlSertifika" style="color:var(--warn);">--</b></span>
         </div>
       </div>
       <div class="table-scroll">
         <table class="data-table">
           <thead><tr>
-            <th>#</th><th>Tur</th><th>Aciklama</th><th>Malzeme</th><th>Kalite</th>
-            <th>Dis Cap (mm)</th><th>Et (mm)</th><th>Toplam Uzunluk</th><th>Adet</th>
-            <th>Sertifika</th><th>Spooller</th>
+            <th>#</th><th data-i18n="dv_th_type">Tur</th><th data-i18n="th_desc">Aciklama</th><th data-i18n="sp_stat_material">Malzeme</th><th data-i18n="th_quality">Kalite</th>
+            <th data-i18n="sp_stat_diameter">Dis Cap (mm)</th><th data-i18n="sp_stat_thickness">Et (mm)</th><th data-i18n="dv_th_total_len">Toplam Uzunluk</th><th data-i18n="th_qty">Adet</th>
+            <th data-i18n="th_cert">Sertifika</th><th data-i18n="dv_th_spools">Spooller</th>
           </tr></thead>
           <tbody id="malzemeTableBody"></tbody>
         </table>
       </div>
-      <div id="mlSertifikaNote" style="display:none;padding:10px 18px;background:rgba(217,119,6,.07);border-top:1px solid var(--bor);font-size:12px;color:var(--warn);">
+      <div id="mlSertifikaNote" style="display:none;padding:10px 18px;background:rgba(217,119,6,.07);border-top:1px solid var(--bor);font-size:12px;color:var(--warn);" data-i18n="dv_cert_note">
         &#9888; Sertifikali malzemeler icin Heat No ve sertifika belgeleri temin edilmeli.
       </div>
     </div>
@@ -472,8 +414,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelDokumanlar" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-gr">
       <div class="table-header">
-        <div class="table-title">Dokumanlar <span id="dokSayi" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
-        <button class="btn-primary" style="height:30px;font-size:12px;" onclick="dokumanYukleModalAc()">+ Dokuman Ekle</button>
+        <div class="table-title"><span data-i18n="sp_docs_label">Dokumanlar</span> <span id="dokSayi" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
+        <button class="btn-primary" style="height:30px;font-size:12px;" onclick="dokumanYukleModalAc()" data-i18n="sp_add_doc">+ Dokuman Ekle</button>
       </div>
       <div id="dokListesi" style="padding:4px 0;"></div>
     </div>
@@ -483,16 +425,24 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelIslemler" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-ac">
       <div class="table-header">
-        <div class="table-title">&#128339; Devre Hareketleri <span style="font-size:11px;font-weight:400;color:var(--txd);margin-left:6px;">Spool bazli islemler spool detayi'nda gorunur</span></div>
+        <div class="table-title">&#128339; <span data-i18n="dv_circuit_moves">Devre Hareketleri</span> <span style="font-size:11px;font-weight:400;color:var(--txd);margin-left:6px;" data-i18n="dv_moves_note">Spool bazli islemler spool detayi'nda gorunur</span></div>
         <span id="islemSayiBadge" style="font-size:13px;color:var(--txd);"></span>
       </div>
-      <div id="islemTimeline" style="padding:8px 20px 20px;"></div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr>
+            <th style="min-width:140px;" data-i18n="th_date">Tarih</th>
+            <th data-i18n="th_operation">Islem</th>
+            <th style="min-width:110px;" data-i18n="th_user">Kullanici</th>
+            <th data-i18n="th_detail">Aciklama</th>
+          </tr></thead>
+          <tbody id="islemBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-</div><!-- /.page -->
-</div><!-- /.main-content -->
-</div><!-- /.app-shell -->
+</div><!-- /.page --></div><!-- /.main-content --></div><!-- /.app-shell -->
 
 <!-- ═══════════════════════════════════════════════════
      MODALLER
@@ -737,11 +687,33 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
 <script>
 'use strict';
+// G-01: XSS sanitizer
+function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+// ── INLINE ÇEVİRİLER — external JSON'a bağımlılık yok ──────────
+var _I18N={en:{"nav_ana_sayfa":"Home","nav_projeler":"PROJECTS","nav_projeler_menu":"Projects","nav_aktif_devreler":"Active Circuits","nav_uretim":"PRODUCTION","nav_kesim":"Cutting","nav_bukum":"Bending","nav_markalama":"Marking","nav_kalite_lojistik":"QUALITY & LOGISTICS","nav_kalite_kontrol":"Quality Control","nav_testler":"Tests","nav_sevkiyatlar":"Shipments","nav_yonetim":"MANAGEMENT","nav_uyarilar":"Alerts","nav_tersaneler":"Shipyards","nav_personel":"Personnel","nav_tezgahlar":"Machines","nav_sistem":"SYSTEM","nav_tanimlar":"Definitions","nav_islem_logu":"Operation Log","nav_raporlar":"Reports","nav_ayarlar":"Settings","nav_home":"Home","nav_active_circuits":"Active Circuits","btn_back":"← Back","btn_edit":"✎ Edit","sp_btn_qc":"✓ Quality Control","sp_btn_shipment":"🚚 Shipment","sp_btn_stop":"⏸ Stop","sp_stopped_title":"This Spool is Stopped","sp_stopped_qr_note":"When QR scanned: \"Contact supervisor\" · Cutting/bending/marking is blocked.","sp_stop_remove":"Remove Stop","sp_stat_diameter":"Outer Diameter","sp_stat_thickness":"Wall Thickness","sp_stat_weight":"Weight","sp_stat_surface":"Surface","sp_stat_material":"Material","sp_tab_general":"📋 General Info","sp_tab_material":"📦 Material List","sp_tab_log":"🕐 Operation Log","th_code":"Code","th_desc":"Description","th_material":"Material","th_quality":"Grade","th_diameter":"OD","th_thickness":"WT (mm)","th_length":"Length","th_qty":"Qty","th_weight":"Weight","th_heat":"Heat No","th_cert":"Cert.","th_date":"Date","th_operation":"Operation","th_user":"User","th_detail":"Detail / Link","sp_stage_pre":"Pre-Fab","sp_stage_fab":"Fabrication","sp_stage_weld":"Welding","sp_stage_inspect":"Pre-Inspect","sp_stage_qc":"QC","sp_stage_ship":"Shipment","sp_chip_not_started":"Not started yet","sp_chip_pre":"Pre-fabrication stage","sp_chip_fab":"In fabrication","sp_chip_weld":"In welding","sp_chip_inspect":"In pre-inspection","sp_chip_qc":"In quality control","sp_chip_shipped":"Shipped","sp_uc_duz":"Straight","sp_uc_kaynak":"Weld End","sp_uc_yiv":"Grooved","sp_uc_dis":"Threaded","sp_uc_bukum":"Bend Pipe","sp_items_unit":"items","sp_notes_unit":"notes","sp_logs_unit":"records","sp_no_materials":"No materials added yet","sp_no_cuts":"No cuts added yet","sp_no_bends":"No bends added yet","sp_no_marks":"No markings added yet","sp_no_notes":"No notes added yet","sp_no_logs":"No log entries","sp_no_docs":"No documents added yet","sp_no_tests":"No tests assigned yet","sp_cut_done":"Cut","sp_cut_pending":"To Cut","sp_bend_done":"Bent","sp_bend_pending":"To Bend","sp_mark_done":"Marked","sp_mark_pending":"To Mark","sp_mark_auto":"Automatic","sp_mark_plaka":"Plate","sp_mark_manuel":"Manual","sp_test_waiting":"Waiting","sp_test_repair":"Repair","sp_test_done":"Completed","sp_qr_stopped":"SPOOL STOPPED — Contact supervisor","sp_qr_alloy_var":"ALLOY REQUIRED — Do not weld, field alignment first","sp_qr_alloy_kismi":"PARTIAL ALLOY — Some parts require field alignment","sp_qr_cert":"CERTIFIED MATERIAL","sp_qr_no_alerts":"No alerts to show","sp_alist_none":"Not determined","sp_alist_var_note":"Parts exist that cannot be welded — field alignment first.","sp_alist_kismi_note":"Partially field-aligned, rest will be welded.","sp_alist_yok_note":"Fully weldable.","sp_no_invite":"No invite yet","sp_no_shipment":"Not shipped yet","sp_invite_date":"Date:","sp_ship_date":"Date:","sp_spool_id":"Spool ID:","sp_qr_btn":"QR & Alerts","sp_photo_album":"📷 Photo Album","sp_add_photo":"+ Add Photo","sp_no_photos":"No photos added yet","sp_kk_label":"✓ Quality Control","sp_sev_label":"🚚 Shipment","sp_sert_label":"📋 Certificate","sp_alist_label":"⚡ Alloy","sp_change_btn":"change","sp_cancel":"cancel","sp_prod_summary":"📊 Production Summary","sp_update_btn":"✎ Update","sp_di_fab_kg":"Fab. kg","sp_di_fab_di":"Fab. DI","sp_di_argon":"Argon DI","sp_di_gazalti":"FCAW DI","sp_cutting":"✂️ Cutting","sp_bending":"🔄 Bending","sp_marking":"🏷️ Marking","sp_tests":"🧪 Tests","sp_tests_auto":"Auto-populated from Tests page","sp_notes_label":"📌 Notes","sp_notes_qr_info":"— Shown to personnel on QR scan","sp_note_placeholder":"New note...","sp_add_log_note":"+ Add Note","sp_docs_label":"📄 Documents","sp_add_doc":"+ Add Document","sp_add_material":"+ Add Material","sp_excel_import":"📥 Excel Import","sp_template_download":"📄 Download Template","sp_qr_modal_title":"📱 QR & Personnel Alerts","sp_qr_print":"🖨️ Print","sp_qr_download":"⬇ Download","sp_qr_personnel_label":"📋 What Personnel Will See on QR Scan","sp_qr_hint":"💡 To change alerts, use the notes and alloy setting in the General tab.","sp_modal_stop_title":"⏸ Stop Spool","sp_modal_stop_reason":"Reason *","sp_stop_opt1":"Revision Pending","sp_stop_opt2":"Material Pending","sp_stop_opt3":"Technical Drawing Change","sp_stop_opt4":"Other","sp_modal_stop_desc":"Description *","sp_modal_stop_placeholder":"Detailed description...","sp_cancel_btn":"Cancel","sp_save_btn":"Save","sp_modal_edit_title":"✎ Edit Spool","sp_spool_no_label":"Spool No *","sp_weight_label":"Weight (kg)","sp_quality_label":"Grade / Standard","sp_modal_cut_title":"✂️ Add Cut","sp_material_label":"Material *","sp_cut_length_label":"Cut Length (mm) *","sp_end_a":"End A","sp_end_b":"End B","sp_modal_bend_title":"🔄 Add Bend","sp_bend_note":"Will also be added to Cut list as Bend Pipe.","sp_modal_mark_title":"🏷️ Add Marking","sp_mark_type_label":"Marking Type","sp_mark_plaka_info":"Spool material auto-assigned. No material selection needed.","sp_mark_manuel_info":"Free marking. No material selection needed.","sp_add_to_list_btn":"Add to List","sp_modal_di_title":"📊 Update Production Summary","sp_di_fab_kg_label":"Fabrication Weight (kg)","sp_di_fab_di_label":"Fabrication Dia-Inch","sp_di_argon_label":"Argon Dia-Inch","sp_di_gazalti_label":"FCAW Dia-Inch","sp_modal_doc_title":"📄 Add Document","sp_doc_file_label":"📁 Select file","sp_doc_name_label":"Document Name *","sp_doc_type_label":"Type *","sp_doc_type_iso":"Isometric Drawing","sp_doc_type_cert":"Certificate","sp_doc_type_proc":"Procedure","sp_doc_type_other":"Other","sp_optional_note":"Note (optional)","sp_add_btn":"+ Add","sp_add_btn_short":"Add","dv_add_spool":"+ Add Spool","dv_labels_btn":"🏷️ Labels","dv_export_btn":"⬇ Export","dv_circuit_stopped":"Circuit is Stopped","dv_stat_spools":"Total Spools","dv_stat_weight":"Total Weight","dv_stat_deadline":"Deadline","dv_bar_kk":"QC Status","dv_bar_sevk":"Shipment Status","dv_bar_tersane_isemri":"Shipyard Work Order","dv_bar_deadline":"Deadline Date","dv_isemri_placeholder":"Enter shipyard work order...","dv_not_shipped":"Not Shipped","dv_tab_spools":"📦 Spool List","dv_tab_general":"📋 General Info","dv_tab_docs":"📄 Documents","dv_spool_list":"Spool List","dv_th_pipeline":"Pipeline No","dv_th_spool":"Spool No","dv_th_status":"Status","dv_th_progress":"Progress","dv_th_last_op":"Last Operation","dv_th_stopped":"Stopped","dv_th_type":"Type","dv_th_total_len":"Total Length","dv_th_spools":"Spools","dv_status_waiting":"Waiting","dv_status_progress":"In Progress","dv_status_qc":"Quality Control","dv_status_done":"Completed","dv_status_stopped":"Stopped","dv_no_spools":"No spools added yet","dv_no_docs":"No documents added yet","dv_no_notes":"No notes added yet","dv_yes":"YES","dv_no":"NO","dv_ctx_detail":"Spool Detail","dv_ctx_kk":"Send to QC","dv_ctx_sevk":"Send to Shipment","dv_ctx_stop":"Stop","dv_ctx_unstop":"Remove Stop","dv_ctx_cancel":"Cancel","dv_ctx_delete":"Delete","dv_mat_pipe":"PIPE","dv_mat_fitting":"FITTING","dv_unit_qty":"pcs","dv_dok_iso":"Isometric","dv_dok_cert":"Certificate","dv_dok_proc":"Procedure","dv_dok_other":"Other","dv_download_btn":"⬇ Download","dv_prev":"Previous","dv_next":"Next","dv_records":"records","dv_circuit_detail":"Circuit Detail","dv_is_emri_label":"WORK ORDER","dv_lbl_tersane":"Shipyard","dv_lbl_ship":"Ship / Project","dv_lbl_circuit":"Circuit No","dv_lbl_zone":"Zone / System","dv_lbl_spool_count":"Spool Count","dv_lbl_work_order":"Work Order No","dv_kk_title":"✓ Quality Control Invitations","dv_no_kk":"No QC invitations yet","dv_sevk_title":"🚢 Shipments","dv_no_sevk":"No shipments sent yet","dv_notes_title":"📌 Circuit Notes","dv_note_placeholder":"Add note...","dv_mat_combined":"Combined Material List","dv_mat_pipe_label":"Pipe:","dv_mat_fitting_label":"Fitting:","dv_cert_note":"⚠ Heat No and certificates must be provided for certified materials.","dv_circuit_moves":"Circuit Movements","dv_moves_note":"Spool operations are shown in spool detail","dv_unit_spool":"spool","dv_genel_bilgiler":"General Info","dv_tip_created":"Created","dv_tip_stopped":"Stopped","dv_tip_restarted":"Restarted","dv_tip_kk":"QC Invitation","dv_tip_shipped":"Sent to Shipment","dv_tip_deadline":"Deadline Updated","dv_tip_note":"Note Added","dv_tip_cancelled":"Spool Cancelled"},ar:{"nav_ana_sayfa":"الرئيسية","nav_projeler":"المشاريع","nav_projeler_menu":"المشاريع","nav_aktif_devreler":"الدوائر النشطة","nav_uretim":"الإنتاج","nav_kesim":"القطع","nav_bukum":"الثني","nav_markalama":"الترقيم","nav_kalite_lojistik":"الجودة والخدمات اللوجستية","nav_kalite_kontrol":"مراقبة الجودة","nav_testler":"الاختبارات","nav_sevkiyatlar":"الشحنات","nav_yonetim":"الإدارة","nav_uyarilar":"التنبيهات","nav_tersaneler":"دور بناء السفن","nav_personel":"الموظفون","nav_tezgahlar":"الماكينات","nav_sistem":"النظام","nav_tanimlar":"التعريفات","nav_islem_logu":"سجل العمليات","nav_raporlar":"التقارير","nav_ayarlar":"الإعدادات","nav_home":"الرئيسية","nav_active_circuits":"الدوائر النشطة","btn_back":"→ رجوع","btn_edit":"✎ تعديل","sp_btn_qc":"✓ مراقبة الجودة","sp_btn_shipment":"🚚 الشحن","sp_btn_stop":"⏸ إيقاف","sp_stopped_title":"هذا السبول موقوف","sp_stopped_qr_note":"عند مسح QR: «راجع المشرف» · القطع/الثني/الترقيم محظور.","sp_stop_remove":"إلغاء الإيقاف","sp_stat_diameter":"القطر الخارجي","sp_stat_thickness":"سماكة الجدار","sp_stat_weight":"الوزن","sp_stat_surface":"السطح","sp_stat_material":"المادة","sp_tab_general":"📋 المعلومات العامة","sp_tab_material":"📦 قائمة المواد","sp_tab_log":"🕐 سجل العمليات","th_code":"الكود","th_desc":"الوصف","th_material":"المادة","th_quality":"الجودة","th_diameter":"القطر","th_thickness":"السماكة","th_length":"الطول","th_qty":"الكمية","th_weight":"الوزن","th_heat":"رقم الحرارة","th_cert":"الشهادة","th_date":"التاريخ","th_operation":"العملية","th_user":"المستخدم","th_detail":"التفاصيل","sp_stage_pre":"ما قبل التصنيع","sp_stage_fab":"التصنيع","sp_stage_weld":"اللحام","sp_stage_inspect":"الفحص المبدئي","sp_stage_qc":"مراقبة الجودة","sp_stage_ship":"الشحن","sp_chip_not_started":"لم يبدأ بعد","sp_chip_pre":"مرحلة ما قبل التصنيع","sp_chip_fab":"في مرحلة التصنيع","sp_chip_weld":"في مرحلة اللحام","sp_chip_inspect":"في الفحص المبدئي","sp_chip_qc":"في مراقبة الجودة","sp_chip_shipped":"تم الشحن","sp_uc_duz":"مستقيم","sp_uc_kaynak":"نهاية لحام","sp_uc_yiv":"مخدد","sp_uc_dis":"مسنن","sp_uc_bukum":"أنبوب منحنٍ","sp_items_unit":"قلم","sp_notes_unit":"ملاحظة","sp_logs_unit":"سجل","sp_no_materials":"لا توجد مواد مضافة بعد","sp_no_cuts":"لا توجد قطعات مضافة بعد","sp_no_bends":"لا توجد ثنيات مضافة بعد","sp_no_marks":"لا توجد علامات مضافة بعد","sp_no_notes":"لا توجد ملاحظات بعد","sp_no_logs":"لا يوجد سجل عمليات","sp_no_docs":"لا توجد مستندات بعد","sp_no_tests":"لم يتم تعيين اختبارات بعد","sp_cut_done":"مقطوع","sp_cut_pending":"سيُقطع","sp_bend_done":"مثني","sp_bend_pending":"سيُثنى","sp_mark_done":"مرقّم","sp_mark_pending":"سيُرقَّم","sp_mark_auto":"تلقائي","sp_mark_plaka":"لوحة","sp_mark_manuel":"يدوي","sp_test_waiting":"انتظار","sp_test_repair":"إصلاح","sp_test_done":"مكتمل","sp_qr_stopped":"السبول موقوف — راجع المشرف","sp_qr_alloy_var":"مطلوب تثبيت ميداني — لا تلحم قبل التثبيت","sp_qr_alloy_kismi":"تثبيت ميداني جزئي — بعض القطع تحتاج تثبيتاً","sp_qr_cert":"مادة معتمدة","sp_qr_no_alerts":"لا توجد تنبيهات","sp_alist_none":"غير محدد","sp_alist_var_note":"توجد قطع لا يمكن لحامها — التثبيت الميداني أولاً.","sp_alist_kismi_note":"تثبيت ميداني جزئي، الباقي سيُلحم.","sp_alist_yok_note":"قابل للحام بالكامل.","sp_no_invite":"لا دعوة بعد","sp_no_shipment":"لم يُشحن بعد","sp_invite_date":"التاريخ:","sp_ship_date":"التاريخ:","sp_spool_id":"رقم السبول:","sp_qr_btn":"QR والتنبيهات","sp_photo_album":"📷 ألبوم الصور","sp_add_photo":"+ إضافة صورة","sp_no_photos":"لا توجد صور بعد","sp_kk_label":"✓ مراقبة الجودة","sp_sev_label":"🚚 الشحن","sp_sert_label":"📋 الشهادة","sp_alist_label":"⚡ التثبيت الميداني","sp_change_btn":"تغيير","sp_cancel":"إلغاء","sp_prod_summary":"📊 ملخص الإنتاج","sp_update_btn":"✎ تحديث","sp_di_fab_kg":"وزن التصنيع","sp_di_fab_di":"DI التصنيع","sp_di_argon":"DI أرجون","sp_di_gazalti":"DI غاز","sp_cutting":"✂️ القطع","sp_bending":"🔄 الثني","sp_marking":"🏷️ الترقيم","sp_tests":"🧪 الاختبارات","sp_tests_auto":"يُضاف تلقائياً من صفحة الاختبارات","sp_notes_label":"📌 الملاحظات","sp_notes_qr_info":"— تُعرض للموظفين عند مسح QR","sp_note_placeholder":"ملاحظة جديدة...","sp_add_log_note":"+ إضافة ملاحظة","sp_docs_label":"📄 المستندات","sp_add_doc":"+ إضافة مستند","sp_add_material":"+ إضافة مادة","sp_excel_import":"📥 استيراد Excel","sp_template_download":"📄 تحميل النموذج","sp_qr_modal_title":"📱 QR وتنبيهات الموظفين","sp_qr_print":"🖨️ طباعة","sp_qr_download":"⬇ تحميل","sp_qr_personnel_label":"📋 ما سيراه الموظفون عند مسح QR","sp_qr_hint":"💡 لتغيير التنبيهات، استخدم الملاحظات وإعداد التثبيت في تبويب المعلومات العامة.","sp_modal_stop_title":"⏸ إيقاف السبول","sp_modal_stop_reason":"السبب *","sp_stop_opt1":"انتظار مراجعة","sp_stop_opt2":"انتظار مواد","sp_stop_opt3":"تغيير رسم فني","sp_stop_opt4":"أخرى","sp_modal_stop_desc":"الوصف *","sp_modal_stop_placeholder":"وصف تفصيلي...","sp_cancel_btn":"إلغاء","sp_save_btn":"حفظ","sp_modal_edit_title":"✎ تعديل السبول","sp_spool_no_label":"رقم السبول *","sp_weight_label":"الوزن (كغ)","sp_quality_label":"الجودة / المعيار","sp_modal_cut_title":"✂️ إضافة قطعة","sp_material_label":"المادة *","sp_cut_length_label":"طول القطع (مم) *","sp_end_a":"النهاية A","sp_end_b":"النهاية B","sp_modal_bend_title":"🔄 إضافة ثنية","sp_bend_note":"سيُضاف أيضاً إلى قائمة القطع كأنبوب منحنٍ.","sp_modal_mark_title":"🏷️ إضافة ترقيم","sp_mark_type_label":"نوع الترقيم","sp_mark_plaka_info":"يُعين مادة السبول تلقائياً. لا حاجة لاختيار مادة.","sp_mark_manuel_info":"ترقيم حر. لا حاجة لاختيار مادة.","sp_add_to_list_btn":"إضافة للقائمة","sp_modal_di_title":"📊 تحديث ملخص الإنتاج","sp_di_fab_kg_label":"وزن التصنيع (كغ)","sp_di_fab_di_label":"Dia-Inch التصنيع","sp_di_argon_label":"Dia-Inch أرجون","sp_di_gazalti_label":"Dia-Inch غاز","sp_modal_doc_title":"📄 إضافة مستند","sp_doc_file_label":"📁 اختر ملفاً","sp_doc_name_label":"اسم المستند *","sp_doc_type_label":"النوع *","sp_doc_type_iso":"رسم إيزومتري","sp_doc_type_cert":"شهادة","sp_doc_type_proc":"إجراء","sp_doc_type_other":"أخرى","sp_optional_note":"ملاحظة (اختياري)","sp_add_btn":"+ إضافة","sp_add_btn_short":"إضافة","dv_add_spool":"+ إضافة سبول","dv_labels_btn":"🏷️ بطاقات","dv_export_btn":"⬇ تصدير","dv_circuit_stopped":"الدائرة موقوفة","dv_stat_spools":"إجمالي السبولات","dv_stat_weight":"الوزن الإجمالي","dv_stat_deadline":"الموعد النهائي","dv_bar_kk":"حالة مراقبة الجودة","dv_bar_sevk":"حالة الشحن","dv_bar_tersane_isemri":"أمر عمل الورشة","dv_bar_deadline":"تاريخ الاستحقاق","dv_isemri_placeholder":"أدخل أمر عمل الورشة...","dv_not_shipped":"لم يُشحن","dv_tab_spools":"📦 قائمة السبولات","dv_tab_general":"📋 معلومات عامة","dv_tab_docs":"📄 المستندات","dv_spool_list":"قائمة السبولات","dv_th_pipeline":"رقم الخط","dv_th_spool":"رقم السبول","dv_th_status":"الحالة","dv_th_progress":"التقدم","dv_th_last_op":"آخر عملية","dv_th_stopped":"موقوف","dv_th_type":"النوع","dv_th_total_len":"الطول الإجمالي","dv_th_spools":"السبولات","dv_status_waiting":"انتظار","dv_status_progress":"جارٍ","dv_status_qc":"مراقبة الجودة","dv_status_done":"مكتمل","dv_status_stopped":"موقوف","dv_no_spools":"لا توجد سبولات بعد","dv_no_docs":"لا توجد مستندات بعد","dv_no_notes":"لا توجد ملاحظات بعد","dv_yes":"نعم","dv_no":"لا","dv_ctx_detail":"تفاصيل السبول","dv_ctx_kk":"إرسال لمراقبة الجودة","dv_ctx_sevk":"إرسال للشحن","dv_ctx_stop":"إيقاف","dv_ctx_unstop":"إلغاء الإيقاف","dv_ctx_cancel":"إلغاء","dv_ctx_delete":"حذف","dv_mat_pipe":"أنبوب","dv_mat_fitting":"تركيب","dv_unit_qty":"قطعة","dv_dok_iso":"إيزومتري","dv_dok_cert":"شهادة","dv_dok_proc":"إجراء","dv_dok_other":"أخرى","dv_download_btn":"⬇ تحميل","dv_prev":"السابق","dv_next":"التالي","dv_records":"سجلات","dv_circuit_detail":"تفاصيل الدائرة","dv_is_emri_label":"أمر العمل","dv_lbl_tersane":"الورشة","dv_lbl_ship":"السفينة / المشروع","dv_lbl_circuit":"رقم الدائرة","dv_lbl_zone":"المنطقة / النظام","dv_lbl_spool_count":"عدد السبولات","dv_lbl_work_order":"رقم أمر العمل","dv_kk_title":"✓ دعوات مراقبة الجودة","dv_no_kk":"لا توجد دعوات مراقبة جودة بعد","dv_sevk_title":"🚢 الشحنات","dv_no_sevk":"لم يُرسل أي شحنة بعد","dv_notes_title":"📌 ملاحظات الدائرة","dv_note_placeholder":"إضافة ملاحظة...","dv_mat_combined":"قائمة المواد الموحدة","dv_mat_pipe_label":"أنبوب:","dv_mat_fitting_label":"تركيب:","dv_cert_note":"⚠ يجب توفير رقم الحرارة والشهادات للمواد المعتمدة.","dv_circuit_moves":"حركات الدائرة","dv_moves_note":"العمليات على السبولات تظهر في تفاصيل السبول","dv_unit_spool":"سبول","dv_genel_bilgiler":"معلومات عامة","dv_tip_created":"تم الإنشاء","dv_tip_stopped":"موقوف","dv_tip_restarted":"تم الاستئناف","dv_tip_kk":"دعوة مراقبة الجودة","dv_tip_shipped":"أُرسل للشحن","dv_tip_deadline":"تم تحديث الموعد","dv_tip_note":"ملاحظة مضافة","dv_tip_cancelled":"إلغاء السبول"}};
+function _getLang(){
+  return window._aresLang ||
+         document.documentElement.getAttribute('data-lang') ||
+         document.documentElement.getAttribute('lang') ||
+         localStorage.getItem('ares_lang') ||
+         localStorage.getItem('lang') || 'tr';
+}
+function _applyI18n(){
+  var lang=_getLang(), dict=_I18N[lang]; if(!dict) return;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(dict[k])el.textContent=dict[k];});
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){var k=el.getAttribute('data-i18n-placeholder');if(dict[k])el.placeholder=dict[k];});
+}
+// ares-layout.js hangi attribute'u değiştirirse değiştirsin yakala
+if(typeof MutationObserver!=='undefined'){
+  new MutationObserver(function(){_applyI18n();renderTable();renderMalzeme();renderDokumanlar();renderGenelNotes();renderIslemler();})
+    .observe(document.documentElement,{attributes:true,attributeFilter:['lang','data-lang','data-language','data-locale']});
+}
+function tv(key,tr){var lang=_getLang(),dict=_I18N[lang];if(dict&&dict[key])return dict[key];return tr!==undefined?tr:key;}
 
 // ── DEMO VERİSİ ─────────────────────────────────────────────────
 (function(){
-  if (!localStorage.getItem('syos_aktif_devre')) {
-    localStorage.setItem('syos_aktif_devre', JSON.stringify({
+  if (!localStorage.getItem('ares_aktif_devre')) {
+    localStorage.setItem('ares_aktif_devre', JSON.stringify({
       id:'devre-001', isEmri:'I26-010', tersane:'TERSAN',
       gemi:'NB1099C', devre:'265-overboard', zone:'F500',
       spool:3, agirlik:1360.75, malzeme:['Paslanmaz'],
@@ -785,7 +757,18 @@ const SPOOL_MALZEMELER = [
 ];
 
 let DOKUMANLAR = [];
-const ADIM_LABELS = ['On Imalat','Imalat','Kaynak','On Kontrol','Kalite Kontrol','Sevkiyat'];
+const DURUM_CFG = {
+  waiting:  {cls:'sb-waiting',  get text(){return tv('dv_status_waiting','Bekliyor');}},
+  progress: {cls:'sb-progress', get text(){return tv('dv_status_progress','Devam Ediyor');}},
+  qc:       {cls:'sb-qc',       get text(){return tv('dv_status_qc','Kalite Kontrol');}},
+  done:     {cls:'sb-done',     get text(){return tv('dv_status_done','Tamamlandi');}},
+  stopped:  {cls:'sb-stopped',  get text(){return tv('dv_status_stopped','Durduruldu');}},
+};
+function getAdimLabels(){return [
+  tv('sp_stage_pre','On Imalat'), tv('sp_stage_fab','Imalat'),
+  tv('sp_stage_weld','Kaynak'), tv('sp_stage_inspect','On Kontrol'),
+  tv('sp_stage_qc','Kalite Kontrol'), tv('sp_stage_ship','Sevkiyat')
+];}
 const DEMO_ISLEMLER = [
   {tip:'olusturuldu',tarih:'15.01.2026 08:00',kullanici:'Admin',aciklama:'Devre sisteme kaydedildi'},
   {tip:'not_eklendi',tarih:'20.02.2026 14:30',kullanici:'M. Demir',aciklama:'Revizyon notu eklendi'},
@@ -801,7 +784,11 @@ function showToast(msg, type='success') {
   const old = document.querySelector('.toast'); if(old) old.remove();
   const t = document.createElement('div');
   t.className = 'toast toast-' + type;
-  t.innerHTML = `<span>${msg}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--txd);cursor:pointer;font-size:16px;line-height:1;padding:0;margin-left:8px;">&#10005;</button>`;
+  const sp = document.createElement('span'); sp.textContent = msg;
+  const cl = document.createElement('button'); cl.textContent = '✕';
+  cl.setAttribute('style','background:none;border:none;color:var(--txd);cursor:pointer;font-size:16px;line-height:1;padding:0;margin-left:8px;');
+  cl.onclick = ()=>t.remove();
+  t.appendChild(sp); t.appendChild(cl);
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 3000);
 }
@@ -810,7 +797,7 @@ function toplumAgirlik() { return SPOOLS.filter(s=>!s.iptal).reduce((s,x)=>s+par
 
 // ── TEMA ────────────────────────────────────────────────────────
 (function(){
-  const t = localStorage.getItem('syos_theme')||'dark';
+  const t = localStorage.getItem('ares_theme')||'dark';
   document.documentElement.setAttribute('data-theme', t);
   const lbl = document.getElementById('temaLabel');
   if(lbl) lbl.textContent = t==='dark' ? 'Acik Tema' : 'Koyu Tema';
@@ -836,7 +823,7 @@ function initTabs() {
 
 // ── SAYFA YÜKLEME ───────────────────────────────────────────────
 function sayfaYukle() {
-  try { DEVRE = JSON.parse(localStorage.getItem('syos_aktif_devre')||'{}'); } catch(e){ DEVRE={}; }
+  try { DEVRE = JSON.parse(localStorage.getItem('ares_aktif_devre')||'{}'); } catch(e){ DEVRE={}; }
   const baslik = [DEVRE.gemi, DEVRE.devre].filter(Boolean).join(' — ');
   document.title = baslik + ' | AresPipe';
   setText('ddBaslik', DEVRE.devre);
@@ -862,29 +849,48 @@ function sayfaYukle() {
   statGuncelle();
 }
 function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val||'--'; }
+
 function statGuncelle() {
   const aktif = SPOOLS.filter(s=>!s.iptal);
-  setText('ddStatSpool', aktif.length + ' spool');
+  setText('ddStatSpool', aktif.length + ' ' + tv('dv_unit_spool','spool'));
   setText('ddStatAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
   setText('ddStatMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddStatYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
-  setText('ddStatTermin', DEVRE.terminTarihi||'Belirlenmemis');
-  setText('ddSpoolCount', aktif.length+' kayit');
-  setText('ddGenelSpoolSayi', aktif.length+' spool');
+  setText('ddStatTermin', DEVRE.terminTarihi||tv('sp_alist_none','Belirlenmemis'));
+  setText('ddSpoolCount', aktif.length+' '+tv('dv_records','kayit'));
+  setText('ddGenelSpoolSayi', aktif.length+' '+tv('dv_unit_spool','spool'));
   setText('ddGenelAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
   setText('ddGenelMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddGenelYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
 }
 
-// ── SPOOL TABLOSU ───────────────────────────────────────────────
-const DURUM_CFG = {
-  waiting:  {cls:'sb-waiting',  text:'Bekliyor'},
-  progress: {cls:'sb-progress', text:'Devam Ediyor'},
-  qc:       {cls:'sb-qc',       text:'Kalite Kontrol'},
-  done:     {cls:'sb-done',     text:'Tamamlandi'},
-  stopped:  {cls:'sb-stopped',  text:'Durduruldu'},
-};
+// ── SIRALAMA + PAGİNATİON ─────────────────────────────────────────
+let _sortKey = null, _sortDir = 0; // 0=default,1=asc,2=desc
+let _page = 1; const _perPage = 25;
 
+function sortBy(key) {
+  if(_sortKey===key) { _sortDir=(_sortDir+1)%3; if(_sortDir===0)_sortKey=null; }
+  else { _sortKey=key; _sortDir=1; }
+  _page=1; renderTable(); _updateSortHeaders();
+}
+function _updateSortHeaders() {
+  document.querySelectorAll('.sort-th').forEach(th=>{
+    const k=th.dataset.sort;
+    const arrow = th.querySelector('.sort-arrow');
+    if(arrow) arrow.textContent = (!_sortKey||_sortKey!==k)?'↕':(_sortDir===1?'↑':'↓');
+    th.style.color = (_sortKey===k)?'var(--ac)':'';
+  });
+}
+function _sortedSpools(aktif) {
+  if(!_sortKey||!_sortDir) return aktif;
+  return [...aktif].sort((a,b)=>{
+    let va=a[_sortKey]||'', vb=b[_sortKey]||'';
+    if(typeof va==='string') return _sortDir===1?va.localeCompare(vb,'tr'):vb.localeCompare(va,'tr');
+    return _sortDir===1?va-vb:vb-va;
+  });
+}
+
+// ── SPOOL TABLOSU ───────────────────────────────────────────────
 function renderStep(v) {
   if(v===1) return '<div class="mini-step ms-done"></div>';
   if(v===3) return '<div class="mini-step ms-blocked"></div>';
@@ -905,43 +911,61 @@ function alistirmaBadge(v) {
 function renderTable() {
   const tbody = document.getElementById('spoolTableBody');
   if(!tbody) return;
-  const aktif = SPOOLS.filter(s=>!s.iptal);
-  if(!aktif.length) { tbody.innerHTML=`<tr><td colspan="18" style="text-align:center;padding:24px;color:var(--txd);">Henuz spool eklenmemis</td></tr>`; return; }
-  tbody.innerHTML = aktif.map((s,i)=>{
+  const aktif = _sortedSpools(SPOOLS.filter(s=>!s.iptal));
+  const total = aktif.length;
+  const totalPages = Math.max(1, Math.ceil(total/_perPage));
+  if(_page > totalPages) _page = totalPages;
+  const slice = aktif.slice((_page-1)*_perPage, _page*_perPage);
+
+  if(!total) { tbody.innerHTML=`<tr><td colspan="18" style="text-align:center;padding:24px;color:var(--txd);">${tv('dv_no_spools','Henuz spool eklenmemis')}</td></tr>`; _renderPagination(0,0,0); return; }
+  tbody.innerHTML = slice.map((s,i)=>{
     const d = DURUM_CFG[s.durum] || {cls:'sb-waiting',text:s.durumText||s.durum};
     const stl = s.stopped ? 'opacity:.55;' : '';
-    const iptalStl = s.iptal ? 'text-decoration:line-through;opacity:.4;' : '';
-    return `<tr style="${stl}${iptalStl}" onclick="navigateToSpool('${s.spoolNo}')" style="cursor:pointer;">
-      <td style="color:var(--txd);font-size:12px;">${i+1}</td>
-      <td style="font-size:12px;color:var(--txm);">${s.pipeline||'--'}</td>
-      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ac);">${s.spoolNo}</span></td>
-      <td style="font-size:12px;color:var(--txm);">${s.cap||'--'}</td>
-      <td style="font-size:12px;color:var(--txm);">${s.agirlik||'--'}</td>
-      <td style="font-size:12px;">${s.malzeme||'--'}</td>
-      <td style="font-size:12px;color:var(--ac);">${s.kalite||'--'}</td>
-      <td style="font-size:12px;">${s.yuzey||'--'}</td>
-      <td><span class="status-badge ${d.cls}">${s.stopped?'Durduruldu':d.text}</span></td>
+    const globalIdx = (_page-1)*_perPage + i + 1;
+    return `<tr style="${stl}" onclick="navigateToSpool('${esc(s.spoolNo)}')" style="cursor:pointer;">
+      <td style="color:var(--txd);font-size:12px;">${globalIdx}</td>
+      <td style="font-size:12px;color:var(--txm);">${esc(s.pipeline)||'--'}</td>
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ac);">${esc(s.spoolNo)}</span></td>
+      <td style="font-size:12px;color:var(--txm);">${esc(s.cap)||'--'}</td>
+      <td style="font-size:12px;color:var(--txm);">${esc(s.agirlik)||'--'}</td>
+      <td style="font-size:12px;">${esc(s.malzeme)||'--'}</td>
+      <td style="font-size:12px;color:var(--ac);">${esc(s.kalite)||'--'}</td>
+      <td style="font-size:12px;">${esc(s.yuzey)||'--'}</td>
+      <td><span class="status-badge ${d.cls}">${s.stopped?tv('dv_status_stopped','Durduruldu'):esc(d.text)}</span></td>
       <td>
-        <div class="mini-steps" title="${ADIM_LABELS.join(' → ')}">
+        <div class="mini-steps" title="${getAdimLabels().map(esc).join(' → ')}">
           ${s.adimlar.map(renderStep).join('')}
         </div>
         <div style="font-size:10px;color:var(--txd);margin-top:3px;">${s.adimlar.filter(v=>v===1).length}/${s.adimlar.length}</div>
       </td>
-      <td style="font-size:11px;color:var(--txd);white-space:nowrap;">${s.sonIslem||'—'}</td>
+      <td style="font-size:11px;color:var(--txd);white-space:nowrap;">${esc(s.sonIslem)||'—'}</td>
       <td>${alistirmaBadge(s.alistirma)}</td>
       <td>${islemBadge(s.bukum)}</td>
       <td>${islemBadge(s.kesim)}</td>
       <td>${islemBadge(s.markalama)}</td>
-      <td><span class="mini-badge ${s.stopped?'mb-no':'mb-yes'}">${s.stopped?'EVET':'HAYIR'}</span></td>
+      <td><span class="mini-badge ${s.stopped?'mb-no':'mb-yes'}">${s.stopped?tv('dv_yes','EVET'):tv('dv_no','HAYIR')}</span></td>
       <td>${islemBadge(s.test)}</td>
       <td onclick="event.stopPropagation()">
-        <button class="ctx-trigger" onclick="ctxAc(event,'${s.spoolNo}')">
+        <button class="ctx-trigger" onclick="ctxAc(event,'${esc(s.spoolNo)}')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
         </button>
       </td>
     </tr>`;
   }).join('');
+  _renderPagination(total, _page, totalPages);
+  _updateSortHeaders();
 }
+
+function _renderPagination(total, page, totalPages) {
+  const pg = document.getElementById('spoolPagination'); if(!pg) return;
+  if(total<=_perPage){pg.style.display='none';return;}
+  pg.style.display='flex';
+  const from=(_page-1)*_perPage+1, to=Math.min(_page*_perPage,total);
+  pg.innerHTML=`<button class="btn-sm" onclick="_changePage(-1)" ${page<=1?'disabled style="opacity:.4;"':''}>← ${tv('dv_prev','Onceki')}</button>
+    <span style="flex:1;text-align:center;font-size:12px;color:var(--txd);">${from}–${to} / ${total} ${tv('dv_records','kayit')}</span>
+    <button class="btn-sm" onclick="_changePage(1)" ${page>=totalPages?'disabled style="opacity:.4;"':''}>→ ${tv('dv_next','Sonraki')}</button>`;
+}
+function _changePage(d){_page=Math.max(1,_page+d);renderTable();}
 
 function navigateToSpool(spoolNo) {
   const s = SPOOLS.find(x=>x.spoolNo===spoolNo); if(!s) return;
@@ -950,7 +974,7 @@ function navigateToSpool(spoolNo) {
     _isEmri: DEVRE.isEmri, _tersane: DEVRE.tersane,
     spoolId: String(s.idx).padStart(4,'0')
   });
-  localStorage.setItem('syos_aktif_spool', JSON.stringify(data));
+  localStorage.setItem('ares_aktif_spool', JSON.stringify(data));
   window.location.href = 'spool_detay.html';
 }
 
@@ -962,24 +986,24 @@ function ctxAc(e, spoolNo) {
   if(!_ctxSpool) return;
   const menu = document.getElementById('ctxMenuEl');
   menu.innerHTML = `
-    <button class="ctx-item" onclick="navigateToSpool('${spoolNo}')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Spool Detayi
+    <button class="ctx-item" onclick="navigateToSpool('${esc(spoolNo)}')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${tv('dv_ctx_detail','Spool Detayi')}
     </button>
     <div class="ctx-sep"></div>
-    <button class="ctx-item" onclick="spoolKKGonder('${spoolNo}');ctxKapat()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>KK Gonder
+    <button class="ctx-item" onclick="spoolKKGonder('${esc(spoolNo)}');ctxKapat()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${tv('dv_ctx_kk','KK Gonder')}
     </button>
-    <button class="ctx-item" onclick="spoolSevkGonder('${spoolNo}');ctxKapat()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Sevkiyata Gonder
+    <button class="ctx-item" onclick="spoolSevkGonder('${esc(spoolNo)}');ctxKapat()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>${tv('dv_ctx_sevk','Sevkiyata Gonder')}
     </button>
     <div class="ctx-sep"></div>
     ${_ctxSpool.stopped
-      ? `<button class="ctx-item success" onclick="spoolKaldir('${spoolNo}');ctxKapat()">&#9654; Durdurmayi Kaldir</button>`
-      : `<button class="ctx-item" onclick="spoolDurdur('${spoolNo}');ctxKapat()">&#9646;&#9646; Durdur</button>`
+      ? `<button class="ctx-item success" onclick="spoolKaldir('${esc(spoolNo)}');ctxKapat()">&#9654; ${tv('dv_ctx_unstop','Durdurmayi Kaldir')}</button>`
+      : `<button class="ctx-item" onclick="spoolDurdur('${esc(spoolNo)}');ctxKapat()">&#9646;&#9646; ${tv('dv_ctx_stop','Durdur')}</button>`
     }
     <div class="ctx-sep"></div>
-    <button class="ctx-item danger" onclick="spoolIptalModal('${spoolNo}');ctxKapat()">&#128683; Iptal Et</button>
-    <button class="ctx-item danger" onclick="spoolSilOnay('${spoolNo}');ctxKapat()">&#10060; Sil</button>
+    <button class="ctx-item danger" onclick="spoolIptalModal('${esc(spoolNo)}');ctxKapat()">&#128683; ${tv('dv_ctx_cancel','Iptal Et')}</button>
+    <button class="ctx-item danger" onclick="spoolSilOnay('${esc(spoolNo)}');ctxKapat()">&#10060; ${tv('dv_ctx_delete','Sil')}</button>
   `;
   menu.classList.add('open');
   const rect = e.currentTarget.getBoundingClientRect();
@@ -1183,9 +1207,9 @@ function gonderListesiRender() {
   liste.innerHTML = aktif.map(s=>{
     const sec = _gonderSecili[s.spoolNo];
     return `<label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:${sec?'rgba(45,142,255,.06)':'var(--sur2)'};border:1px solid ${sec?'var(--ac)':'var(--bor)'};cursor:pointer;transition:all .15s;">
-      <input type="checkbox" ${sec?'checked':''} onchange="_gonderToggle('${s.spoolNo}',this.checked)" style="width:14px;height:14px;accent-color:var(--ac);">
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;">${s.spoolNo}</span>
-      <span style="font-size:11px;color:var(--txd);">${s.cap||''} · ${s.agirlik||''}</span>
+      <input type="checkbox" ${sec?'checked':''} onchange="_gonderToggle('${esc(s.spoolNo)}',this.checked)" style="width:14px;height:14px;accent-color:var(--ac);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;">${esc(s.spoolNo)}</span>
+      <span style="font-size:11px;color:var(--txd);">${esc(s.cap||'')} · ${esc(s.agirlik||'')}</span>
     </label>`;
   }).join('');
 }
@@ -1207,14 +1231,14 @@ function gonderKaydet() {
 function tersaneIsEmriKaydet() {
   const val = (document.getElementById('tersaneIsEmriInput')||{}).value?.trim()||'';
   DEVRE.tersaneIsEmri = val;
-  try { const d=JSON.parse(localStorage.getItem('syos_aktif_devre')||'{}'); d.tersaneIsEmri=val; localStorage.setItem('syos_aktif_devre',JSON.stringify(d)); } catch(e){}
+  try { const d=JSON.parse(localStorage.getItem('ares_aktif_devre')||'{}'); d.tersaneIsEmri=val; localStorage.setItem('ares_aktif_devre',JSON.stringify(d)); } catch(e){}
   showToast('Tersane is emri kaydedildi','success');
 }
 function terminKaydet() {
   const val = (document.getElementById('terminInput')||{}).value||'';
   DEVRE.terminTarihi = val;
-  try { const d=JSON.parse(localStorage.getItem('syos_aktif_devre')||'{}'); d.terminTarihi=val; localStorage.setItem('syos_aktif_devre',JSON.stringify(d)); } catch(e){}
-  setText('ddStatTermin', val||'Belirlenmemis');
+  try { const d=JSON.parse(localStorage.getItem('ares_aktif_devre')||'{}'); d.terminTarihi=val; localStorage.setItem('ares_aktif_devre',JSON.stringify(d)); } catch(e){}
+  setText('ddStatTermin', val||tv('sp_alist_none','Belirlenmemis'));
   devreLogEkle('termin_guncellendi','Yeni termin: '+val);
   showToast('Termin tarihi guncellendi','success');
 }
@@ -1248,47 +1272,48 @@ function renderMalzeme() {
     const turBg = m.tur==='boru'?'rgba(45,142,255,.12)':'rgba(124,58,237,.12)';
     const turClr = m.tur==='boru'?'var(--ac)':'var(--leg)';
     const boyut = m.tur==='boru' ? m.uzunluk_toplam.toLocaleString('tr-TR')+' mm' : '—';
-    const adet  = m.tur==='fitting' ? m.adet_toplam+' adet' : '—';
+    const adet  = m.tur==='fitting' ? m.adet_toplam+' '+tv('dv_unit_qty','adet') : '—';
+    const turLabel = m.tur==='boru'?tv('dv_mat_pipe','BORU'):tv('dv_mat_fitting','FITTING');
     return `<tr style="${stl}">
       <td style="color:var(--txd);">${i+1}</td>
-      <td><span style="padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;background:${turBg};color:${turClr};">${m.tur==='boru'?'BORU':'FITTING'}</span></td>
-      <td>${m.aciklama}</td>
-      <td>${m.malzeme}</td>
-      <td style="color:var(--ac);font-weight:600;">${m.kalite}</td>
-      <td style="text-align:right;">${m.cap}</td>
-      <td style="text-align:right;">${m.et||'—'}</td>
+      <td><span style="padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;background:${turBg};color:${turClr};">${turLabel}</span></td>
+      <td>${esc(m.aciklama)}</td>
+      <td>${esc(m.malzeme)}</td>
+      <td style="color:var(--ac);font-weight:600;">${esc(m.kalite)}</td>
+      <td style="text-align:right;">${esc(String(m.cap))}</td>
+      <td style="text-align:right;">${m.et?esc(String(m.et)):'—'}</td>
       <td style="text-align:right;">${boyut}</td>
       <td style="text-align:right;">${adet}</td>
       <td style="text-align:center;">${m.sertifika?'<span style="color:var(--warn);font-weight:700;">&#9888;</span>':'—'}</td>
-      <td style="font-size:11px;color:var(--txd);">${m.spooller.join(', ')}</td>
+      <td style="font-size:11px;color:var(--txd);">${m.spooller.map(esc).join(', ')}</td>
     </tr>`;
   }).join('');
 }
 
 // ── DÖKÜMANLAR ──────────────────────────────────────────────────
 const DOK_TUR = {
-  izometri:{etiket:'Izometri',renk:'var(--ac)',bg:'rgba(45,142,255,.08)',bor:'rgba(45,142,255,.25)'},
-  sertifika:{etiket:'Sertifika',renk:'var(--warn)',bg:'rgba(217,119,6,.08)',bor:'rgba(217,119,6,.25)'},
-  prosedur:{etiket:'Prosedur',renk:'var(--gr)',bg:'rgba(22,163,110,.08)',bor:'rgba(22,163,110,.25)'},
-  diger:{etiket:'Diger',renk:'var(--txd)',bg:'rgba(100,116,139,.06)',bor:'rgba(100,116,139,.2)'},
+  izometri:{get etiket(){return tv('dv_dok_iso','Izometri');},renk:'var(--ac)',bg:'rgba(45,142,255,.08)',bor:'rgba(45,142,255,.25)'},
+  sertifika:{get etiket(){return tv('dv_dok_cert','Sertifika');},renk:'var(--warn)',bg:'rgba(217,119,6,.08)',bor:'rgba(217,119,6,.25)'},
+  prosedur:{get etiket(){return tv('dv_dok_proc','Prosedur');},renk:'var(--gr)',bg:'rgba(22,163,110,.08)',bor:'rgba(22,163,110,.25)'},
+  diger:{get etiket(){return tv('dv_dok_other','Diger');},renk:'var(--txd)',bg:'rgba(100,116,139,.06)',bor:'rgba(100,116,139,.2)'},
 };
 const DOK_EXT = {pdf:'PDF',dwg:'DWG',dxf:'DXF',doc:'DOC',docx:'DOC',xls:'XLS',xlsx:'XLS',png:'IMG',jpg:'IMG',jpeg:'IMG',txt:'TXT'};
 function renderDokumanlar() {
   const liste = document.getElementById('dokListesi'); if(!liste) return;
   setText('dokSayi', DOKUMANLAR.length ? DOKUMANLAR.length+' dokuman' : '');
-  if(!DOKUMANLAR.length) { liste.innerHTML=`<div style="padding:20px;color:var(--txd);font-size:13px;">Henuz dokuman eklenmemis</div>`; return; }
+  if(!DOKUMANLAR.length) { liste.innerHTML=`<div style="padding:20px;color:var(--txd);font-size:13px;">${tv('dv_no_docs','Henuz dokuman eklenmemis')}</div>`; return; }
   liste.innerHTML = DOKUMANLAR.map(d=>{
     const cfg = DOK_TUR[d.tur]||DOK_TUR.diger;
     const ext = (d.dosyaAdi||'').split('.').pop().toLowerCase();
     const ikon = DOK_EXT[ext]||'DOC';
     return `<div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--bor);">
-      <div style="width:36px;height:36px;border-radius:8px;background:${cfg.bg};border:1px solid ${cfg.bor};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:${cfg.renk};flex-shrink:0;">${ikon}</div>
+      <div style="width:36px;height:36px;border-radius:8px;background:${cfg.bg};border:1px solid ${cfg.bor};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:${cfg.renk};flex-shrink:0;">${esc(ikon)}</div>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:13px;font-weight:600;color:var(--tx);">${d.ad}</div>
-        <div style="font-size:11px;color:var(--txd);margin-top:2px;"><span style="padding:1px 7px;border-radius:7px;background:${cfg.bg};color:${cfg.renk};font-weight:700;font-size:10px;">${cfg.etiket}</span> ${d.dosyaAdi||''} — ${d.tarih}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--tx);">${esc(d.ad)}</div>
+        <div style="font-size:11px;color:var(--txd);margin-top:2px;"><span style="padding:1px 7px;border-radius:7px;background:${cfg.bg};color:${cfg.renk};font-weight:700;font-size:10px;">${esc(cfg.etiket)}</span> ${esc(d.dosyaAdi||'')} — ${esc(d.tarih)}</div>
       </div>
-      <button onclick="dokumanIndir('${d.id}')" class="btn-sm" style="font-size:11px;">&#11015; Indir</button>
-      <button onclick="dokumanSilOnay('${d.id}')" class="btn-sm" style="color:var(--re);border-color:rgba(229,62,62,.3);">&#10005;</button>
+      <button onclick="dokumanIndir('${esc(d.id)}')" class="btn-sm" style="font-size:11px;" data-i18n="dv_download_btn">&#11015; Indir</button>
+      <button onclick="dokumanSilOnay('${esc(d.id)}')" class="btn-sm" style="color:var(--re);border-color:rgba(229,62,62,.3);">&#10005;</button>
     </div>`;
   }).join('');
 }
@@ -1325,15 +1350,15 @@ function dokumanSilOnay(id) {
 let genelNotlar = [];
 function renderGenelNotes() {
   const liste = document.getElementById('genelNotListesi'); if(!liste) return;
-  setText('genelNotCount', genelNotlar.length+' not');
+  setText('genelNotCount', genelNotlar.length+' '+tv('sp_notes_unit','not'));
   liste.innerHTML = genelNotlar.length
     ? genelNotlar.map(n=>`
       <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:9px;padding:9px 12px;position:relative;">
-        <div style="font-size:13px;line-height:1.5;padding-right:20px;">${n.metin}</div>
-        <div style="font-size:11px;color:var(--txd);margin-top:4px;">${n.kullanici} — ${n.tarih}</div>
-        <button onclick="deleteGenelNote(${n.id})" style="position:absolute;top:8px;right:8px;background:none;border:none;color:var(--txd);cursor:pointer;font-size:13px;line-height:1;" onmouseover="this.style.color='var(--re)'" onmouseout="this.style.color='var(--txd)'">&#10005;</button>
+        <div style="font-size:13px;line-height:1.5;padding-right:20px;">${esc(n.metin)}</div>
+        <div style="font-size:11px;color:var(--txd);margin-top:4px;">${esc(n.kullanici)} — ${esc(n.tarih)}</div>
+        <button onclick="deleteGenelNote(${esc(String(n.id))})" style="position:absolute;top:8px;right:8px;background:none;border:none;color:var(--txd);cursor:pointer;font-size:13px;line-height:1;" onmouseover="this.style.color='var(--re)'" onmouseout="this.style.color='var(--txd)'">&#10005;</button>
       </div>`).join('')
-    : '<div style="font-size:12px;color:var(--txd);">Henuz not eklenmemis</div>';
+    : `<div style="font-size:12px;color:var(--txd);">${tv('dv_no_notes','Henuz not eklenmemis')}</div>`;
 }
 function addGenelNote() {
   const el=document.getElementById('genelNotInput'); if(!el) return;
@@ -1350,43 +1375,47 @@ function deleteGenelNote(id) {
 
 // ── İŞLEM KAYITLARI ─────────────────────────────────────────────
 const TIP_CFG = {
-  olusturuldu:          {renk:'var(--ac)',   ikon:'&#128203;'},
-  durduruldu:           {renk:'var(--re)',   ikon:'&#9646;&#9646;'},
-  yeniden_baslandi:     {renk:'var(--gr)',   ikon:'&#9654;'},
-  kk_daveti:            {renk:'var(--leg)',  ikon:'&#10003;'},
-  sevkiyata_gonderildi: {renk:'var(--ac)',   ikon:'&#128667;'},
-  termin_guncellendi:   {renk:'var(--warn)', ikon:'&#128197;'},
-  not_eklendi:          {renk:'var(--txd)',  ikon:'&#128204;'},
-  spool_iptal:          {renk:'var(--re)',   ikon:'&#128683;'},
+  olusturuldu:          {renk:'var(--ac)',   ikon:'📋', get label(){return tv('dv_tip_created','Olusturuldu');}},
+  durduruldu:           {renk:'var(--re)',   ikon:'⏸',  get label(){return tv('dv_tip_stopped','Durduruldu');}},
+  yeniden_baslandi:     {renk:'var(--gr)',   ikon:'▶',  get label(){return tv('dv_tip_restarted','Yeniden Baslandi');}},
+  kk_daveti:            {renk:'var(--leg)',  ikon:'✓',  get label(){return tv('dv_tip_kk','KK Daveti');}},
+  sevkiyata_gonderildi: {renk:'var(--ac)',   ikon:'🚢', get label(){return tv('dv_tip_shipped','Sevkiyata Gonderildi');}},
+  termin_guncellendi:   {renk:'var(--warn)', ikon:'📅', get label(){return tv('dv_tip_deadline','Termin Guncellendi');}},
+  not_eklendi:          {renk:'var(--txd)',  ikon:'📌', get label(){return tv('dv_tip_note','Not Eklendi');}},
+  spool_iptal:          {renk:'var(--re)',   ikon:'🚫', get label(){return tv('dv_tip_cancelled','Spool Iptal');}},
 };
 function devreLogEkle(tip, aciklama) {
   const devreId = DEVRE.id||'devre-001';
   let kayitlar = [];
-  try { kayitlar=JSON.parse(localStorage.getItem('syos_devre_log_'+devreId)||'[]'); } catch(e){}
+  try { kayitlar=JSON.parse(localStorage.getItem('ares_devre_log_'+devreId)||'[]'); } catch(e){}
   kayitlar.unshift({tip,aciklama,tarih:new Date().toLocaleString('tr-TR'),kullanici:'Admin'});
-  try { localStorage.setItem('syos_devre_log_'+devreId,JSON.stringify(kayitlar)); } catch(e){}
+  try { localStorage.setItem('ares_devre_log_'+devreId,JSON.stringify(kayitlar)); } catch(e){}
   renderIslemler();
 }
 function renderIslemler() {
   const devreId = DEVRE.id||'devre-001';
   let kayitlar = DEMO_ISLEMLER;
-  try { const s=JSON.parse(localStorage.getItem('syos_devre_log_'+devreId)||'null'); if(s&&s.length) kayitlar=s; } catch(e){}
-  const badge=document.getElementById('islemSayiBadge'); if(badge) badge.textContent=kayitlar.length+' kayit';
-  const tl = document.getElementById('islemTimeline'); if(!tl) return;
-  tl.innerHTML = kayitlar.map((k,i)=>{
-    const cfg = TIP_CFG[k.tip]||{renk:'var(--txd)',ikon:'&#9679;'};
-    const last = i===kayitlar.length-1;
-    return `<div class="tl-item">
-      <div class="tl-dot-col">
-        <div class="tl-dot" style="background:${cfg.renk};">${cfg.ikon.length<4?'':''}</div>
-        ${!last?'<div class="tl-line"></div>':''}
-      </div>
-      <div class="tl-body">
-        <div class="tl-title">${cfg.ikon} ${k.tip.replace(/_/g,' ')}</div>
-        <div class="tl-meta">${k.tarih} · ${k.kullanici}</div>
-        ${k.aciklama?`<div class="tl-aciklama">${k.aciklama}</div>`:''}
-      </div>
-    </div>`;
+  try { const s=JSON.parse(localStorage.getItem('ares_devre_log_'+devreId)||'null'); if(s&&s.length) kayitlar=s; } catch(e){}
+  const badge=document.getElementById('islemSayiBadge');
+  if(badge) badge.textContent=kayitlar.length+' '+tv('dv_records','kayit');
+  const tbody = document.getElementById('islemBody'); if(!tbody) return;
+  if(!kayitlar.length){
+    tbody.innerHTML=`<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:20px;">${tv('sp_no_logs','Islem kaydi yok')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = kayitlar.map((k,i)=>{
+    const cfg = TIP_CFG[k.tip]||{renk:'var(--txd)',ikon:'●',label:k.tip};
+    return `<tr style="${i%2===0?'':'background:rgba(255,255,255,.015)'}">
+      <td style="color:var(--txd);font-size:12px;white-space:nowrap;">${esc(k.tarih)}</td>
+      <td>
+        <span style="display:inline-flex;align-items:center;gap:5px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:${cfg.renk};flex-shrink:0;display:inline-block;"></span>
+          <strong style="color:${cfg.renk};">${esc(cfg.label)}</strong>
+        </span>
+      </td>
+      <td style="color:var(--txm);font-size:12px;">${esc(k.kullanici)}</td>
+      <td style="color:var(--txm);font-size:12px;">${esc(k.aciklama||'')}</td>
+    </tr>`;
   }).join('');
 }
 
@@ -1493,12 +1522,12 @@ function _etiketSecimRender() {
   liste.innerHTML = SPOOLS.filter(s=>!s.iptal).map(s=>{
     const sec = _etiketSecili[s.spoolNo];
     const k = s.spoolNo.replace(/[^a-z0-9]/gi,'_');
-    return `<div id="etcard_${k}" onclick="_etiketToggle('${s.spoolNo}')"
+    return `<div id="etcard_${k}" onclick="_etiketToggle('${esc(s.spoolNo)}')"
       style="display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;border:1px solid ${sec?'var(--ac)':'var(--bor)'};background:${sec?'rgba(45,142,255,.06)':'var(--sur2)'};cursor:pointer;transition:all .15s;opacity:${sec?'1':'0.45'};">
-      <input type="checkbox" id="etcb_${k}" ${sec?'checked':''} onclick="event.stopPropagation();_etiketToggle('${s.spoolNo}')" style="width:13px;height:13px;accent-color:var(--ac);cursor:pointer;flex-shrink:0;">
+      <input type="checkbox" id="etcb_${k}" ${sec?'checked':''} onclick="event.stopPropagation();_etiketToggle('${esc(s.spoolNo)}')" style="width:13px;height:13px;accent-color:var(--ac);cursor:pointer;flex-shrink:0;">
       <div style="min-width:0;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--tx);">${s.spoolNo}</div>
-        <div style="font-size:10px;color:var(--txd);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.cap||'--'} · ${s.malzeme||'--'}</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--tx);">${esc(s.spoolNo)}</div>
+        <div style="font-size:10px;color:var(--txd);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.cap||'--')} · ${esc(s.malzeme||'--')}</div>
       </div>
     </div>`;
   }).join('');
@@ -1625,6 +1654,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderGenelNotes();
   renderIslemler();
   initTabs();
+  _applyI18n();
+  window._onLangChange = function(lang) {
+    if(lang) window._aresLang = lang;
+    _applyI18n();
+    sayfaYukle();
+    renderTable();
+    renderMalzeme();
+    renderDokumanlar();
+    renderGenelNotes();
+    renderIslemler();
+  };
+  document.documentElement.style.visibility = '';
 });
 </script>
 </body>
