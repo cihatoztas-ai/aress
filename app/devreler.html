@@ -6,8 +6,7 @@
   <title>Aktif Devreler — AresPipe</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Flaş önleme -->
-  <script>(function(){try{var t=localStorage.getItem('syos_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <script>(function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.visibility='hidden';})()</script>
 
   <style>
     /* ── Tema değişkenleri — her sayfada zorunlu ── */
@@ -25,16 +24,18 @@
 
     /* ── Stat kartları ── */
     .stat-row { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
-    .sc       { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:14px 18px; display:flex; align-items:center; gap:14px; flex:1; min-width:150px; transition:border-color .18s; }
-    .sc-icon  { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sc       { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:14px 18px; display:flex; align-items:center; gap:12px; flex:1; min-width:150px; transition:border-color .18s; }
+    .sc-icon  { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .ic-blue  { background:#4f46e5; color:#fff; } .ic-green { background:#16a34a; color:#fff; } .ic-cyan { background:#0891b2; color:#fff; }
     .ic-orange{ background:#f97316; color:#fff; } .ic-amber { background:#d97706; color:#fff; } .ic-violet{ background:#7c3aed; color:#fff; }
     .sc-body  { flex:1; min-width:0; }
-    .sc-label { font-size:12px; color:var(--txd); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .sc-val   { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; line-height:1.2; color:var(--tx); }
-    .sc-val span { font-size:13px; font-weight:400; color:var(--txd); }
+    .sc-label { font-size:17px; color:var(--txd); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; }
+    .sc-val   { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:800; line-height:1.1; color:var(--tx); }
+    .sc-val span { font-size:15px; font-weight:400; color:var(--txd); }
     .sc-prog  { height:4px; background:var(--bor); border-radius:99px; overflow:hidden; margin-top:6px; }
     .sc-prog-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--warn),var(--gr)); transition:width .5s; }
+    .seg-bar  { display:flex; height:5px; border-radius:99px; overflow:hidden; gap:1px; margin-top:6px; }
+    .seg-bar-fill { height:100%; border-radius:2px; transition:width .4s; }
     .sc-donut { cursor:pointer; }
     .sc-donut:hover { border-color:var(--ac); }
 
@@ -60,7 +61,7 @@
     .table-count  { font-size:13px; font-weight:400; color:var(--txm); margin-left:8px; }
     .table-scroll { overflow-x:auto; }
     .data-table   { width:100%; border-collapse:collapse; font-size:14px; white-space:nowrap; min-width:1100px; }
-    .data-table th { padding:10px 12px; text-align:left; font-size:11px; font-weight:600; color:var(--txd); text-transform:uppercase; letter-spacing:.5px; background:var(--sur2); border-bottom:1px solid var(--bor); }
+        .data-table th { padding:10px 12px; text-align:left; font-size:12px; font-weight:600; color:var(--txd); text-transform:uppercase; letter-spacing:.5px; background:var(--sur2); border-bottom:1px solid var(--bor); }
     .data-table td { padding:11px 12px; border-bottom:1px solid var(--bor); vertical-align:middle; white-space:nowrap; }
     .data-table tr:last-child td { border-bottom:none; }
     .data-table tbody tr { cursor:pointer; transition:background .12s; }
@@ -78,10 +79,10 @@
     .sb-imalatta  { background:rgba(45,142,255,.12); color:var(--ac); }
     .sb-kalite    { background:rgba(124,58,237,.12); color:var(--leg); }
     .sb-sevkehazir{ background:rgba(22,163,110,.12); color:var(--gr); }
-    .mat-badge    { display:inline-block; padding:2px 6px; border-radius:10px; font-size:11px; font-weight:500; margin:1px; }
+      .mat-badge    { display:inline-block; padding:2px 6px; border-radius:10px; font-size:12px; font-weight:500; margin:1px; }
     .mb-celik     { background:rgba(45,142,255,.1); color:var(--ac); }
     .mb-pas       { background:rgba(124,58,237,.1); color:var(--leg); }
-    .yuzey-badge  { display:inline-block; padding:2px 6px; border-radius:10px; font-size:11px; font-weight:500; margin:1px; }
+      .yuzey-badge  { display:inline-block; padding:2px 6px; border-radius:10px; font-size:12px; font-weight:500; margin:1px; }
     .yb-asit      { background:rgba(45,142,255,.1); color:var(--ac); }
     .yb-galvaniz  { background:rgba(22,163,110,.1); color:var(--gr); }
     .yb-siyah     { background:rgba(107,122,144,.15); color:var(--txm); }
@@ -133,9 +134,9 @@
     .donut-svg-wrap  { position:relative; width:180px; height:180px; }
     .donut-center    { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; text-align:center; }
     .donut-center-val{ font-size:20px; font-weight:800; }
-    .donut-center-sub{ font-size:10px; color:var(--txd); margin-top:2px; }
+      .donut-center-sub{ font-size:12px; color:var(--txd); margin-top:2px; }
     .donut-legend    { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
-    .donut-legend-item{ display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txd); }
+      .donut-legend-item{ display:flex; align-items:center; gap:4px; font-size:12px; color:var(--txd); }
     .donut-legend-dot { width:8px; height:8px; border-radius:50%; }
     .fmt-options { display:flex; gap:8px; margin-bottom:16px; }
     .fmt-opt { display:flex; align-items:center; gap:8px; flex:1; padding:11px 14px; border:1px solid var(--bor); border-radius:10px; background:var(--sur2); cursor:pointer; font-size:13px; font-weight:500; font-family:'Barlow',sans-serif; transition:border-color .15s; }
@@ -161,25 +162,22 @@
   <script src="ares-layout.js"></script>
 </head>
 <body>
-
-<div class="app-shell">
-  <div class="main-content">
-    <div class="page">
+<div class="app-shell"><div class="main-content"><div class="page">
 
       <!-- BAŞLIK -->
       <div class="page-header">
         <div>
-          <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> › <span style="color:var(--tx)">Aktif Devreler</span></div>
-          <div class="page-title">Aktif Devreler</div>
+          <div class="breadcrumb"><a href="index.html" data-i18n="nav_home">Ana Sayfa</a> › <span style="color:var(--tx)" data-i18n="nav_active_circuits">Aktif Devreler</span></div>
+          <div class="page-title" data-i18n="dr_title">Aktif Devreler</div>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
           <button class="btn-outline" id="btnExport">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Dışa Aktar
+            <span data-i18n="dr_export">Dışa Aktar</span>
           </button>
           <button class="btn-primary" onclick="location.href='devre_yeni.html'">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Yeni Devre
+            <span data-i18n="dr_new_circuit">Yeni Devre</span>
           </button>
         </div>
       </div>
@@ -188,30 +186,34 @@
       <div class="stat-row">
         <div class="sc cl-ac">
           <div class="sc-icon ic-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-          <div class="sc-body"><div class="sc-label">Devre Adedi</div><div class="sc-val"><span id="stDevre">—</span> <span>adet</span></div></div>
+          <div class="sc-body"><div class="sc-label" data-i18n="dr_circuit_count">Devre Adedi</div><div class="sc-val"><span id="stDevre">—</span> <span data-i18n="dr_qty">adet</span></div></div>
         </div>
         <div class="sc cl-gr">
           <div class="sc-icon ic-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div class="sc-body"><div class="sc-label">Spool Adedi</div><div class="sc-val"><span id="stSpool">—</span> <span>adet</span></div></div>
+          <div class="sc-body"><div class="sc-label" data-i18n="dr_spool_count">Spool Adedi</div><div class="sc-val"><span id="stSpool">—</span> <span data-i18n="dr_qty">adet</span></div></div>
         </div>
         <div class="sc cl-ac">
           <div class="sc-icon ic-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="sc-body"><div class="sc-label">Ağırlık</div><div class="sc-val"><span id="stAgirlik" style="font-size:18px;">—</span> <span>kg</span></div></div>
+          <div class="sc-body"><div class="sc-label" data-i18n="dr_weight">Ağırlık</div><div class="sc-val"><span id="stAgirlik" style="font-size:18px;">—</span> <span>kg</span></div></div>
         </div>
         <div class="sc cl-warn sc-donut" id="scMalzeme">
           <div class="sc-icon ic-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div>
-          <div class="sc-body"><div class="sc-label">Malzeme</div></div>
-          <svg width="40" height="40" id="malzemePreview" style="flex-shrink:0;"></svg>
+          <div class="sc-body">
+            <div class="sc-label" data-i18n="dr_material">Malzeme</div>
+            <div class="seg-bar" id="malzemeBar"></div>
+          </div>
         </div>
         <div class="sc cl-leg sc-donut" id="scCap">
           <div class="sc-icon ic-violet"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></div>
-          <div class="sc-body"><div class="sc-label">Çap Dağılımı</div></div>
-          <svg width="40" height="40" id="capPreview" style="flex-shrink:0;"></svg>
+          <div class="sc-body">
+            <div class="sc-label" data-i18n="dr_cap_dist">Çap Dağılımı</div>
+            <div class="seg-bar" id="capBar"></div>
+          </div>
         </div>
         <div class="sc cl-re">
           <div class="sc-icon ic-orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
           <div class="sc-body">
-            <div class="sc-label">İlerleme</div>
+            <div class="sc-label" data-i18n="dr_progress">İlerleme</div>
             <div class="sc-val" id="stIlerleme">—</div>
             <div class="sc-prog"><div class="sc-prog-fill" id="barIlerleme" style="width:0%"></div></div>
           </div>
@@ -221,29 +223,29 @@
       <!-- FİLTRE BAR -->
       <div class="filter-bar cl-ac">
         <select class="fsel" id="fFirma">
-          <option value="">Tüm Firmalar</option>
+          <option value="" data-i18n="dr_all_firms">Tüm Firmalar</option>
           <option value="TERSAN">TERSAN</option>
           <option value="ADA">ADA</option>
         </select>
         <select class="fsel" id="fProje">
-          <option value="">Tüm Projeler</option>
+          <option value="" data-i18n="dr_all_projects">Tüm Projeler</option>
           <option value="NB1099C">NB1099C</option>
           <option value="NB1137">NB1137</option>
           <option value="NB138">NB138</option>
         </select>
         <select class="fsel" id="fMalzeme">
-          <option value="">Tüm Malzemeler</option>
+          <option value="" data-i18n="dr_all_materials">Tüm Malzemeler</option>
           <option value="celik">Çelik</option>
           <option value="paslanmaz">Paslanmaz</option>
         </select>
         <select class="fsel" id="fYuzey">
-          <option value="">Tüm Yüzeyler</option>
+          <option value="" data-i18n="dr_all_surfaces">Tüm Yüzeyler</option>
           <option value="Asit">Asit</option>
           <option value="Galvaniz">Galvaniz</option>
           <option value="Siyah">Siyah</option>
         </select>
         <select class="fsel" id="fDurum">
-          <option value="">Tüm Durumlar</option>
+          <option value="" data-i18n="dr_all_statuses">Tüm Durumlar</option>
           <option value="baslamadi">Başlamadı</option>
           <option value="imalatta">İmalatta</option>
           <option value="kalite_davette">Kalite Davette</option>
@@ -252,15 +254,15 @@
         <div class="filter-sep"></div>
         <div class="search-wrap">
           <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input class="fi-search" type="text" id="fArama" placeholder="İş emri, proje, devre...">
+          <input class="fi-search" type="text" id="fArama" placeholder="İş emri, proje, devre..." data-i18n-placeholder="dr_search_placeholder">
         </div>
         <button class="btn-oncelik" id="btnOncelik">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Sadece Öncelikliler
+          <span data-i18n="dr_priority_only">Sadece Öncelikliler</span>
         </button>
         <button class="btn-sifirla" id="btnSifirla">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          Sıfırla
+          <span data-i18n="dr_reset">Sıfırla</span>
         </button>
       </div>
 
@@ -268,10 +270,10 @@
       <div class="table-wrap cl-ac">
         <div class="table-header">
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <span class="table-title">Devre Listesi <span class="table-count" id="tableCount"></span></span>
-            <button class="btn-outline" id="btnMalzemeListesi" disabled style="height:30px;font-size:12px;" title="Önce en az bir devre yıldızlayın">
+            <span class="table-title"><span data-i18n="dr_circuit_list">Devre Listesi</span> <span class="table-count" id="tableCount"></span></span>
+            <button class="btn-outline" id="btnMalzemeListesi" disabled style="height:30px;font-size:12px;">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-              Malzeme Listesi Çıkar
+              <span data-i18n="dr_mat_list_export">Malzeme Listesi Çıkar</span>
             </button>
           </div>
         </div>
@@ -281,18 +283,18 @@
               <tr>
                 <th style="width:36px;text-align:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></th>
                 <th style="width:32px;">#</th>
-                <th>İş Emri No</th>
-                <th>Tersane</th>
-                <th>Gemi</th>
-                <th>Devre Adı</th>
-                <th>Zone</th>
-                <th style="text-align:right;">Spool</th>
-                <th style="text-align:right;">Ağırlık</th>
-                <th>Malzeme</th>
-                <th>Yüzey</th>
-                <th>İlerleme</th>
-                <th>Durum</th>
-                <th>Son İşlem</th>
+                <th class="sort-th" data-sort="isEmri" onclick="sortBy('isEmri')" style="cursor:pointer;" data-i18n="dr_th_isemri">İş Emri No <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th data-i18n="dr_th_tersane">Tersane</th>
+                <th class="sort-th" data-sort="gemi" onclick="sortBy('gemi')" style="cursor:pointer;" data-i18n="dr_th_gemi">Gemi <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th class="sort-th" data-sort="devre" onclick="sortBy('devre')" style="cursor:pointer;" data-i18n="dr_th_devre">Devre Adı <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th data-i18n="dr_th_zone">Zone</th>
+                <th style="text-align:right;" data-i18n="dr_th_spool">Spool</th>
+                <th class="sort-th" data-sort="agirlik" onclick="sortBy('agirlik')" style="cursor:pointer;text-align:right;" data-i18n="dr_th_agirlik">Ağırlık <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th data-i18n="dr_th_malzeme">Malzeme</th>
+                <th data-i18n="dr_th_yuzey">Yüzey</th>
+                <th class="sort-th" data-sort="ilerleme" onclick="sortBy('ilerleme')" style="cursor:pointer;" data-i18n="dr_th_ilerleme">İlerleme <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th class="sort-th" data-sort="durum" onclick="sortBy('durum')" style="cursor:pointer;" data-i18n="dr_th_durum">Durum <span class="sort-arrow-wrap"><span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span></span></th>
+                <th data-i18n="dr_th_sonislem">Son İşlem</th>
                 <th style="width:40px;"></th>
               </tr>
             </thead>
@@ -301,9 +303,7 @@
         </div>
       </div>
 
-    </div><!-- /.page -->
-  </div><!-- /.main-content -->
-</div><!-- /.app-shell -->
+</div><!-- /.page --></div><!-- /.main-content --></div><!-- /.app-shell -->
 
 <!-- ═══ MODALLER ═══ -->
 <div class="modal-ov" id="modalMalzeme">
@@ -378,7 +378,7 @@
         <p id="mlInfo" style="font-size:13px;color:var(--txm);margin-bottom:6px;"></p>
         <p style="font-size:12px;color:var(--txd);">Liste her zaman yıldızlı devreler için oluşturulur — aktif filtreye göre değil.</p>
       </div>
-      <p style="font-size:11px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Format Seçin</p>
+      <p style="font-size:12px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Format Seçin</p>
       <div class="fmt-options">
         <label class="fmt-opt"><input type="radio" name="mlFormat" value="excel" checked> <span style="color:var(--gr);">Excel</span></label>
         <label class="fmt-opt"><input type="radio" name="mlFormat" value="pdf"> <span style="color:var(--re);">PDF</span></label>
@@ -398,39 +398,50 @@
 <script>
 'use strict';
 
+// ── INLINE ÇEVİRİLER ─────────────────────────────────────────────
+var _I18N={en:{"nav_home":"Home","nav_active_circuits":"Active Circuits","dv_lbl_tersane":"Shipyard","sp_stat_material":"Material","dv_circuit_detail":"Circuit Detail","btn_back":"← Back","dv_add_spool":"+ Add Spool","dv_export_btn":"⬇ Export","dv_stat_spools":"Total Spools","dv_stat_weight":"Total Weight","dv_stat_deadline":"Deadline","dv_stat_material":"Material","dv_stat_surface":"Surface","dr_title":"Active Circuits","dr_new_circuit":"New Circuit","dr_export":"Export","dr_circuit_count":"Circuits","dr_spool_count":"Spools","dr_weight":"Weight","dr_material":"Material","dr_cap_dist":"Diameter Distribution","dr_progress":"Progress","dr_all_firms":"All Firms","dr_all_projects":"All Projects","dr_all_materials":"All Materials","dr_all_surfaces":"All Surfaces","dr_all_statuses":"All Statuses","dr_search_placeholder":"Work order, project, circuit...","dr_priority_only":"Priority Only","dr_reset":"Reset","dr_circuit_list":"Circuit List","dr_mat_list_export":"Export Material List","dr_th_isemri":"Work Order No","dr_th_tersane":"Shipyard","dr_th_gemi":"Ship","dr_th_devre":"Circuit Name","dr_th_zone":"Zone","dr_th_spool":"Spool","dr_th_agirlik":"Weight","dr_th_malzeme":"Material","dr_th_yuzey":"Surface","dr_th_ilerleme":"Progress","dr_th_durum":"Status","dr_th_sonislem":"Last Operation","dr_status_notstarted":"Not Started","dr_status_production":"In Production","dr_status_qc":"Quality Control","dr_status_ready":"Ready to Ship","dr_no_results":"No circuits found matching the filter","dr_qty":"pcs","dr_modal_mat_dist":"Material Distribution","dr_modal_cap_dist":"Diameter Distribution","dr_modal_close":"Close","dr_modal_export":"Export","dr_modal_ml_title":"Export Material List","dr_modal_ml_info":"Selected circuits","dr_modal_ml_format":"Select Format","dr_modal_ml_excel":"Excel","dr_modal_ml_pdf":"PDF","dr_modal_ml_both":"Both","dr_modal_ml_note":"List is always for starred circuits — not based on active filter.","dr_modal_ml_create":"Create","dr_modal_ml_cancel":"Cancel"},ar:{"nav_home":"الرئيسية","nav_active_circuits":"الدوائر النشطة","dv_lbl_tersane":"الورشة","sp_stat_material":"المادة","dv_circuit_detail":"تفاصيل الدائرة","btn_back":"→ رجوع","dv_add_spool":"+ إضافة سبول","dv_export_btn":"⬇ تصدير","dv_stat_spools":"إجمالي السبولات","dv_stat_weight":"الوزن الإجمالي","dv_stat_deadline":"الموعد النهائي","dv_stat_material":"المادة","dv_stat_surface":"السطح","dr_title":"الدوائر النشطة","dr_new_circuit":"دائرة جديدة","dr_export":"تصدير","dr_circuit_count":"الدوائر","dr_spool_count":"السبولات","dr_weight":"الوزن","dr_material":"المادة","dr_cap_dist":"توزيع الأقطار","dr_progress":"التقدم","dr_all_firms":"كل الشركات","dr_all_projects":"كل المشاريع","dr_all_materials":"كل المواد","dr_all_surfaces":"كل الأسطح","dr_all_statuses":"كل الحالات","dr_search_placeholder":"أمر العمل، المشروع، الدائرة...","dr_priority_only":"الأولويات فقط","dr_reset":"إعادة تعيين","dr_circuit_list":"قائمة الدوائر","dr_mat_list_export":"استخراج قائمة المواد","dr_th_isemri":"رقم أمر العمل","dr_th_tersane":"الورشة","dr_th_gemi":"السفينة","dr_th_devre":"اسم الدائرة","dr_th_zone":"المنطقة","dr_th_spool":"السبول","dr_th_agirlik":"الوزن","dr_th_malzeme":"المادة","dr_th_yuzey":"السطح","dr_th_ilerleme":"التقدم","dr_th_durum":"الحالة","dr_th_sonislem":"آخر عملية","dr_status_notstarted":"لم يبدأ","dr_status_production":"في الإنتاج","dr_status_qc":"مراقبة الجودة","dr_status_ready":"جاهز للشحن","dr_no_results":"لا توجد دوائر تطابق الفلتر","dr_qty":"قطعة","dr_modal_mat_dist":"توزيع المواد","dr_modal_cap_dist":"توزيع الأقطار","dr_modal_close":"إغلاق","dr_modal_export":"تصدير","dr_modal_ml_title":"استخراج قائمة المواد","dr_modal_ml_info":"الدوائر المحددة","dr_modal_ml_format":"اختر الصيغة","dr_modal_ml_excel":"Excel","dr_modal_ml_pdf":"PDF","dr_modal_ml_both":"كلاهما","dr_modal_ml_note":"القائمة دائماً للدوائر المنجمة — وليس حسب الفلتر النشط.","dr_modal_ml_create":"إنشاء","dr_modal_ml_cancel":"إلغاء"}};
+function _getLang(){return document.documentElement.getAttribute('lang')||localStorage.getItem('ares_lang')||'tr';}
+function _applyI18n(){var lang=_getLang(),dict=_I18N[lang];if(!dict)return;document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(dict[k])el.textContent=dict[k];});document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){var k=el.getAttribute('data-i18n-placeholder');if(dict[k])el.placeholder=dict[k];});}
+function tv(key,tr){var lang=_getLang(),dict=_I18N[lang];if(dict&&dict[key])return dict[key];return tr!==undefined?tr:key;}
+if(typeof MutationObserver!=='undefined'){new MutationObserver(function(){_applyI18n();renderTable();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang','data-lang']});}
+
+// ── TARİH FORMAT ────────────────────────────────────────────────
+function tarihFormat(str){if(!str||str==='—')return '—';var parts=str.split(' ');var d=parts[0];if(!d)return str;var dp=d.split('.');if(dp.length===3)return dp[0]+'/'+dp[1]+'/'+dp[2];return str;}
+
 // ── VERİ ──────────────────────────────────────────────────────────
 const DEVRELER = [
-  {id:1,  isEmri:'I26-010', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'f500',         spool:10, agirlik:1840.5,  malzeme:['celik'],      yuzey:['Asit','Galvaniz'], ilerleme:72,  durum:'imalatta',      sonIslem:'12.03.2026 14:22'},
-  {id:2,  isEmri:'I26-011', tersane:'TERSAN', gemi:'NB1099C', devre:'582-Sewage Graywater', zone:'D100-E2',       spool:6,  agirlik:920.0,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:45,  durum:'imalatta',      sonIslem:'11.03.2026 09:10'},
-  {id:3,  isEmri:'I26-012', tersane:'TERSAN', gemi:'NB1099C', devre:'803-bg',               zone:'CF400',         spool:8,  agirlik:1360.75, malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:88,  durum:'kalite_davette',sonIslem:'13.03.2026 16:45'},
-  {id:4,  isEmri:'I26-013', tersane:'TERSAN', gemi:'NB1099C', devre:'813-Fire System',      zone:'Z11-12-13-14',  spool:14, agirlik:2100.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:30,  durum:'baslamadi',     sonIslem:'08.03.2026 11:00'},
-  {id:5,  isEmri:'I26-014', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'c1003',         spool:5,  agirlik:750.25,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:60,  durum:'imalatta',      sonIslem:'10.03.2026 13:30'},
-  {id:6,  isEmri:'I26-023', tersane:'ADA',    gemi:'NB138',   devre:'Air Vent Sounding',    zone:'Z10',           spool:4,  agirlik:480.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:100, durum:'sevke_hazir',   sonIslem:'14.03.2026 10:00'},
-  {id:7,  isEmri:'I26-025', tersane:'ADA',    gemi:'NB138',   devre:'Fuel Filling Transfer',zone:'Z14',           spool:7,  agirlik:1120.5,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:55,  durum:'imalatta',      sonIslem:'12.03.2026 08:45'},
-  {id:8,  isEmri:'I26-026', tersane:'ADA',    gemi:'NB138',   devre:'Ballast',              zone:'z101',          spool:9,  agirlik:1650.0,  malzeme:['celik'],      yuzey:['Galvaniz','Siyah'],ilerleme:20,  durum:'baslamadi',     sonIslem:'07.03.2026 15:20'},
-  {id:9,  isEmri:'I26-027', tersane:'ADA',    gemi:'NB138',   devre:'Fuel System',          zone:'z10-11-14',     spool:11, agirlik:1890.75, malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:75,  durum:'imalatta',      sonIslem:'13.03.2026 12:15'},
-  {id:10, isEmri:'I26-028', tersane:'ADA',    gemi:'NB138',   devre:'813-Fire System',      zone:'Z14',           spool:6,  agirlik:980.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:40,  durum:'imalatta',      sonIslem:'11.03.2026 14:00'},
-  {id:11, isEmri:'I26-030', tersane:'TERSAN', gemi:'NB1137',  devre:'582-Sanitary Disch',   zone:'M120-Galv',     spool:3,  agirlik:1360.75, malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:90,  durum:'kalite_davette',sonIslem:'15.03.2026 09:30'},
-  {id:12, isEmri:'I26-032', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'G400-Galv',     spool:8,  agirlik:1240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:65,  durum:'imalatta',      sonIslem:'12.03.2026 16:00'},
-  {id:13, isEmri:'I26-033', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'Y200-Galv',     spool:5,  agirlik:810.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:50,  durum:'imalatta',      sonIslem:'11.03.2026 10:45'},
-  {id:14, isEmri:'I26-034', tersane:'TERSAN', gemi:'NB1137',  devre:'803-Bilge System',     zone:'AT110-Galv-P2', spool:12, agirlik:2240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:35,  durum:'baslamadi',     sonIslem:'09.03.2026 13:00'},
-  {id:15, isEmri:'I26-038', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi',   zone:'B100',          spool:4,  agirlik:560.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:80,  durum:'imalatta',      sonIslem:'13.03.2026 11:30'},
-  {id:16, isEmri:'I26-039', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi 2', zone:'B100',          spool:3,  agirlik:420.25,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:95,  durum:'sevke_hazir',   sonIslem:'15.03.2026 14:20'},
-  {id:17, isEmri:'I26-043', tersane:'TERSAN', gemi:'NB1137',  devre:'701-FO-KK',            zone:'CF400K25',      spool:7,  agirlik:1050.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:15,  durum:'baslamadi',     sonIslem:'06.03.2026 09:00'},
-  {id:18, isEmri:'I26-048', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devre 3',   zone:'B100',          spool:2,  agirlik:310.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:70,  durum:'imalatta',      sonIslem:'12.03.2026 15:45'},
-  {id:19, isEmri:'I26-049', tersane:'TERSAN', gemi:'NB1137',  devre:'265-overboard',        zone:'f1101',         spool:6,  agirlik:890.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:55,  durum:'imalatta',      sonIslem:'11.03.2026 12:30'},
+  {id:1,  isEmri:'I26-010', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'f500',         spool:10, agirlik:1840.5,  malzeme:['celik'],      yuzey:['Asit','Galvaniz'], ilerleme:72,  durum:'imalatta',      sonIslem:'12.03.2026 14:22', caps:['DN300','DN300','DN250','DN250','DN200','DN200','DN150','DN150','DN100','DN80']},
+  {id:2,  isEmri:'I26-011', tersane:'TERSAN', gemi:'NB1099C', devre:'582-Sewage Graywater', zone:'D100-E2',       spool:6,  agirlik:920.0,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:45,  durum:'imalatta',      sonIslem:'11.03.2026 09:10', caps:['DN100','DN100','DN80','DN80','DN50','DN50']},
+  {id:3,  isEmri:'I26-012', tersane:'TERSAN', gemi:'NB1099C', devre:'803-bg',               zone:'CF400',         spool:8,  agirlik:1360.75, malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:88,  durum:'kalite_davette',sonIslem:'13.03.2026 16:45', caps:['DN200','DN200','DN150','DN150','DN100','DN100','DN80','DN50']},
+  {id:4,  isEmri:'I26-013', tersane:'TERSAN', gemi:'NB1099C', devre:'813-Fire System',      zone:'Z11-12-13-14',  spool:14, agirlik:2100.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:30,  durum:'baslamadi',     sonIslem:'08.03.2026 11:00', caps:['DN150','DN150','DN150','DN100','DN100','DN100','DN100','DN80','DN80','DN80','DN50','DN50','DN50','DN40']},
+  {id:5,  isEmri:'I26-014', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'c1003',         spool:5,  agirlik:750.25,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:60,  durum:'imalatta',      sonIslem:'10.03.2026 13:30', caps:['DN300','DN250','DN200','DN150','DN100']},
+  {id:6,  isEmri:'I26-023', tersane:'ADA',    gemi:'NB138',   devre:'Air Vent Sounding',    zone:'Z10',           spool:4,  agirlik:480.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:100, durum:'sevke_hazir',   sonIslem:'14.03.2026 10:00', caps:['DN80','DN80','DN50','DN50']},
+  {id:7,  isEmri:'I26-025', tersane:'ADA',    gemi:'NB138',   devre:'Fuel Filling Transfer',zone:'Z14',           spool:7,  agirlik:1120.5,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:55,  durum:'imalatta',      sonIslem:'12.03.2026 08:45', caps:['DN150','DN150','DN100','DN100','DN100','DN80','DN50']},
+  {id:8,  isEmri:'I26-026', tersane:'ADA',    gemi:'NB138',   devre:'Ballast',              zone:'z101',          spool:9,  agirlik:1650.0,  malzeme:['celik'],      yuzey:['Galvaniz','Siyah'],ilerleme:20,  durum:'baslamadi',     sonIslem:'07.03.2026 15:20', caps:['DN400','DN350','DN300','DN300','DN250','DN200','DN150','DN100','DN80']},
+  {id:9,  isEmri:'I26-027', tersane:'ADA',    gemi:'NB138',   devre:'Fuel System',          zone:'z10-11-14',     spool:11, agirlik:1890.75, malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:75,  durum:'imalatta',      sonIslem:'13.03.2026 12:15', caps:['DN200','DN200','DN150','DN150','DN150','DN100','DN100','DN80','DN80','DN50','DN50']},
+  {id:10, isEmri:'I26-028', tersane:'ADA',    gemi:'NB138',   devre:'813-Fire System',      zone:'Z14',           spool:6,  agirlik:980.0,   malzeme:['celik'],      yuzey:['Asit'],            ilerleme:40,  durum:'imalatta',      sonIslem:'11.03.2026 14:00', caps:['DN150','DN100','DN100','DN80','DN80','DN50']},
+  {id:11, isEmri:'I26-030', tersane:'TERSAN', gemi:'NB1137',  devre:'582-Sanitary Disch',   zone:'M120-Galv',     spool:3,  agirlik:1360.75, malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:90,  durum:'kalite_davette',sonIslem:'15.03.2026 09:30', caps:['DN100','DN80','DN50']},
+  {id:12, isEmri:'I26-032', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'G400-Galv',     spool:8,  agirlik:1240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:65,  durum:'imalatta',      sonIslem:'12.03.2026 16:00', caps:['DN200','DN150','DN150','DN100','DN100','DN80','DN80','DN50']},
+  {id:13, isEmri:'I26-033', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'Y200-Galv',     spool:5,  agirlik:810.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:50,  durum:'imalatta',      sonIslem:'11.03.2026 10:45', caps:['DN150','DN100','DN100','DN80','DN50']},
+  {id:14, isEmri:'I26-034', tersane:'TERSAN', gemi:'NB1137',  devre:'803-Bilge System',     zone:'AT110-Galv-P2', spool:12, agirlik:2240.0,  malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:35,  durum:'baslamadi',     sonIslem:'09.03.2026 13:00', caps:['DN250','DN250','DN200','DN200','DN150','DN150','DN100','DN100','DN100','DN80','DN80','DN50']},
+  {id:15, isEmri:'I26-038', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi',   zone:'B100',          spool:4,  agirlik:560.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:80,  durum:'imalatta',      sonIslem:'13.03.2026 11:30', caps:['DN100','DN100','DN80','DN50']},
+  {id:16, isEmri:'I26-039', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi 2', zone:'B100',          spool:3,  agirlik:420.25,  malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:95,  durum:'sevke_hazir',   sonIslem:'15.03.2026 14:20', caps:['DN100','DN80','DN50']},
+  {id:17, isEmri:'I26-043', tersane:'TERSAN', gemi:'NB1137',  devre:'701-FO-KK',            zone:'CF400K25',      spool:7,  agirlik:1050.0,  malzeme:['celik'],      yuzey:['Siyah'],           ilerleme:15,  durum:'baslamadi',     sonIslem:'06.03.2026 09:00', caps:['DN300','DN250','DN200','DN150','DN100','DN80','DN50']},
+  {id:18, isEmri:'I26-048', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devre 3',   zone:'B100',          spool:2,  agirlik:310.0,   malzeme:['paslanmaz'],  yuzey:['Asit'],            ilerleme:70,  durum:'imalatta',      sonIslem:'12.03.2026 15:45', caps:['DN80','DN50']},
+  {id:19, isEmri:'I26-049', tersane:'TERSAN', gemi:'NB1137',  devre:'265-overboard',        zone:'f1101',         spool:6,  agirlik:890.5,   malzeme:['celik'],      yuzey:['Galvaniz'],        ilerleme:55,  durum:'imalatta',      sonIslem:'11.03.2026 12:30', caps:['DN300','DN250','DN200','DN150','DN100','DN80']},
 ];
 
 const RENKLER = ['#2D8EFF','#e53e3e','#d97706','#16a36e','#7c3aed','#f97316','#06b6d4','#84cc16','#ec4899','#8b5cf6'];
 
 // ── YARDIMCI ─────────────────────────────────────────────────────
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+// G-01: XSS sanitizer
+function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function gv(id) { var el = document.getElementById(id); return el ? el.value : ''; }
 function modal(id, open) { var el = document.getElementById(id); if(el) el.classList.toggle('open', open); }
 
 // ── YILDIZ SİSTEMİ (Kural Y-01) ──────────────────────────────────
-function getOncelikler() { try { return JSON.parse(localStorage.getItem('syos_devre_oncelik') || '[]'); } catch(e) { return []; } }
-function setOncelikler(arr) { try { localStorage.setItem('syos_devre_oncelik', JSON.stringify(arr)); } catch(e) {} }
+function getOncelikler() { try { return JSON.parse(localStorage.getItem('ares_devre_oncelik') || '[]'); } catch(e) { return []; } }
+function setOncelikler(arr) { try { localStorage.setItem('ares_devre_oncelik', JSON.stringify(arr)); } catch(e) {} }
 function isStarred(id) { return getOncelikler().indexOf(id) !== -1; }
 
 function yildizToggle(id) {
@@ -460,6 +471,31 @@ function guncelleMLButonu() {
 var oncelikFiltreAktif = false;
 var _sayfa = 1;
 var _sayfaBasi = 25;
+var _sortKey = null, _sortDir = 0; // 0=default,1=asc,2=desc
+
+function sortBy(key) {
+  if(_sortKey===key){ _sortDir=(_sortDir+1)%3; if(_sortDir===0)_sortKey=null; }
+  else { _sortKey=key; _sortDir=1; }
+  _sayfa=1; renderTable();
+}
+function _sortArrow(key){ if(_sortKey!==key||_sortDir===0)return '<span class="sort-arrow" style="font-size:12px;opacity:.5;">↕</span>'; return _sortDir===1?'<span style="font-size:12px;color:var(--ac);">↑</span>':'<span style="font-size:12px;color:var(--ac);">↓</span>'; }
+function _updateSortHeaders(){
+  document.querySelectorAll('.sort-th').forEach(function(th){
+    var k=th.getAttribute('data-sort');
+    var arr=th.querySelector('.sort-arrow-wrap');
+    if(arr) arr.innerHTML=_sortArrow(k);
+    th.style.color=(_sortKey===k&&_sortDir>0)?'var(--ac)':'';
+  });
+}
+function _applySortTo(liste){
+  if(!_sortKey||_sortDir===0)return liste;
+  var dir=_sortDir===1?1:-1;
+  return liste.slice().sort(function(a,b){
+    var av=a[_sortKey], bv=b[_sortKey];
+    if(typeof av==='number'&&typeof bv==='number') return (av-bv)*dir;
+    return String(av||'').localeCompare(String(bv||''),'tr')*dir;
+  });
+}
 
 function oncelikToggle() {
   oncelikFiltreAktif = !oncelikFiltreAktif;
@@ -477,7 +513,7 @@ function getFiltered() {
   var arama   = (document.getElementById('fArama') ? document.getElementById('fArama').value : '').toLowerCase().trim();
   var oncelikler = getOncelikler();
 
-  return DEVRELER.filter(function(d) {
+  var base = DEVRELER.filter(function(d) {
     if (oncelikFiltreAktif && oncelikler.indexOf(d.id) === -1) return false;
     if (firma   && d.tersane !== firma) return false;
     if (proje   && d.gemi    !== proje) return false;
@@ -494,6 +530,7 @@ function getFiltered() {
     var sb = isStarred(b.id) ? 0 : 1;
     return sa - sb || a.id - b.id;
   });
+  return _applySortTo(base);
 }
 
 function filtreleriSifirla() {
@@ -529,24 +566,30 @@ function renderTable(sayfaReset) {
   var topIler    = liste.length ? Math.round(liste.reduce(function(s,d){ return s + d.ilerleme; }, 0) / liste.length) : 0;
   var stD = document.getElementById('stDevre');    if(stD) stD.textContent = liste.length;
   var stS = document.getElementById('stSpool');    if(stS) stS.textContent = topSpool;
-  var stA = document.getElementById('stAgirlik');  if(stA) stA.textContent = topAgirlik.toLocaleString('tr-TR', {minimumFractionDigits:2});
+  var stA = document.getElementById('stAgirlik');  if(stA) stA.textContent = Math.round(topAgirlik).toLocaleString('tr-TR');
   var stI = document.getElementById('stIlerleme'); if(stI) stI.textContent = '%' + topIler;
   var barI = document.getElementById('barIlerleme'); if(barI) { barI.style.width = topIler + '%'; barI.style.background = progColor(topIler); }
 
-  // Donut önizleme
+  // Segmented bar — Malzeme
   var malzemeSayim = {};
   liste.forEach(function(d){ d.malzeme.forEach(function(m){ malzemeSayim[m] = (malzemeSayim[m]||0)+1; }); });
   var malzemeItems = Object.keys(malzemeSayim).map(function(k,i){ return {label:k,val:malzemeSayim[k],color:RENKLER[i]}; });
-  miniDonut('malzemePreview', malzemeItems.map(function(x){return x.val;}), malzemeItems.map(function(x){return x.color;}));
+  segBar('malzemeBar', malzemeItems);
 
+  // Segmented bar — Çap
   var capSayim = {};
-  liste.forEach(function(d){ var k = d.zone||'?'; capSayim[k] = (capSayim[k]||0)+1; });
-  var capItems = Object.keys(capSayim).slice(0,5).map(function(k,i){ return {label:k,val:capSayim[k],color:RENKLER[i+3]}; });
-  miniDonut('capPreview', capItems.map(function(x){return x.val;}), capItems.map(function(x){return x.color;}));
+  liste.forEach(function(d){ (d.caps||[]).forEach(function(c){ capSayim[c]=(capSayim[c]||0)+1; }); });
+  var DN_ORDER = ['DN40','DN50','DN65','DN80','DN100','DN125','DN150','DN200','DN250','DN300','DN350','DN400'];
+  var capItems = Object.keys(capSayim).sort(function(a,b){
+    var ai=DN_ORDER.indexOf(a), bi=DN_ORDER.indexOf(b);
+    return (ai<0?99:ai)-(bi<0?99:bi);
+  }).slice(0,8).map(function(k,i){ return {label:k,val:capSayim[k],color:RENKLER[i%RENKLER.length]}; });
+  segBar('capBar', capItems);
 
   if (!liste.length) {
-    tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:32px;color:var(--txd);font-size:14px;">Filtreyle eşleşen devre bulunamadı</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:32px;color:var(--txd);font-size:14px;">' + tv('dr_no_results','Filtreyle eşleşen devre bulunamadı') + '</td></tr>';
     paginationGuncelle(0, 0, 0);
+    _updateSortHeaders();
     return;
   }
 
@@ -556,10 +599,10 @@ function renderTable(sayfaReset) {
   paginationGuncelle(liste.length, _sayfa, Math.ceil(liste.length / _sayfaBasi));
 
   var DURUM_MAP = {
-    baslamadi:     {cls:'sb-baslamadi', text:'Başlamadı'},
-    imalatta:      {cls:'sb-imalatta',  text:'İmalatta'},
-    kalite_davette:{cls:'sb-kalite',    text:'Kalite Davette'},
-    sevke_hazir:   {cls:'sb-sevkehazir',text:'Sevke Hazır'},
+    baslamadi:     {cls:'sb-baslamadi', get text(){return tv('dr_status_notstarted','Başlamadı');}},
+    imalatta:      {cls:'sb-imalatta',  get text(){return tv('dr_status_production','İmalatta');}},
+    kalite_davette:{cls:'sb-kalite',    get text(){return tv('dr_status_qc','Kalite Davette');}},
+    sevke_hazir:   {cls:'sb-sevkehazir',get text(){return tv('dr_status_ready','Sevke Hazır');}},
   };
 
   tbody.innerHTML = sayfaListesi.map(function(d, i) {
@@ -579,22 +622,35 @@ function renderTable(sayfaReset) {
       '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;font-weight:500;">' + esc(d.devre) + '</td>' +
       '<td style="font-size:12px;color:var(--txd);">' + esc(d.zone) + '</td>' +
       '<td style="text-align:right;font-weight:600;">' + d.spool + '</td>' +
-      '<td style="text-align:right;font-size:13px;color:var(--txm);">' + d.agirlik.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' kg</td>' +
+      '<td style="text-align:right;font-size:13px;color:var(--txm);">' + Math.round(d.agirlik).toLocaleString('tr-TR') + ' kg</td>' +
       '<td>' + matBadge + '</td>' +
       '<td>' + yuzeyBadge + '</td>' +
       '<td><div class="prog-cell"><span class="prog-pct" style="color:' + pc + '">%' + d.ilerleme + '</span><div class="prog-mini"><div class="prog-fill" style="width:' + d.ilerleme + '%;background:' + pc + ';"></div></div></div></td>' +
-      '<td><span class="status-badge ' + dur.cls + '">' + dur.text + '</span></td>' +
-      '<td style="font-size:12px;color:var(--txd);">' + esc(d.sonIslem||'—') + '</td>' +
+      '<td><span class="status-badge ' + dur.cls + '">' + esc(dur.text) + '</span></td>' +
+      '<td style="font-size:12px;color:var(--txd);">' + tarihFormat(esc(d.sonIslem||'—')) + '</td>' +
       '<td style="text-align:center;"><button class="action-btn" onclick="event.stopPropagation();devreAc(' + d.id + ')" title="Detay">→</button></td>' +
       '</tr>';
   }).join('');
+  paginationGuncelle(liste.length, _sayfa, Math.ceil(liste.length / _sayfaBasi));
+  _updateSortHeaders();
 }
 
 function devreAc(id) {
   var d = DEVRELER.find(function(x){ return x.id === id; });
   if (!d) return;
-  try { localStorage.setItem('syos_aktif_devre', JSON.stringify(d)); } catch(e) {}
+  try { localStorage.setItem('ares_aktif_devre', JSON.stringify(d)); } catch(e) {}
   location.href = 'devre_detay_sayfasi.html';
+}
+
+// ── SEGMENTED BAR ────────────────────────────────────────────────
+function segBar(elId, items) {
+  var el = document.getElementById(elId); if(!el) return;
+  var total = items.reduce(function(s,x){return s+x.val;},0);
+  if(!total){ el.innerHTML=''; return; }
+  el.innerHTML = items.map(function(x){
+    var pct = Math.round(x.val/total*100);
+    return '<div class="seg-bar-fill" style="width:'+pct+'%;background:'+x.color+';flex:'+x.val+'" title="'+esc(x.label)+': '+x.val+'"></div>';
+  }).join('');
 }
 
 // ── DONUT ────────────────────────────────────────────────────────
@@ -603,7 +659,7 @@ function miniDonut(svgId, vals, cols) {
   if (!svg) return;
   var total = vals.reduce(function(a,b){return a+b;},0);
   if (!total) { svg.innerHTML=''; return; }
-  var cx=20,cy=20,r=16,sw=7;
+  var cx=16,cy=16,r=12,sw=6;
   var offset=0;
   var paths = vals.map(function(v,i){
     var angle = (v/total)*2*Math.PI;
@@ -658,14 +714,19 @@ function malzemeModalAc() {
 function capModalAc() {
   var liste = getFiltered();
   var sayim = {};
-  liste.forEach(function(d){ var k=d.zone||'?'; sayim[k]=(sayim[k]||0)+1; });
-  var items = Object.keys(sayim).slice(0,8).map(function(k,i){ return {label:k,val:sayim[k],color:RENKLER[i]}; });
+  liste.forEach(function(d){ (d.caps||[]).forEach(function(c){ sayim[c]=(sayim[c]||0)+1; }); });
+  var DN_ORDER = ['DN40','DN50','DN65','DN80','DN100','DN125','DN150','DN200','DN250','DN300','DN350','DN400'];
+  var items = Object.keys(sayim).sort(function(a,b){
+    var ai=DN_ORDER.indexOf(a), bi=DN_ORDER.indexOf(b);
+    return (ai<0?99:ai)-(bi<0?99:bi);
+  }).map(function(k,i){ return {label:k,val:sayim[k],color:RENKLER[i%RENKLER.length]}; });
   var cols = items.map(function(x){return x.color;});
   var list = document.getElementById('capList');
+  var total = items.reduce(function(s,x){return s+x.val;},0);
   if (list) list.innerHTML = items.map(function(x,i){
-    return '<div class="modal-item"><div class="modal-item-left"><div class="modal-dot" style="background:'+cols[i]+'"></div><span>'+esc(x.label)+'</span></div><span style="font-weight:700;">'+x.val+'</span></div>';
+    return '<div class="modal-item"><div class="modal-item-left"><div class="modal-dot" style="background:'+cols[i]+'"></div><span style="font-weight:600;">'+esc(x.label)+'</span></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;">'+x.val+' spool</span><span style="font-size:12px;color:var(--txd);">%'+Math.round(x.val/total*100)+'</span></div></div>';
   }).join('');
-  fullDonut('capSvg','capCenter','capLegend',items,cols,'zone');
+  fullDonut('capSvg','capCenter','capLegend',items,cols,'spool');
   modal('modalCap', true);
 }
 
@@ -697,10 +758,10 @@ function exportPdf() {
     return '<tr><td>'+(i+1)+'</td><td>'+d.isEmri+'</td><td>'+d.tersane+'</td><td>'+d.gemi+'</td><td>'+d.devre+'</td><td>'+d.zone+'</td><td>'+d.spool+'</td><td>'+d.agirlik.toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg</td></tr>';
   }).join('');
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Aktif Devreler</title>' +
-    '<style>body{font-family:Arial,sans-serif;font-size:11px;padding:10mm;}' +
+    '<style>body{font-family:Arial,sans-serif;font-size:12px;padding:10mm;}' +
     'h1{font-size:18px;font-weight:800;margin:0 0 4px;}' +
     'table{width:100%;border-collapse:collapse;margin-top:12px;}' +
-    'th{background:#f1f5f9;padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;}' +
+    'th{background:#f1f5f9;padding:6px 8px;text-align:left;font-size:12px;text-transform:uppercase;}' +
     'td{padding:6px 8px;border-bottom:1px solid #f1f5f9;}' +
     '.bar{background:#1e3a5f;color:#fff;padding:8px 16px;display:flex;justify-content:space-between;margin-bottom:16px;}' +
     '.bar button{border:none;padding:4px 12px;border-radius:4px;cursor:pointer;}' +
@@ -708,7 +769,7 @@ function exportPdf() {
     '<div class="bar"><span>AresPipe — Aktif Devreler</span><div style="display:flex;gap:6px;">' +
     '<button onclick="window.close()" style="background:rgba(255,255,255,.2);color:#fff;">Kapat</button>' +
     '<button onclick="window.print()" style="background:#fff;color:#1e3a5f;font-weight:700;">Yazdır / PDF</button></div></div>' +
-    '<h1>Aktif Devreler</h1><p style="font-size:11px;color:#64748b;">'+liste.length+' devre · '+new Date().toLocaleDateString('tr-TR')+'</p>' +
+    '<h1>Aktif Devreler</h1><p style="font-size:12px;color:#64748b;">'+liste.length+' devre · '+new Date().toLocaleDateString('tr-TR')+'</p>' +
     '<table><thead><tr><th>#</th><th>İş Emri</th><th>Tersane</th><th>Gemi</th><th>Devre</th><th>Zone</th><th>Spool</th><th>Ağırlık</th></tr></thead>' +
     '<tbody>'+satirlar+'</tbody></table></body></html>';
   var w = window.open('','_blank','width=1200,height=800');
@@ -768,16 +829,21 @@ function showToast(msg, type) {
   var old = document.querySelector('.toast'); if(old) old.remove();
   var t = document.createElement('div');
   t.className = 'toast toast-' + (type||'info');
-  t.innerHTML = '<span>' + esc(msg) + '</span><button style="background:none;border:none;color:var(--txd);cursor:pointer;font-size:18px;margin-left:auto;" onclick="this.parentElement.remove()">✕</button>';
+  var sp = document.createElement('span'); sp.textContent = msg;
+  var cl = document.createElement('button');
+  cl.setAttribute('style','background:none;border:none;color:var(--txd);cursor:pointer;font-size:18px;margin-left:auto;');
+  cl.textContent = '✕';
+  cl.onclick = function(){ t.remove(); };
+  t.appendChild(sp); t.appendChild(cl);
   document.body.appendChild(t);
   setTimeout(function(){ if(t.parentNode) t.remove(); }, 3500);
 }
 
 // ── NAV BADGE ────────────────────────────────────────────────────
 function navBadgeGuncelle() {
-  var badges = JSON.parse(localStorage.getItem('syos_nav_badges') || '{}');
+  var badges = JSON.parse(localStorage.getItem('ares_nav_badges') || '{}');
   badges['devreler'] = 0;
-  localStorage.setItem('syos_nav_badges', JSON.stringify(badges));
+  localStorage.setItem('ares_nav_badges', JSON.stringify(badges));
 }
 
 // ── BAŞLATMA (DOMContentLoaded) ──────────────────────────────────
@@ -820,7 +886,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // İlk render
   navBadgeGuncelle();
   guncelleMLButonu();
+  _applyI18n();
   renderTable();
+
+  // D-01: dil değişimi
+  window._onLangChange = function() { _applyI18n(); renderTable(); };
+
+  // B-03: visibility restore
+  document.documentElement.style.visibility = '';
 });
 </script>
 
