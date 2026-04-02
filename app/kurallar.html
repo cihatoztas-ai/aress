@@ -625,6 +625,151 @@
 
 <!-- ══ KULLANIM KILAVUZLARI ══ -->
 
+  <!-- ══ TEST & KALİTE ══ -->
+  <div class="panel" id="paneltest">
+    <div class="sec-header">
+      <span class="sec-badge" style="background:rgba(22,163,110,.12);color:var(--gr);">TEST</span>
+      <div class="sec-title">Test & Kalite Kuralları</div>
+      <div class="sec-line"></div>
+    </div>
+
+    <!-- K-01 -->
+    <div class="kural-kart cl-gr" style="margin-bottom:10px;">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">K-01</span>
+        <span class="kural-baslik">JS Syntax Kontrolü — Her Sayfada Zorunlu</span>
+        <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Her sayfa tesliminden önce Node.js ile syntax kontrolü yapılır. Tarayıcıda test öncesi bu adım atlanamaz. Hata varsa teslim kabul edilmez.</div>
+        <div class="ornek-label">Kontrol Komutu (terminal)</div>
+        <div class="demo-log">
+node -e "<br>
+&nbsp;&nbsp;var fs=require('fs');<br>
+&nbsp;&nbsp;var c=fs.readFileSync('<span class="ls">sayfa.html</span>','utf8');<br>
+&nbsp;&nbsp;var s=c.indexOf("'use strict';"), e=c.lastIndexOf('&lt;/script&gt;');<br>
+&nbsp;&nbsp;try{new Function(c.slice(s,e));console.log('<span class="lv">✅ JS OK</span>');}<br>
+&nbsp;&nbsp;catch(err){console.log('<span class="e">❌ HATA:</span>',err.message);}<br>
+"
+        </div>
+        <div class="ornek-label" style="margin-top:12px;">Tüm Sayfaları Toplu Tara</div>
+        <div class="demo-log">
+<span class="e"># app/ klasöründen çalıştır</span><br>
+for f in *.html; do<br>
+&nbsp;&nbsp;node -e "var fs=require('fs'),c=fs.readFileSync('$f','utf8'),s=c.indexOf("'use strict';"),e=c.lastIndexOf('&lt;/script&gt;');if(s&lt;0){console.log('⏭ JS yok: $f');process.exit(0);}try{new Function(c.slice(s,e));console.log('✅ $f');}catch(err){console.log('❌ $f: '+err.message);}"<br>
+done
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--txd);">
+          ⚠️ Sık karşılaşılan hatalar:<br>
+          • JS string içinde tek tırnak → font-family:'Barlow' gibi CSS kaldır veya kaçır<br>
+          • Python triple-quote içinde ' → çıktıda ' olur, JS string kırılır<br>
+          • QRCode, Swiper gibi CDN kütüphaneleri yüklenmeden çağrılırsa → ReferenceError
+        </div>
+      </div>
+    </div>
+
+    <!-- K-02 -->
+    <div class="kural-kart cl-ac" style="margin-bottom:10px;">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">K-02</span>
+        <span class="kural-baslik">Senaryo Bazlı Manuel Test</span>
+        <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Supabase öncesi aşamada temel test yöntemi budur. Her sayfa tamamlandığında ilgili senaryolar elle çalıştırılır ve sonuçlar kayıt altına alınır.</div>
+        <div class="ornek-label">Temel Test Senaryoları</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+
+          <div style="background:var(--sur2);border-left:3px solid var(--gr);border-radius:8px;padding:9px 12px;">
+            <div style="font-size:11px;font-weight:800;color:var(--gr);margin-bottom:4px;">S-01 — Veri Akışı</div>
+            <div style="font-size:12px;color:var(--txm);line-height:1.7;">
+              Devre oluştur → Spool listesi yükle → Spool detaya git → Malzeme ekle → Heat no gir → Kesim ekle → Tamamla → İşlem kaydında görünüyor mu?
+            </div>
+          </div>
+
+          <div style="background:var(--sur2);border-left:3px solid var(--warn);border-radius:8px;padding:9px 12px;">
+            <div style="font-size:11px;font-weight:800;color:var(--warn);margin-bottom:4px;">S-02 — Uyarı Sistemi</div>
+            <div style="font-size:12px;color:var(--txm);line-height:1.7;">
+              Devre oluştur (alıştırma devresi) → Spool detaya git → Alıştırma VAR mı? → QR modalını aç → Uyarı görünüyor mu? → Not ekle → QR'da not çıkıyor mu?
+            </div>
+          </div>
+
+          <div style="background:var(--sur2);border-left:3px solid var(--re);border-radius:8px;padding:9px 12px;">
+            <div style="font-size:11px;font-weight:800;color:var(--re);margin-bottom:4px;">S-03 — Durdurma</div>
+            <div style="font-size:12px;color:var(--txm);line-height:1.7;">
+              Spoolı durdur → Kırmızı banner çıktı mı? → QR modalında durdurma uyarısı var mı? → Durdurma kaldır → Banner gitti mi?
+            </div>
+          </div>
+
+          <div style="background:var(--sur2);border-left:3px solid var(--leg);border-radius:8px;padding:9px 12px;">
+            <div style="font-size:11px;font-weight:800;color:var(--leg);margin-bottom:4px;">S-04 — Sertifika</div>
+            <div style="font-size:12px;color:var(--txm);line-height:1.7;">
+              Malzeme listesinde sertifika checkbox'ı işaretle → Sertifika bilgi kutusu güncellendi mi? → QR modalında sertifika uyarısı çıktı mı?
+            </div>
+          </div>
+
+          <div style="background:var(--sur2);border-left:3px solid var(--ac);border-radius:8px;padding:9px 12px;">
+            <div style="font-size:11px;font-weight:800;color:var(--ac);margin-bottom:4px;">S-05 — Tema & Görünüm</div>
+            <div style="font-size:12px;color:var(--txm);line-height:1.7;">
+              Her sayfada koyu → açık tema geçişi yap → Flash (yanıp sönme) var mı? → Renk kırılması var mı? → Hardcoded renk kaldı mı?
+            </div>
+          </div>
+
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--txd);">Senaryo sayısı artırılabilir. Yeni sayfa eklenince ilgili senaryo buraya eklenir.</div>
+      </div>
+    </div>
+
+    <!-- K-03 -->
+    <div class="kural-kart cl-leg" style="margin-bottom:10px;">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">K-03</span>
+        <span class="kural-baslik">Entegrasyon Kontrol Listesi</span>
+        <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Sayfalar arası veri akışını doğrulayan kontrol listesi. Her yeni sayfa eklenince bu liste genişler. Supabase geçişinde kritik öneme sahip.</div>
+        <div style="display:grid;grid-template-columns:160px 1fr 1fr;gap:6px;font-size:11px;background:var(--sur2);border-radius:8px;padding:10px;margin:8px 0;">
+          <div style="font-weight:800;color:var(--txd);">Bağlantı</div>
+          <div style="font-weight:800;color:var(--txd);">localStorage Key</div>
+          <div style="font-weight:800;color:var(--txd);">Kontrol Edilecek</div>
+          <div>Devre → Spool Detay</div><div style="color:var(--txm);font-family:monospace;font-size:10px;">ares_aktif_spool</div><div style="color:var(--txm);">Spool no, ID doğru geliyor mu?</div>
+          <div>Spool → Kesim Havuzu</div><div style="color:var(--txm);font-family:monospace;font-size:10px;">ares_kesimler</div><div style="color:var(--txm);">Kesim eklenince havuza düşüyor mu?</div>
+          <div>Malzeme → Sertifika Kutusu</div><div style="color:var(--txm);">State içi</div><div style="color:var(--txm);">Checkbox → bilgi kutusu → QR senkron mu?</div>
+          <div>Not → QR Uyarısı</div><div style="color:var(--txm);">State içi</div><div style="color:var(--txm);">Not eklenir eklenmez QR önizlemede çıkıyor mu?</div>
+          <div>Alıştırma → QR</div><div style="color:var(--txm);">State içi</div><div style="color:var(--txm);">VAR/KISMI/YOK → doğru uyarı geliyor mu?</div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--warn);font-weight:600;">
+          ⚠️ Supabase geçişinde tüm localStorage key'leri Supabase sorgusuyla değişecek — entegrasyon testleri yeniden çalıştırılacak.
+        </div>
+      </div>
+    </div>
+
+    <!-- K-04 -->
+    <div class="kural-kart cl-warn">
+      <div class="kural-head" onclick="tog(this.parentElement)">
+        <span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">K-04</span>
+        <span class="kural-baslik">Supabase Sonrası Test Altyapısı</span>
+        <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
+      </div>
+      <div class="kural-body">
+        <div class="kural-aciklama">Supabase kurulduktan sonra gerçek veri akışıyla test edilir. Bu aşamada daha kapsamlı test araçları devreye alınır.</div>
+        <div style="font-size:12px;color:var(--txm);line-height:2.2;margin:8px 0;">
+          • <strong>Playwright / Puppeteer</strong> — Tarayıcı otomasyonu: butona tık, değeri kontrol et<br>
+          • <strong>Supabase test ortamı</strong> — Production'dan ayrı staging veritabanı<br>
+          • <strong>RLS testleri</strong> — Tenant A'nın verisi Tenant B'ye görünmemeli (G-05)<br>
+          • <strong>Senaryo bazlı E2E</strong> — K-02 senaryoları otomatik script haline getirilir<br>
+          • <strong>Performans</strong> — 1000+ spool olan devrede sayfa yavaşlıyor mu?
+        </div>
+        <div style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--warn);">
+          ⏳ Supabase aşamasına kadar bekler. Şu an K-01 + K-02 + K-03 yeterli.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
   <!-- ══ KULLANIM KILAVUZU ══ -->
   <div class="panel" id="panelklavuz">
     <div class="sec-header">
