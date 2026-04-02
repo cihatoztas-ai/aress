@@ -125,15 +125,6 @@
 .toast-info{border-left:3px solid var(--ac);}
 @keyframes toastIn{from{transform:translateX(110%);opacity:0;}to{transform:translateX(0);opacity:1;}}
 
-/* === TİMELİNE === */
-.tl-item{display:flex;gap:12px;padding:12px 0;}
-.tl-dot-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:24px;}
-.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.tl-line{flex:1;width:1px;background:var(--bor);margin-top:4px;}
-.tl-body{flex:1;min-width:0;}
-.tl-title{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px;}
-.tl-meta{font-size:11px;color:var(--txd);}
-.tl-aciklama{font-size:12px;color:var(--txm);margin-top:4px;line-height:1.5;}
 
 /* === TEMA TOGGLE === */
 .tema-toggle{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9px;border:1px solid var(--bor);background:var(--sur2);color:var(--txd);font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .2s;width:100%;}
@@ -441,7 +432,17 @@
         <div class="table-title">&#128339; <span data-i18n="dv_circuit_moves">Devre Hareketleri</span> <span style="font-size:11px;font-weight:400;color:var(--txd);margin-left:6px;" data-i18n="dv_moves_note">Spool bazli islemler spool detayi'nda gorunur</span></div>
         <span id="islemSayiBadge" style="font-size:13px;color:var(--txd);"></span>
       </div>
-      <div id="islemTimeline" style="padding:8px 20px 20px;"></div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr>
+            <th style="min-width:140px;" data-i18n="th_date">Tarih</th>
+            <th data-i18n="th_operation">Islem</th>
+            <th style="min-width:110px;" data-i18n="th_user">Kullanici</th>
+            <th data-i18n="th_detail">Aciklama</th>
+          </tr></thead>
+          <tbody id="islemBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -1361,14 +1362,14 @@ function deleteGenelNote(id) {
 
 // ── İŞLEM KAYITLARI ─────────────────────────────────────────────
 const TIP_CFG = {
-  olusturuldu:          {renk:'var(--ac)',   ikon:'&#128203;'},
-  durduruldu:           {renk:'var(--re)',   ikon:'&#9646;&#9646;'},
-  yeniden_baslandi:     {renk:'var(--gr)',   ikon:'&#9654;'},
-  kk_daveti:            {renk:'var(--leg)',  ikon:'&#10003;'},
-  sevkiyata_gonderildi: {renk:'var(--ac)',   ikon:'&#128667;'},
-  termin_guncellendi:   {renk:'var(--warn)', ikon:'&#128197;'},
-  not_eklendi:          {renk:'var(--txd)',  ikon:'&#128204;'},
-  spool_iptal:          {renk:'var(--re)',   ikon:'&#128683;'},
+  olusturuldu:          {renk:'var(--ac)',   ikon:'📋', get label(){return tv('dv_tip_created','Olusturuldu');}},
+  durduruldu:           {renk:'var(--re)',   ikon:'⏸',  get label(){return tv('dv_tip_stopped','Durduruldu');}},
+  yeniden_baslandi:     {renk:'var(--gr)',   ikon:'▶',  get label(){return tv('dv_tip_restarted','Yeniden Baslandi');}},
+  kk_daveti:            {renk:'var(--leg)',  ikon:'✓',  get label(){return tv('dv_tip_kk','KK Daveti');}},
+  sevkiyata_gonderildi: {renk:'var(--ac)',   ikon:'🚢', get label(){return tv('dv_tip_shipped','Sevkiyata Gonderildi');}},
+  termin_guncellendi:   {renk:'var(--warn)', ikon:'📅', get label(){return tv('dv_tip_deadline','Termin Guncellendi');}},
+  not_eklendi:          {renk:'var(--txd)',  ikon:'📌', get label(){return tv('dv_tip_note','Not Eklendi');}},
+  spool_iptal:          {renk:'var(--re)',   ikon:'🚫', get label(){return tv('dv_tip_cancelled','Spool Iptal');}},
 };
 function devreLogEkle(tip, aciklama) {
   const devreId = DEVRE.id||'devre-001';
@@ -1382,22 +1383,26 @@ function renderIslemler() {
   const devreId = DEVRE.id||'devre-001';
   let kayitlar = DEMO_ISLEMLER;
   try { const s=JSON.parse(localStorage.getItem('ares_devre_log_'+devreId)||'null'); if(s&&s.length) kayitlar=s; } catch(e){}
-  const badge=document.getElementById('islemSayiBadge'); if(badge) badge.textContent=kayitlar.length+' kayit';
-  const tl = document.getElementById('islemTimeline'); if(!tl) return;
-  tl.innerHTML = kayitlar.map((k,i)=>{
-    const cfg = TIP_CFG[k.tip]||{renk:'var(--txd)',ikon:'&#9679;'};
-    const last = i===kayitlar.length-1;
-    return `<div class="tl-item">
-      <div class="tl-dot-col">
-        <div class="tl-dot" style="background:${cfg.renk};"></div>
-        ${!last?'<div class="tl-line"></div>':''}
-      </div>
-      <div class="tl-body">
-        <div class="tl-title">${cfg.ikon} ${esc(k.tip.replace(/_/g,' '))}</div>
-        <div class="tl-meta">${esc(k.tarih)} · ${esc(k.kullanici)}</div>
-        ${k.aciklama?`<div class="tl-aciklama">${esc(k.aciklama)}</div>`:''}
-      </div>
-    </div>`;
+  const badge=document.getElementById('islemSayiBadge');
+  if(badge) badge.textContent=kayitlar.length+' '+tv('dv_records','kayit');
+  const tbody = document.getElementById('islemBody'); if(!tbody) return;
+  if(!kayitlar.length){
+    tbody.innerHTML=`<tr><td colspan="4" style="text-align:center;color:var(--txd);padding:20px;">${tv('sp_no_logs','Islem kaydi yok')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = kayitlar.map((k,i)=>{
+    const cfg = TIP_CFG[k.tip]||{renk:'var(--txd)',ikon:'●',label:k.tip};
+    return `<tr style="${i%2===0?'':'background:rgba(255,255,255,.015)'}">
+      <td style="color:var(--txd);font-size:12px;white-space:nowrap;">${esc(k.tarih)}</td>
+      <td>
+        <span style="display:inline-flex;align-items:center;gap:5px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:${cfg.renk};flex-shrink:0;display:inline-block;"></span>
+          <strong style="color:${cfg.renk};">${esc(cfg.label)}</strong>
+        </span>
+      </td>
+      <td style="color:var(--txm);font-size:12px;">${esc(k.kullanici)}</td>
+      <td style="color:var(--txm);font-size:12px;">${esc(k.aciklama||'')}</td>
+    </tr>`;
   }).join('');
 }
 
