@@ -19,43 +19,12 @@
   --tx:#141e2b;--txm:#3a4f63;--txd:#637080;
 }
 
-/* === TOPBAR === */
-.sidebar.collapsed ~ .main-content .topbar-left{ display:flex; align-items:center; gap:12px; }
-.page{ padding-top:76px; } /* topbar yüksekliği + boşluk */
-
-.sidebar{ border-right:1px solid var(--bor); box-shadow:2px 0 8px rgba(0,0,0,.18); }
-
-/* === RESET === */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-height:100vh;}
-
-/* === APP SHELL === */
-.app-shell{display:flex;min-height:100vh;}
-.sidebar{width:220px;min-height:100vh;background:var(--sur);border-right:1px solid var(--bor);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:width .22s;overflow:hidden;}
-.sidebar.collapsed{width:56px;}
-.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 16px;height:56px;border-bottom:1px solid var(--bor);flex-shrink:0;overflow:hidden;white-space:nowrap;cursor:pointer;}
-.logo-mark{width:28px;height:28px;border-radius:7px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;flex-shrink:0;}
-.logo-text{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--tx);transition:opacity .15s;}
-.sidebar.collapsed .logo-text{opacity:0;pointer-events:none;}
-.sidebar-nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden;}
-.sidebar-footer{padding:10px 8px;border-top:1px solid var(--bor);flex-shrink:0;}
-.sidebar-toggle{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;border:1px solid var(--bor);background:var(--sur2);cursor:pointer;color:var(--txd);position:absolute;top:14px;right:-14px;z-index:201;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
-.sidebar-toggle:hover{border-color:var(--ac);color:var(--ac);}
-.sidebar-toggle svg{transition:transform .22s;}
-.sidebar.collapsed .sidebar-toggle svg{transform:rotate(180deg);}
-.main-content{margin-left:220px;transition:margin-left .22s;flex:1;min-width:0;}
-.sidebar.collapsed~.main-content{margin-left:56px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;text-decoration:none;color:var(--txm);font-size:14px;font-weight:500;white-space:nowrap;transition:background .15s,color .15s;margin-bottom:2px;overflow:hidden;position:relative;}
-.nav-item:hover{background:var(--sur2);color:var(--tx);}
-.nav-item.active{background:rgba(45,142,255,.12);color:var(--ac);font-weight:600;}
-.nav-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.nav-label{transition:opacity .15s;}
-.sidebar.collapsed .nav-label{opacity:0;}
-.sidebar.collapsed .nav-item:hover::after{content:attr(data-label);position:absolute;left:48px;top:50%;transform:translateY(-50%);background:var(--sur);border:1px solid var(--bor);color:var(--tx);font-size:13px;padding:5px 10px;border-radius:7px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:300;}
+/* === RESET (ares-layout.js global CSS'ini tamamlar) === */
+*{box-sizing:border-box;}
 
 /* === SAYFA === */
-.page{padding:24px 32px;max-width:1600px;margin:0 auto;}
-@media(max-width:768px){.page{padding:16px;}}
+.page{padding:24px 28px 60px;}
+@media(max-width:768px){.page{padding:16px 16px 40px;}}
 
 /* === BUTONLAR === */
 .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:36px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--txm);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif;}
@@ -232,12 +201,12 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
   <!-- BASLIK -->
   <div style="margin-bottom:20px;">
-    <div style="font-size:12px;color:var(--txd);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Devre Detayi</div>
+    <div style="font-size:12px;color:var(--txd);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_circuit_detail">Devre Detayi</div>
     <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;">
       <h1 id="ddBaslik" style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:var(--ac);letter-spacing:1px;line-height:1;">--</h1>
       <div id="ddTersane" style="font-size:14px;color:var(--txd);font-weight:500;"></div>
       <div id="ddIsEmriBar" style="display:none;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);">
-        <span style="font-size:11px;font-weight:700;color:var(--leg);">IS EMRI</span>
+        <span style="font-size:11px;font-weight:700;color:var(--leg);" data-i18n="dv_is_emri_label">IS EMRI</span>
         <span id="ddIsEmriNo" style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--leg);"></span>
       </div>
     </div>
@@ -358,39 +327,39 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
         <div class="info-title">&#128203; Devre Bilgileri</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Tersane</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_tersane">Tersane</span>
             <span id="ddGenelTersane" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Gemi / Proje</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_ship">Gemi / Proje</span>
             <span id="ddGenelGemi" style="font-size:14px;font-weight:700;color:var(--ac);">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Devre No</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_circuit">Devre No</span>
             <span id="ddGenelDevre" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Zone / Sistem</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_zone">Zone / Sistem</span>
             <span id="ddGenelZone" style="font-size:14px;font-weight:600;color:var(--txm);">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Spool Sayisi</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_spool_count">Spool Sayisi</span>
             <span id="ddGenelSpoolSayi" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Toplam Agirlik</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_stat_weight">Toplam Agirlik</span>
             <span id="ddGenelAgirlik" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Malzeme</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="sp_stat_material">Malzeme</span>
             <span id="ddGenelMalzeme" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Yuzey</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="sp_stat_surface">Yuzey</span>
             <span id="ddGenelYuzey" style="font-size:14px;font-weight:600;">--</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;">
-            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Is Emri No</span>
+            <span style="font-size:12px;color:var(--txd);font-weight:600;text-transform:uppercase;letter-spacing:.5px;" data-i18n="dv_lbl_work_order">Is Emri No</span>
             <span id="ddGenelIsEmri" style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--leg);">--</span>
           </div>
         </div>
@@ -401,26 +370,26 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
         <!-- KK -->
         <div class="info-card cl-leg">
-          <div class="info-title">&#10003; Kalite Kontrol Davetleri</div>
-          <div id="ddKKListe" style="font-size:13px;color:var(--txd);">Henuz KK daveti olusturulmamis</div>
+          <div class="info-title" data-i18n="dv_kk_title">&#10003; Kalite Kontrol Davetleri</div>
+          <div id="ddKKListe" style="font-size:13px;color:var(--txd);" data-i18n="dv_no_kk">Henuz KK daveti olusturulmamis</div>
         </div>
 
         <!-- Sevkiyat -->
         <div class="info-card cl-ac">
-          <div class="info-title">&#128667; Sevkiyatlar</div>
-          <div id="ddSevkiyatListe" style="font-size:13px;color:var(--txd);">Henuz sevkiyat gonderilmemis</div>
+          <div class="info-title" data-i18n="dv_sevk_title">&#128667; Sevkiyatlar</div>
+          <div id="ddSevkiyatListe" style="font-size:13px;color:var(--txd);" data-i18n="dv_no_sevk">Henuz sevkiyat gonderilmemis</div>
         </div>
 
         <!-- Notlar -->
         <div class="info-card cl-gr" style="flex:1;">
           <div class="info-title" style="display:flex;justify-content:space-between;align-items:center;">
-            <span>&#128204; Devre Notlari</span>
+            <span data-i18n="dv_notes_title">&#128204; Devre Notlari</span>
             <span id="genelNotCount" style="font-size:11px;font-weight:400;color:var(--txd);"></span>
           </div>
           <div id="genelNotListesi" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;max-height:180px;overflow-y:auto;"></div>
           <div style="display:flex;gap:8px;">
-            <input id="genelNotInput" type="text" placeholder="Not ekle..." style="flex:1;background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')addGenelNote()">
-            <button class="btn-primary" onclick="addGenelNote()" style="height:34px;padding:0 12px;font-size:13px;">+ Ekle</button>
+            <input id="genelNotInput" type="text" placeholder="Not ekle..." data-i18n-placeholder="dv_note_placeholder" style="flex:1;background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--tx);font-family:'Barlow',sans-serif;outline:none;" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--bor)'" onkeydown="if(event.key==='Enter')addGenelNote()">
+            <button class="btn-primary" onclick="addGenelNote()" style="height:34px;padding:0 12px;font-size:13px;" data-i18n="sp_add_btn">+ Ekle</button>
           </div>
         </div>
       </div>
@@ -431,11 +400,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelMalzeme" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-warn">
       <div class="table-header">
-        <div class="table-title">Birlestik Malzeme Listesi <span id="mlKalem" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
+        <div class="table-title"><span data-i18n="dv_mat_combined">Birlestik Malzeme Listesi</span> <span id="mlKalem" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
         <div style="display:flex;gap:12px;font-size:12px;color:var(--txd);">
-          <span>Boru: <b id="mlBoru" style="color:var(--tx);">--</b></span>
-          <span>Fitting: <b id="mlFitting" style="color:var(--tx);">--</b></span>
-          <span>Sertifika: <b id="mlSertifika" style="color:var(--warn);">--</b></span>
+          <span><span data-i18n="dv_mat_pipe_label">Boru:</span> <b id="mlBoru" style="color:var(--tx);">--</b></span>
+          <span><span data-i18n="dv_mat_fitting_label">Fitting:</span> <b id="mlFitting" style="color:var(--tx);">--</b></span>
+          <span><span data-i18n="th_cert">Sertifika:</span> <b id="mlSertifika" style="color:var(--warn);">--</b></span>
         </div>
       </div>
       <div class="table-scroll">
@@ -448,7 +417,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
           <tbody id="malzemeTableBody"></tbody>
         </table>
       </div>
-      <div id="mlSertifikaNote" style="display:none;padding:10px 18px;background:rgba(217,119,6,.07);border-top:1px solid var(--bor);font-size:12px;color:var(--warn);">
+      <div id="mlSertifikaNote" style="display:none;padding:10px 18px;background:rgba(217,119,6,.07);border-top:1px solid var(--bor);font-size:12px;color:var(--warn);" data-i18n="dv_cert_note">
         &#9888; Sertifikali malzemeler icin Heat No ve sertifika belgeleri temin edilmeli.
       </div>
     </div>
@@ -458,8 +427,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelDokumanlar" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-gr">
       <div class="table-header">
-        <div class="table-title">Dokumanlar <span id="dokSayi" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
-        <button class="btn-primary" style="height:30px;font-size:12px;" onclick="dokumanYukleModalAc()">+ Dokuman Ekle</button>
+        <div class="table-title"><span data-i18n="sp_docs_label">Dokumanlar</span> <span id="dokSayi" style="font-size:12px;font-weight:400;color:var(--txd);margin-left:6px;"></span></div>
+        <button class="btn-primary" style="height:30px;font-size:12px;" onclick="dokumanYukleModalAc()" data-i18n="sp_add_doc">+ Dokuman Ekle</button>
       </div>
       <div id="dokListesi" style="padding:4px 0;"></div>
     </div>
@@ -469,7 +438,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
   <div id="panelIslemler" class="tab-panel" style="display:none;">
     <div class="table-wrapper cl-ac">
       <div class="table-header">
-        <div class="table-title">&#128339; Devre Hareketleri <span style="font-size:11px;font-weight:400;color:var(--txd);margin-left:6px;">Spool bazli islemler spool detayi'nda gorunur</span></div>
+        <div class="table-title">&#128339; <span data-i18n="dv_circuit_moves">Devre Hareketleri</span> <span style="font-size:11px;font-weight:400;color:var(--txd);margin-left:6px;" data-i18n="dv_moves_note">Spool bazli islemler spool detayi'nda gorunur</span></div>
         <span id="islemSayiBadge" style="font-size:13px;color:var(--txd);"></span>
       </div>
       <div id="islemTimeline" style="padding:8px 20px 20px;"></div>
@@ -869,13 +838,13 @@ function esc(s){var d=document.createElement('div');d.textContent=s==null?'':Str
 function tv(key,tr){var v=window.t?window.t(key):key;return(v===key)?tr:v;}
 function statGuncelle() {
   const aktif = SPOOLS.filter(s=>!s.iptal);
-  setText('ddStatSpool', aktif.length + ' spool');
+  setText('ddStatSpool', aktif.length + ' ' + tv('dv_unit_spool','spool'));
   setText('ddStatAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
   setText('ddStatMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddStatYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
-  setText('ddStatTermin', DEVRE.terminTarihi||'Belirlenmemis');
-  setText('ddSpoolCount', aktif.length+' kayit');
-  setText('ddGenelSpoolSayi', aktif.length+' spool');
+  setText('ddStatTermin', DEVRE.terminTarihi||tv('sp_alist_none','Belirlenmemis'));
+  setText('ddSpoolCount', aktif.length+' '+tv('dv_records','kayit'));
+  setText('ddGenelSpoolSayi', aktif.length+' '+tv('dv_unit_spool','spool'));
   setText('ddGenelAgirlik', toplumAgirlik().toLocaleString('tr-TR',{minimumFractionDigits:2})+' kg');
   setText('ddGenelMalzeme', (DEVRE.malzeme||[]).join(', ')||'--');
   setText('ddGenelYuzey', (DEVRE.yuzey||[]).join(', ')||'--');
@@ -1255,7 +1224,7 @@ function terminKaydet() {
   const val = (document.getElementById('terminInput')||{}).value||'';
   DEVRE.terminTarihi = val;
   try { const d=JSON.parse(localStorage.getItem('ares_aktif_devre')||'{}'); d.terminTarihi=val; localStorage.setItem('ares_aktif_devre',JSON.stringify(d)); } catch(e){}
-  setText('ddStatTermin', val||'Belirlenmemis');
+  setText('ddStatTermin', val||tv('sp_alist_none','Belirlenmemis'));
   devreLogEkle('termin_guncellendi','Yeni termin: '+val);
   showToast('Termin tarihi guncellendi','success');
 }
@@ -1367,7 +1336,7 @@ function dokumanSilOnay(id) {
 let genelNotlar = [];
 function renderGenelNotes() {
   const liste = document.getElementById('genelNotListesi'); if(!liste) return;
-  setText('genelNotCount', genelNotlar.length+' not');
+  setText('genelNotCount', genelNotlar.length+' '+tv('sp_notes_unit','not'));
   liste.innerHTML = genelNotlar.length
     ? genelNotlar.map(n=>`
       <div style="background:rgba(22,163,110,.06);border:1px solid rgba(22,163,110,.2);border-radius:9px;padding:9px 12px;position:relative;">
