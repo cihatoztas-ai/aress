@@ -799,7 +799,6 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         var el = document.getElementById('ares-no-transition');
         if (el) el.remove();
       });
-      });
     });
   });
 
