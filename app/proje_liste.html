@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Proje Listesi | AresPipe</title>
-<script>(function(){var t=localStorage.getItem('syos_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<!-- B-03: Flash prevention — LINK'TEN ÖNCE, visibility:hidden zorunlu -->
+<script>(function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.visibility='hidden';})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ac:#2D8EFF;--gr:#16a36e;--re:#e53e3e;--warn:#d97706;--leg:#7c3aed;}
@@ -37,7 +38,7 @@ select.inp{cursor:pointer;}
 .sc.sc-ac{border-left:4px solid var(--ac);}
 .sc.sc-gr{border-left:4px solid var(--gr);}
 .sc.sc-leg{border-left:4px solid var(--leg);}
-.sc-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:20px;background:var(--sur2);color:var(--txd);margin-bottom:8px;}
+.sc-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:20px;background:var(--sur2);color:var(--txd);margin-bottom:8px;}
 .sc-badge.re{background:rgba(229,62,62,.12);color:var(--re);}
 .sc-badge.warn{background:rgba(217,119,6,.12);color:var(--warn);}
 .sc-badge.ac{background:rgba(45,142,255,.12);color:var(--ac);}
@@ -56,7 +57,7 @@ select.inp{cursor:pointer;}
 /* TABLE */
 .tbl-wrap{border:1px solid var(--bor);border-radius:14px;overflow:hidden;}
 table{width:100%;border-collapse:collapse;white-space:nowrap;}
-thead th{text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;background:var(--sur2);border-bottom:1px solid var(--bor);}
+thead th{text-align:left;padding:10px 14px;font-size:12px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;background:var(--sur2);border-bottom:1px solid var(--bor);}
 thead th.sort{cursor:pointer;user-select:none;}
 thead th.sort:hover{color:var(--tx);}
 thead th.sort::after{content:' ⇅';font-size:10px;opacity:.35;font-weight:400;}
@@ -163,8 +164,8 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 <!-- BAŞLIK -->
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
   <div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;">Proje Listesi</div>
-    <div style="font-size:13px;color:var(--txm);margin-top:3px;">Tüm aktif ve tamamlanan projeler</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;" data-i18n="pl_title">Proje Listesi</div>
+    <div style="font-size:13px;color:var(--txm);margin-top:3px;" data-i18n="pl_subtitle">Tüm aktif ve tamamlanan projeler</div>
   </div>
 
 </div>
@@ -172,33 +173,33 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 <!-- STAT CARDS -->
 <div class="sgrid">
   <div class="sc cl-ac">
-    <div class="sc-badge ac">TERSANE</div>
+    <div class="sc-badge ac" data-i18n="pl_badge_tersane">TERSANE</div>
     <div class="sv" id="st-tersane">4</div>
-    <div class="sl">Tersane Sayısı</div>
+    <div class="sl" data-i18n="pl_sl_tersane">Tersane Sayısı</div>
     <div class="sc-bar"><div class="sc-bar-fill ac" id="bar-tersane" style="width:0%"></div></div>
   </div>
   <div class="sc cl-gr">
-    <div class="sc-badge gr">TOPLAM</div>
+    <div class="sc-badge gr" data-i18n="pl_badge_toplam">TOPLAM</div>
     <div class="sv" id="st-toplam">12</div>
-    <div class="sl">Toplam Proje</div>
+    <div class="sl" data-i18n="pl_sl_toplam">Toplam Proje</div>
     <div class="sc-bar"><div class="sc-bar-fill gr" id="bar-toplam" style="width:0%"></div></div>
   </div>
   <div class="sc cl-warn">
-    <div class="sc-badge warn">DEVRE</div>
+    <div class="sc-badge warn" data-i18n="pl_badge_devre">DEVRE</div>
     <div class="sv" id="st-devre">109</div>
-    <div class="sl">Toplam Devre</div>
+    <div class="sl" data-i18n="pl_sl_devre">Toplam Devre</div>
     <div class="sc-bar"><div class="sc-bar-fill warn" id="bar-devre" style="width:0%"></div></div>
   </div>
   <div class="sc cl-leg">
-    <div class="sc-badge leg">SPOOL</div>
+    <div class="sc-badge leg" data-i18n="pl_badge_spool">SPOOL</div>
     <div class="sv" id="st-spool">1.393</div>
-    <div class="sl">Toplam Spool</div>
+    <div class="sl" data-i18n="pl_sl_spool">Toplam Spool</div>
     <div class="sc-bar"><div class="sc-bar-fill leg" id="bar-spool" style="width:0%"></div></div>
   </div>
   <div class="sc cl-re">
-    <div class="sc-badge re">AĞIRLIK</div>
+    <div class="sc-badge re" data-i18n="pl_badge_agirlik">AĞIRLIK</div>
     <div class="sv" id="st-agirlik">44.820</div>
-    <div class="sl">Toplam Ağırlık (kg)</div>
+    <div class="sl" data-i18n="pl_sl_agirlik">Toplam Ağırlık (kg)</div>
     <div class="sc-bar"><div class="sc-bar-fill re" id="bar-agirlik" style="width:0%"></div></div>
   </div>
 </div>
@@ -207,25 +208,25 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 <div class="cl-warn" style="display:flex;gap:8px;margin-bottom:14px;align-items:center;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:10px 14px;">
   <button class="bp" onclick="modalAc()" style="height:34px;font-size:13px;flex:none;">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Yeni Proje
+    <span data-i18n="pl_btn_new">Yeni Proje</span>
   </button>
   <div style="flex:1;"></div>
-  <input class="inp" id="plAra" placeholder="Proje no, gemi adi, tersane..." oninput="plFiltrele()" style="width:240px;flex:none;">
+  <input class="inp" id="plAra" data-i18n-placeholder="pl_search_placeholder" placeholder="Proje no, gemi adi, tersane..." oninput="plFiltrele()" style="width:240px;flex:none;">
   <select class="inp" id="plTersane" onchange="plFiltrele()" style="width:150px;flex:none;">
-    <option value="">Tüm Tersaneler</option>
+    <option value="" data-i18n="pl_all_shipyards">Tüm Tersaneler</option>
     <option value="TERSAN">TERSAN</option>
     <option value="SEDEF">SEDEF</option>
     <option value="GEMAK">GEMAK</option>
     <option value="DESAN">DESAN</option>
   </select>
   <select class="inp" id="plDurum" onchange="plFiltrele()" style="width:150px;flex:none;">
-    <option value="">Tüm Durumlar</option>
-    <option value="Devam Ediyor">Devam Ediyor</option>
-    <option value="Tamamlandı">Tamamlandı</option>
-    <option value="Beklemede">Beklemede</option>
-    <option value="İptal">İptal</option>
+    <option value="" data-i18n="pl_all_statuses">Tüm Durumlar</option>
+    <option value="Devam Ediyor" data-i18n="pl_status_ongoing">Devam Ediyor</option>
+    <option value="Tamamlandı" data-i18n="pl_status_done">Tamamlandı</option>
+    <option value="Beklemede" data-i18n="pl_status_waiting">Beklemede</option>
+    <option value="İptal" data-i18n="pl_status_cancelled">İptal</option>
   </select>
-  <button class="bo" onclick="plSifirla()">Temizle</button>
+  <button class="bo" onclick="plSifirla()" data-i18n="pl_btn_clear">Temizle</button>
 </div>
 
 <!-- TABLO -->
@@ -235,16 +236,16 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
     <thead>
       <tr>
         <th style="width:40px;">#</th>
-        <th class="sort" onclick="plSort(this)" data-col="0" style="min-width:120px;">Tersane</th>
-        <th class="sort" onclick="plSort(this)" data-col="1" style="min-width:120px;">Proje No</th>
-        <th class="sort" onclick="plSort(this)" data-col="2" style="min-width:190px;">Gemi Adı</th>
-        <th class="sort" onclick="plSort(this)" data-col="3" style="min-width:120px;">Başlangıç</th>
-        <th class="sort" onclick="plSort(this)" data-col="4" style="min-width:120px;">Bitiş</th>
-        <th class="sort" onclick="plSort(this)" data-col="5" style="min-width:80px;text-align:right;">Devre</th>
-        <th class="sort" onclick="plSort(this)" data-col="6" style="min-width:80px;text-align:right;">Spool</th>
-        <th class="sort" onclick="plSort(this)" data-col="7" style="min-width:130px;text-align:right;">Ağırlık (kg)</th>
-        <th style="min-width:160px;">İlerleme</th>
-        <th class="sort" onclick="plSort(this)" data-col="9" style="min-width:130px;">Durum</th>
+        <th class="sort" onclick="plSort(this)" data-col="0" style="min-width:120px;" data-i18n="pl_th_shipyard">Tersane</th>
+        <th class="sort" onclick="plSort(this)" data-col="1" style="min-width:120px;" data-i18n="pl_th_project_no">Proje No</th>
+        <th class="sort" onclick="plSort(this)" data-col="2" style="min-width:190px;" data-i18n="pl_th_ship_name">Gemi Adı</th>
+        <th class="sort" onclick="plSort(this)" data-col="3" style="min-width:120px;" data-i18n="pl_th_start">Başlangıç</th>
+        <th class="sort" onclick="plSort(this)" data-col="4" style="min-width:120px;" data-i18n="pl_th_end">Bitiş</th>
+        <th class="sort" onclick="plSort(this)" data-col="5" style="min-width:80px;text-align:right;" data-i18n="pl_th_circuit">Devre</th>
+        <th class="sort" onclick="plSort(this)" data-col="6" style="min-width:80px;text-align:right;" data-i18n="pl_th_spool">Spool</th>
+        <th class="sort" onclick="plSort(this)" data-col="7" style="min-width:130px;text-align:right;" data-i18n="pl_th_weight">Ağırlık (kg)</th>
+        <th style="min-width:160px;" data-i18n="pl_th_progress">İlerleme</th>
+        <th class="sort" onclick="plSort(this)" data-col="9" style="min-width:130px;" data-i18n="pl_th_status">Durum</th>
         <th style="min-width:76px;text-align:center;"></th>
       </tr>
     </thead>
@@ -1104,7 +1105,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 </div>
 </div>
 
-<div id="plBos" style="display:none;padding:40px;text-align:center;color:var(--txd);font-size:14px;background:var(--sur);border:1px solid var(--bor);border-radius:14px;margin-top:8px;">Filtreyle eşleşen proje bulunamadı.</div>
+<div id="plBos" style="display:none;padding:40px;text-align:center;color:var(--txd);font-size:14px;background:var(--sur);border:1px solid var(--bor);border-radius:14px;margin-top:8px;" data-i18n="pl_no_results">Filtreyle eşleşen proje bulunamadı.</div>
 
 <div class="pgn" id="pgnWrap">
   <div class="pgn-info" id="pgnInfo"></div>
@@ -1117,22 +1118,22 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 <div class="modal-overlay" id="modalOverlay" onclick="modalKapat(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-head">
-      <div class="modal-title">Yeni Proje Ekle</div>
+      <div class="modal-title" data-i18n="pl_modal_title">Yeni Proje Ekle</div>
       <button class="modal-close" onclick="modalKapat()">&#215;</button>
     </div>
     <div class="modal-body">
 
       <!-- Tersane / Firma seçici -->
       <div class="field">
-        <label>Kaynak Seçimi <span style="color:var(--re);">*</span></label>
+        <label><span data-i18n="pl_source_label">Kaynak Seçimi</span> <span style="color:var(--re);">*</span></label>
         <div class="source-toggle">
           <div class="source-opt" id="soptTersane" onclick="kaynakSec('tersane')">
             <div class="sopt-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
             <div>
-              <div class="sopt-label">Tersane</div>
-              <div style="font-size:11px;color:var(--txd);margin-top:1px;">Kayıtlı tersaneler</div>
+              <div class="sopt-label" data-i18n="pl_source_shipyard">Tersane</div>
+              <div style="font-size:11px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_shipyard_sub">Kayıtlı tersaneler</div>
             </div>
             <div class="sopt-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
@@ -1141,8 +1142,8 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
             </div>
             <div>
-              <div class="sopt-label">Firma</div>
-              <div style="font-size:11px;color:var(--txd);margin-top:1px;">Kayıtlı firmalar</div>
+              <div class="sopt-label" data-i18n="pl_source_company">Firma</div>
+              <div style="font-size:11px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_company_sub">Kayıtlı firmalar</div>
             </div>
             <div class="sopt-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
@@ -1150,7 +1151,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <!-- Tersane dropdown -->
         <div class="source-sub" id="subTersane">
           <select class="inp" id="fTersane" style="font-size:14px;">
-            <option value="">Tersane seçiniz...</option>
+            <option value="" data-i18n="pl_select_shipyard">Tersane seçiniz...</option>
             <option value="TERSAN">TERSAN Tersanesi</option>
             <option value="SEDEF">SEDEF Tersanesi</option>
             <option value="GEMAK">GEMAK Tersanesi</option>
@@ -1160,7 +1161,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <!-- Firma dropdown -->
         <div class="source-sub" id="subFirma">
           <select class="inp" id="fFirma" style="font-size:14px;">
-            <option value="">Firma seçiniz...</option>
+            <option value="" data-i18n="pl_select_company">Firma seçiniz...</option>
             <option value="Firma A">Firma A</option>
             <option value="Firma B">Firma B</option>
           </select>
@@ -1170,43 +1171,43 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
       <!-- Proje No + Gemi Adı -->
       <div class="field-row">
         <div class="field">
-          <label>Proje No <span style="color:var(--re);">*</span></label>
-          <input class="inp" id="fProjeNo" type="text" placeholder="örn. NB 1140" style="text-transform:uppercase;">
+          <label><span data-i18n="pl_project_no_label">Proje No</span> <span style="color:var(--re);">*</span></label>
+          <input class="inp" id="fProjeNo" type="text" data-i18n-placeholder="pl_project_no_placeholder" placeholder="örn. NB 1140" style="text-transform:uppercase;">
         </div>
         <div class="field">
-          <label>Gemi Adı</label>
-          <input class="inp" id="fGemiAdi" type="text" placeholder="örn. MV ATLANTIC PIONEER" style="text-transform:uppercase;">
+          <label data-i18n="pl_ship_name_label">Gemi Adı</label>
+          <input class="inp" id="fGemiAdi" type="text" data-i18n-placeholder="pl_ship_name_placeholder" placeholder="örn. MV ATLANTIC PIONEER" style="text-transform:uppercase;">
         </div>
       </div>
 
       <!-- Gemi Türü -->
       <div class="field">
-        <label>Gemi Türü</label>
+        <label data-i18n="pl_ship_type_label">Gemi Türü</label>
         <div style="display:flex;gap:8px;align-items:center;">
           <select class="inp" id="fGemiTuru" style="flex:1;font-size:14px;">
-            <option value="">Seçiniz...</option>
-            <option>Feribot</option>
-            <option>Balıkçı Teknesi</option>
+            <option value="" data-i18n="pl_select_type">Seçiniz...</option>
+            <option data-i18n="pl_ship_type_ferry">Feribot</option>
+            <option data-i18n="pl_ship_type_fishing">Balıkçı Teknesi</option>
           </select>
           <button class="bo" onclick="yeniGemiTuruEkle()" style="white-space:nowrap;flex-shrink:0;height:36px;font-size:13px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Yeni Ekle
+            <span data-i18n="pl_btn_add_type">Yeni Ekle</span>
           </button>
         </div>
       </div>
 
       <!-- Proje Türü -->
       <div class="field">
-        <label>Proje Türü</label>
+        <label data-i18n="pl_project_type_label">Proje Türü</label>
         <div class="ptur-row">
           <div class="ptur-opt" id="ptYeniInsa" onclick="projeTuruSec('Yeni İnşa','ptYeniInsa')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--txd);"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-            <span class="ptur-lbl">Yeni İnşa</span>
+            <span class="ptur-lbl" data-i18n="pl_type_new_build">Yeni İnşa</span>
             <div class="ptur-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
           <div class="ptur-opt" id="ptTamir" onclick="projeTuruSec('Tamir / Bakım','ptTamir')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--txd);"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-            <span class="ptur-lbl">Tamir / Bakım</span>
+            <span class="ptur-lbl" data-i18n="pl_type_repair">Tamir / Bakım</span>
             <div class="ptur-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
         </div>
@@ -1215,22 +1216,127 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 
       <!-- Proje Açıklaması -->
       <div class="field">
-        <label>Proje Açıklaması</label>
-        <textarea class="inp" id="fAciklama" rows="3" placeholder="Kısa açıklama..." style="resize:vertical;min-height:80px;line-height:1.6;"></textarea>
+        <label data-i18n="pl_desc_label">Proje Açıklaması</label>
+        <textarea class="inp" id="fAciklama" rows="3" data-i18n-placeholder="pl_desc_placeholder" placeholder="Kısa açıklama..." style="resize:vertical;min-height:80px;line-height:1.6;"></textarea>
       </div>
 
     </div>
     <div class="modal-foot">
-      <button class="bo" onclick="modalKapat()">İptal</button>
+      <button class="bo" onclick="modalKapat()" data-i18n="pl_btn_cancel">İptal</button>
       <button class="bp" onclick="projeKaydet()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Proje Ekle
+        <span data-i18n="pl_btn_save">Proje Ekle</span>
       </button>
     </div>
   </div>
 </div>
 
 <script>
+'use strict';
+
+// ── D-01: DİL SİSTEMİ ────────────────────────────────────────────
+var _I18N = {
+  en: {
+    "pl_title":"Project List","pl_subtitle":"All active and completed projects",
+    "pl_badge_tersane":"SHIPYARD","pl_badge_toplam":"TOTAL","pl_badge_devre":"CIRCUIT",
+    "pl_badge_spool":"SPOOL","pl_badge_agirlik":"WEIGHT",
+    "pl_sl_tersane":"Shipyard Count","pl_sl_toplam":"Total Projects",
+    "pl_sl_devre":"Total Circuits","pl_sl_spool":"Total Spools","pl_sl_agirlik":"Total Weight (kg)",
+    "pl_btn_new":"New Project","pl_search_placeholder":"Project no, ship name, shipyard...",
+    "pl_all_shipyards":"All Shipyards","pl_all_statuses":"All Statuses",
+    "pl_status_ongoing":"In Progress","pl_status_done":"Completed",
+    "pl_status_waiting":"On Hold","pl_status_cancelled":"Cancelled",
+    "pl_btn_clear":"Clear",
+    "pl_th_shipyard":"Shipyard","pl_th_project_no":"Project No","pl_th_ship_name":"Ship Name",
+    "pl_th_start":"Start","pl_th_end":"End","pl_th_circuit":"Circuit",
+    "pl_th_spool":"Spool","pl_th_weight":"Weight (kg)","pl_th_progress":"Progress","pl_th_status":"Status",
+    "pl_no_results":"No projects found matching the filter.",
+    "pl_modal_title":"Add New Project","pl_source_label":"Source Selection",
+    "pl_source_shipyard":"Shipyard","pl_source_shipyard_sub":"Registered shipyards",
+    "pl_source_company":"Company","pl_source_company_sub":"Registered companies",
+    "pl_select_shipyard":"Select shipyard...","pl_select_company":"Select company...",
+    "pl_project_no_label":"Project No","pl_project_no_placeholder":"e.g. NB 1140",
+    "pl_ship_name_label":"Ship Name","pl_ship_name_placeholder":"e.g. MV ATLANTIC PIONEER",
+    "pl_ship_type_label":"Ship Type","pl_select_type":"Select...","pl_btn_add_type":"Add New",
+    "pl_ship_type_ferry":"Ferry","pl_ship_type_fishing":"Fishing Vessel",
+    "pl_project_type_label":"Project Type","pl_type_new_build":"New Build","pl_type_repair":"Repair / Maintenance",
+    "pl_desc_label":"Project Description","pl_desc_placeholder":"Brief description...",
+    "pl_btn_cancel":"Cancel","pl_btn_save":"Add Project",
+    "pl_status_not_started":"Not Started","pl_pending":"Pending",
+    "pl_alert_no":"Project No is required.","pl_alert_source":"Please select a shipyard or company.",
+    "pl_confirm_delete":"Are you sure you want to delete this project?",
+    "pl_pgn_info":"{total} projects, showing {from}–{to}"
+  },
+  ar: {
+    "pl_title":"قائمة المشاريع","pl_subtitle":"جميع المشاريع النشطة والمكتملة",
+    "pl_badge_tersane":"الورشة","pl_badge_toplam":"الإجمالي","pl_badge_devre":"الدوائر",
+    "pl_badge_spool":"السبولات","pl_badge_agirlik":"الوزن",
+    "pl_sl_tersane":"عدد الورش","pl_sl_toplam":"إجمالي المشاريع",
+    "pl_sl_devre":"إجمالي الدوائر","pl_sl_spool":"إجمالي السبولات","pl_sl_agirlik":"الوزن الإجمالي (كغ)",
+    "pl_btn_new":"مشروع جديد","pl_search_placeholder":"رقم المشروع، اسم السفينة، الورشة...",
+    "pl_all_shipyards":"كل الورش","pl_all_statuses":"كل الحالات",
+    "pl_status_ongoing":"جارٍ","pl_status_done":"مكتمل",
+    "pl_status_waiting":"معلق","pl_status_cancelled":"ملغى",
+    "pl_btn_clear":"مسح",
+    "pl_th_shipyard":"الورشة","pl_th_project_no":"رقم المشروع","pl_th_ship_name":"اسم السفينة",
+    "pl_th_start":"البداية","pl_th_end":"النهاية","pl_th_circuit":"الدوائر",
+    "pl_th_spool":"السبولات","pl_th_weight":"الوزن (كغ)","pl_th_progress":"التقدم","pl_th_status":"الحالة",
+    "pl_no_results":"لا توجد مشاريع تطابق الفلتر.",
+    "pl_modal_title":"إضافة مشروع جديد","pl_source_label":"اختيار المصدر",
+    "pl_source_shipyard":"الورشة","pl_source_shipyard_sub":"الورش المسجلة",
+    "pl_source_company":"الشركة","pl_source_company_sub":"الشركات المسجلة",
+    "pl_select_shipyard":"اختر الورشة...","pl_select_company":"اختر الشركة...",
+    "pl_project_no_label":"رقم المشروع","pl_project_no_placeholder":"مثال: NB 1140",
+    "pl_ship_name_label":"اسم السفينة","pl_ship_name_placeholder":"مثال: MV ATLANTIC PIONEER",
+    "pl_ship_type_label":"نوع السفينة","pl_select_type":"اختر...","pl_btn_add_type":"إضافة جديد",
+    "pl_ship_type_ferry":"عبارة","pl_ship_type_fishing":"قارب صيد",
+    "pl_project_type_label":"نوع المشروع","pl_type_new_build":"بناء جديد","pl_type_repair":"إصلاح / صيانة",
+    "pl_desc_label":"وصف المشروع","pl_desc_placeholder":"وصف مختصر...",
+    "pl_btn_cancel":"إلغاء","pl_btn_save":"إضافة المشروع",
+    "pl_status_not_started":"لم يبدأ","pl_pending":"قيد الانتظار",
+    "pl_alert_no":"رقم المشروع مطلوب.","pl_alert_source":"يرجى اختيار الورشة أو الشركة.",
+    "pl_confirm_delete":"هل أنت متأكد من حذف هذا المشروع؟",
+    "pl_pgn_info":"{total} مشروع، عرض {from}–{to}"
+  }
+};
+function _getLang() { return document.documentElement.getAttribute('lang') || localStorage.getItem('ares_lang') || 'tr'; }
+function tv(key, tr) {
+  var lang = _getLang(), dict = _I18N[lang];
+  if (dict && dict[key]) return dict[key];
+  return tr !== undefined ? tr : key;
+}
+function _applyI18n() {
+  var lang = _getLang(), dict = _I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n');
+    if (!el.hasAttribute('data-i18n-tr')) el.setAttribute('data-i18n-tr', el.textContent.trim());
+    if (!dict) { el.textContent = el.getAttribute('data-i18n-tr'); return; }
+    if (dict[k]) el.textContent = dict[k];
+    else el.textContent = el.getAttribute('data-i18n-tr');
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n-placeholder');
+    if (!el.hasAttribute('data-i18n-placeholder-tr')) el.setAttribute('data-i18n-placeholder-tr', el.placeholder || '');
+    if (!dict) { el.placeholder = el.getAttribute('data-i18n-placeholder-tr'); return; }
+    if (dict[k]) el.placeholder = dict[k];
+    else el.placeholder = el.getAttribute('data-i18n-placeholder-tr');
+  });
+}
+// MutationObserver — html[lang] değişince tetiklenir (D-01 Katman 4)
+if (typeof MutationObserver !== 'undefined') {
+  new MutationObserver(function() { _applyI18n(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+}
+// _onLangChange hook
+window._onLangChange = function() { _applyI18n(); };
+
+// G-01: XSS sanitizer — innerHTML'e kullanıcı verisi yazmadan önce zorunlu
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = (s == null) ? '' : String(s);
+  return d.innerHTML;
+}
+
 function modalAc(){
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1273,21 +1379,44 @@ function yeniGemiTuruEkle(){
   sel.value=yeni;
 }
 
+// UI-03: İlerleme renk standardı — progColor()
+function progColor(p) {
+  return p === 0 ? 'var(--txd)' : p < 30 ? 'var(--re)' : p < 70 ? 'var(--warn)' : 'var(--gr)';
+}
+// UI-03: İlerleme CSS class → progColor ile eşleşen class adı
+function progClass(p) {
+  return p === 0 ? 'pl' : p < 30 ? 're' : p < 70 ? 'warn' : 'gr';
+}
+
+// tarihFormat: gg.aa.yyyy → gg/aa/yyyy
+function tarihFormat(str) {
+  if (!str) return '—';
+  return str.replace(/\./g, '/');
+}
+
 function durumPill(d){
-  var map={'Devam Ediyor':'dv','Tamamlandı':'bt','Beklemede':'bk','İptal':'re'};
-  return '<span class="pill '+(map[d]||'pl')+'">'+d+'</span>';
+  var map={
+    'Devam Ediyor':'dv','Tamamlandı':'bt','Beklemede':'bk','İptal':'re'
+  };
+  var label = {
+    'Devam Ediyor': tv('pl_status_ongoing','Devam Ediyor'),
+    'Tamamlandı':   tv('pl_status_done','Tamamlandı'),
+    'Beklemede':    tv('pl_status_waiting','Beklemede'),
+    'İptal':        tv('pl_status_cancelled','İptal')
+  };
+  return '<span class="pill '+(map[d]||'pl')+'">'+(label[d]||d)+'</span>';
 }
 function irlPct(d){ return d==='Tamamlandı'?100:d==='Devam Ediyor'?50:d==='Beklemede'?10:0; }
-function irlColor(d){ return d==='Tamamlandı'?'gr':d==='Devam Ediyor'?'ac':d==='Beklemede'?'warn':'re'; }
+function irlColor(d){ return progClass(irlPct(d)); }
 
 function projeKaydet(){
   var gemi=(document.getElementById('fGemiAdi').value.trim()||'—').toUpperCase();
   var no=document.getElementById('fProjeNo').value.trim().toUpperCase();
-  if(!no){alert('Proje No zorunludur.');document.getElementById('fProjeNo').focus();return;}
+  if(!no){alert(tv('pl_alert_no','Proje No zorunludur.'));document.getElementById('fProjeNo').focus();return;}
   var kaynak='';
   if(_kaynak==='tersane') kaynak=document.getElementById('fTersane').value;
   else if(_kaynak==='firma') kaynak=document.getElementById('fFirma').value;
-  if(!kaynak){alert('Tersane veya firma seçiniz.');return;}
+  if(!kaynak){alert(tv('pl_alert_source','Tersane veya firma seçiniz.'));return;}
   var bugun=new Date();
   var bas=bugun.getDate().toString().padStart(2,'0')+'.'+(bugun.getMonth()+1).toString().padStart(2,'0')+'.'+bugun.getFullYear();
   var durum='Başlamadı';
@@ -1295,27 +1424,63 @@ function projeKaydet(){
   var tbody=document.getElementById('plBody');
   var sira=tbody.querySelectorAll('tr').length+1;
 
-  var tr=document.createElement('tr');
+  var tr = document.createElement('tr');
   tr.setAttribute('data-durum', durum);
   tr.setAttribute('data-tersane', kaynak);
-  tr.setAttribute('onclick', 'projeyeGit(this)');
-  // Bitiş tarihi, devre, spool, ağırlık, ilerleme, durum → diğer sayfalardan gelecek
-  tr.innerHTML=
-    '<td style="color:var(--txd);">'+sira+'</td>'+
-    '<td style="color:var(--txm);">'+kaynak+'</td>'+
-    '<td class="mono">'+no+'</td>'+
-    '<td style="font-weight:500;">'+gemi+'</td>'+
-    '<td style="color:var(--txm);">'+bas+'</td>'+
-    '<td style="color:var(--txd);font-style:italic;">Bekleniyor</td>'+
-    '<td style="text-align:right;color:var(--txd);">—</td>'+
-    '<td style="text-align:right;color:var(--txd);">—</td>'+
-    '<td style="text-align:right;color:var(--txd);">—</td>'+
-    '<td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill pl" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--txd);">%0</span></div></td>'+
-    '<td><span class="pill pl">Başlamadı</span></td>'+
-    '<td style="text-align:center;" onclick="event.stopPropagation()">'+
-      '<button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'+
-      '<button class="icon-btn del" title="Sil" onclick="silRow(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>'+
-    '</td>';
+  tr.addEventListener('click', function() { projeyeGit(tr); });
+
+  // G-01: Kullanıcı verisi createElement + textContent ile yazılır
+  var td = function(content, attrs) {
+    var el = document.createElement('td');
+    if (attrs) Object.keys(attrs).forEach(function(k) { el.setAttribute('style', attrs[k]); });
+    el.innerHTML = content; // sadece güvenli/sabit HTML için
+    return el;
+  };
+
+  var tdText = function(text, style) {
+    var el = document.createElement('td');
+    el.textContent = text;
+    if (style) el.setAttribute('style', style);
+    return el;
+  };
+
+  tr.appendChild(tdText(String(sira), 'color:var(--txd);'));
+  tr.appendChild(tdText(kaynak, 'color:var(--txm);'));
+
+  var tdNo = document.createElement('td');
+  tdNo.className = 'mono';
+  tdNo.textContent = no;
+  tr.appendChild(tdNo);
+
+  tr.appendChild(tdText(gemi, 'font-weight:500;'));
+  tr.appendChild(tdText(bas, 'color:var(--txm);'));
+  tr.appendChild(tdText('Bekleniyor', 'color:var(--txd);font-style:italic;'));
+  tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
+  tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
+  tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
+
+  // İlerleme
+  var tdIler = document.createElement('td');
+  tdIler.innerHTML = '<div class="tprog"><div class="tprog-bar"><div class="tprog-fill pl" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--txd);">%0</span></div>';
+  tr.appendChild(tdIler);
+
+  // Durum
+  var tdDurum = document.createElement('td');
+  var span = document.createElement('span');
+  span.className = 'pill pl';
+  span.textContent = 'Başlamadı';
+  tdDurum.appendChild(span);
+  tr.appendChild(tdDurum);
+
+  // Aksiyon butonları
+  var tdAkt = document.createElement('td');
+  tdAkt.setAttribute('style', 'text-align:center;');
+  tdAkt.setAttribute('onclick', 'event.stopPropagation()');
+  tdAkt.innerHTML =
+    '<button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' +
+    '<button class="icon-btn del" title="Sil" onclick="silRow(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>';
+  tr.appendChild(tdAkt);
+
   tbody.appendChild(tr);
 
   // Sıfırla
@@ -1434,29 +1599,61 @@ function plSifirla(){
   plFiltrele();
 }
 
-// SIRALA
-var plSortCol=-1,plSortDir=1;
-function plSort(th){
-  var col=parseInt(th.getAttribute('data-col'));
-  var tbody=document.getElementById('plBody');
-  var rows=Array.from(tbody.querySelectorAll('tr'));
-  if(plSortCol===col){plSortDir*=-1;}else{plSortDir=1;plSortCol=col;}
-  document.querySelectorAll('thead th.sort').forEach(function(h){h.className='sort';});
-  th.classList.add(plSortDir===1?'asc':'desc');
-  rows.sort(function(a,b){
-    var at=a.querySelectorAll('td')[col+1],bt=b.querySelectorAll('td')[col+1];
-    var av=at?at.textContent.trim():'',bv=bt?bt.textContent.trim():'';
-    var an=parseFloat(av.replace(/\./g,'').replace(',','.')),bn=parseFloat(bv.replace(/\./g,'').replace(',','.'));
-    if(!isNaN(an)&&!isNaN(bn)) return (an-bn)*plSortDir;
-    return av.localeCompare(bv,'tr')*plSortDir;
+// T-01: ASC → DESC → Varsayılan döngüsü
+var plSortCol = -1, plSortDir = 0; // 0=varsayılan, 1=asc, 2=desc
+var _plOriginalOrder = [];
+
+function plSort(th) {
+  var col = parseInt(th.getAttribute('data-col'));
+  if (plSortCol === col) {
+    plSortDir = (plSortDir + 1) % 3;
+    if (plSortDir === 0) plSortCol = -1;
+  } else {
+    plSortCol = col; plSortDir = 1;
+  }
+  document.querySelectorAll('thead th.sort').forEach(function(h) {
+    h.classList.remove('asc', 'desc');
   });
-  rows.forEach(function(r){tbody.appendChild(r);});
+  if (plSortDir === 0) {
+    // Varsayılan sıraya dön
+    var tbody = document.getElementById('plBody');
+    _plOriginalOrder.forEach(function(r) { tbody.appendChild(r); });
+    plFiltrele(); return;
+  }
+  th.classList.add(plSortDir === 1 ? 'asc' : 'desc');
+  var tbody = document.getElementById('plBody');
+  var rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort(function(a, b) {
+    var at = a.querySelectorAll('td')[col + 1], bt = b.querySelectorAll('td')[col + 1];
+    var av = at ? at.textContent.trim() : '', bv = bt ? bt.textContent.trim() : '';
+    var an = parseFloat(av.replace(/\./g, '').replace(',', '.')), bn = parseFloat(bv.replace(/\./g, '').replace(',', '.'));
+    if (!isNaN(an) && !isNaN(bn)) return (an - bn) * (plSortDir === 1 ? 1 : -1);
+    return av.localeCompare(bv, 'tr') * (plSortDir === 1 ? 1 : -1);
+  });
+  rows.forEach(function(r) { tbody.appendChild(r); });
+  plFiltrele();
 }
 
 // SİL
 function silRow(btn){
-  if(!confirm('Bu projeyi silmek istediğinize emin misiniz?')) return;
-  btn.closest('tr').remove();
+  if(!confirm(tv('pl_confirm_delete','Bu projeyi silmek istediğinize emin misiniz?'))) return;
+  var row = btn.closest('tr');
+  // L-01: Silme işlemi loglanır
+  var no = (row.querySelector('.mono') || {}).textContent || '?';
+  var tersane = (row.querySelectorAll('td')[1] || {}).textContent || '';
+  try {
+    var log = JSON.parse(localStorage.getItem('ares_islemLog') || '[]');
+    log.unshift({
+      id: 'L' + Date.now(),
+      tarih: new Date().toLocaleString('tr-TR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+      katman: 'proje', katmanId: no,
+      islem: 'SİLME', yapan: '—',
+      ust: { tersane: tersane }
+    });
+    if (log.length > 1000) log = log.slice(0, 1000);
+    localStorage.setItem('ares_islemLog', JSON.stringify(log));
+  } catch(e) {}
+  row.remove();
   plFiltrele();
 }
 
@@ -1465,12 +1662,19 @@ function projeyeGit(row){
   var no=row.querySelector('.mono');
   if(no){
     var proje={projeNo:no.textContent.trim(),tersane:(row.querySelector('td:nth-child(2)')||{}).textContent||''};
-    localStorage.setItem('syos_aktif_proje', JSON.stringify(proje));
+    localStorage.setItem('ares_aktif_proje', JSON.stringify(proje));
     window.location.href='proje_detay.html';
   }
 }
 
-document.addEventListener('DOMContentLoaded', function(){ plFiltrele(); });
+document.addEventListener('DOMContentLoaded', function(){
+  // T-01: Varsayılan sırayı kaydet
+  _plOriginalOrder = Array.from(document.querySelectorAll('#plBody tr'));
+  _applyI18n();
+  plFiltrele();
+  // B-03: visibility restore
+  document.documentElement.style.visibility = '';
+});
 </script>
 </div>
 </div>
