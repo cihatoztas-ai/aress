@@ -883,24 +883,9 @@ var _STAR_CFG = [
 function yildizToggle(id) {
   var d = DEVRELER.find(function(x) { return x.id === id; });
   if (!d) return;
-  var state = getStarState(id);
-  if (state === 0) {
-    // İlk tıklama — ML yoksa otomatik üret, sonra modal aç
-    if (!getML(id)) setML(id, mockMalzemeUret(d));
-    mlKontrolAc(id);
-  } else {
-    var sonraki = (state % 3) + 1;
-    var m = getStarMap();
-    m[id] = sonraki;
-    setStarMap(m);
-    var el = document.getElementById('star_' + id);
-    if (el) {
-      var cfg = _STAR_CFG[sonraki];
-      el.className = 'star-icon ' + cfg.cls;
-      el.textContent = cfg.icon;
-    }
-    guncelleMLButonu();
-  }
+  // Her tıklamada modal açılır — renk mlKaydet'te kaydedilirken otomatik set edilir
+  if (!getML(id)) setML(id, mockMalzemeUret(d));
+  mlKontrolAc(id);
 }
 
 // ── DEMO MALZEME ÜRETİCİ ─────────────────────────────────────────
@@ -991,6 +976,11 @@ function mlkOzetGuncelle() {
   var top = _mlkKalemler.length;
   var oz = document.getElementById('mlkOzet');
   if (oz) oz.textContent = top ? (hazir + ' / ' + top + ' hazır') : '';
+  // İkon rengini gerçek zamanlı güncelle
+  var state = top === 0 ? 1 : hazir === top ? 3 : hazir > 0 ? 2 : 1;
+  var renkler = ['','var(--re)','var(--warn)','var(--gr)'];
+  var icon = document.getElementById('mlkIcon');
+  if (icon) icon.style.background = renkler[state];
 }
 
 function mlHepsiniToggle(val) {
