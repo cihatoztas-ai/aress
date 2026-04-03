@@ -33,6 +33,8 @@
 
   function setLang(lang) {
     localStorage.setItem('ares_lang', lang);
+    // D-01: html[lang] attribute güncelle — MutationObserver'ları tetikler
+    document.documentElement.setAttribute('lang', lang);
     if (lang === 'tr') {
       // ✅ D-01: Türkçe varsayılan — _langData temizle, sayfa HTML'i göster
       _langData = {};
@@ -766,11 +768,14 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     // Dil yöneticisi
     window._setLang = setLang;
-    loadLang(getLang(), function() {
+    var initLang = getLang();
+    // D-01: Sayfa açılışında html[lang] attribute'unu ayarla
+    document.documentElement.setAttribute('lang', initLang);
+    loadLang(initLang, function() {
       applyLang();
       updateLangToggle();
       // ✅ D-01: Sayfa hazır olduktan sonra hook'u tetikle
-      if (typeof window._onLangChange === 'function') window._onLangChange(getLang());
+      if (typeof window._onLangChange === 'function') window._onLangChange(initLang);
     });
 
     // Logo tıklayınca ana sayfa
