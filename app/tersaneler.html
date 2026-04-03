@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Tersaneler | AresPipe</title>
-<script>(function(){var t=localStorage.getItem('syos_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>(function(){try{var t=localStorage.getItem('ares_theme');if(t)document.documentElement.setAttribute('data-theme',t);var l=localStorage.getItem('ares_lang');if(l)document.documentElement.setAttribute('lang',l);}catch(e){}document.documentElement.style.visibility='hidden';})();</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ac:#2D8EFF;--gr:#16a36e;--re:#e53e3e;--warn:#d97706;--leg:#7c3aed;}
@@ -27,25 +27,21 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 [data-theme=light] .sun{display:none;}[data-theme=light] .moon{display:block;}
 
 /* STAT CARDS */
+:root{--ic-blue:#4f46e5;--ic-orange:#f97316;}
+.ic-blue{background:var(--ic-blue);color:#fff;}
+.ic-green{background:var(--gr);color:#fff;}
+.ic-orange{background:var(--ic-orange);color:#fff;}
+.ic-amber{background:var(--warn);color:#fff;}
+.ic-violet{background:var(--leg);color:#fff;}
+.ic-red{background:var(--re);color:#fff;}
+/* STAT CARDS */
 .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.sc{background:var(--sur);border:1px solid var(--bor);border-radius:14px;padding:14px 16px;}
-.sc.sc-ac{border-left:3px solid var(--ac) !important;}
-.sc.sc-gr{border-left:3px solid var(--gr) !important;}
-.sc.sc-warn{border-left:3px solid var(--warn) !important;}
-.sc.sc-re{border-left:3px solid var(--re) !important;}
-.sc-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:20px;margin-bottom:8px;}
-.sc-badge.ac{background:rgba(45,142,255,.12);color:var(--ac);}
-.sc-badge.gr{background:rgba(22,163,110,.12);color:var(--gr);}
-.sc-badge.warn{background:rgba(217,119,6,.12);color:var(--warn);}
-.sc-badge.re{background:rgba(229,62,62,.12);color:var(--re);}
-.sv{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;line-height:1;}
-.sl{font-size:12px;color:var(--txm);margin-top:3px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:600;}
-.sc-bar{height:4px;background:var(--sur2);border-radius:4px;overflow:hidden;}
-.sc-bar-fill{height:100%;border-radius:4px;transition:width .5s ease;}
-.sc-bar-fill.ac{background:var(--ac);}
-.sc-bar-fill.gr{background:var(--gr);}
-.sc-bar-fill.warn{background:var(--warn);}
-.sc-bar-fill.re{background:var(--re);}
+.sc{background:var(--sur);border:1px solid var(--bor);border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:12px;}
+.sc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sc-body{flex:1;min-width:0;}
+.sc-label{font-size:12px;color:var(--txd);font-weight:600;margin-bottom:4px;}
+.sc-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;line-height:1;color:var(--tx);}
+.sc-unit{font-size:14px;font-weight:500;color:var(--txd);}
 
 
 /* SOL KENAR RENK (Kural B-01) */
@@ -59,7 +55,7 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 .ftab{padding:5px 14px;border-radius:5px;border:none;background:transparent;font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;color:var(--txd);cursor:pointer;transition:background .15s,color .15s;}
 .ftab:hover{color:var(--tx);}
 .ftab.on{background:var(--sur);color:var(--tx);border:1px solid var(--bor);}
-.ftab-count{background:var(--sur2);border:1px solid var(--bor);border-radius:10px;font-size:11px;padding:0 6px;margin-left:3px;font-weight:700;}
+.ftab-count{background:var(--sur2);border:1px solid var(--bor);border-radius:10px;font-size:12px;padding:0 6px;margin-left:3px;font-weight:700;}
 .ftab.on .ftab-count{border-color:var(--bor);}
 
 /* ROW CARDS */
@@ -77,19 +73,19 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 .tr-middle{display:flex;align-items:stretch;margin-left:auto;border-left:1px solid var(--bor);}
 .tr-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 20px;border-right:1px solid var(--bor);gap:1px;min-width:90px;}
 .tr-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;line-height:1;}
-.tr-stat-lbl{font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.4px;font-weight:600;text-align:center;}
+.tr-stat-lbl{font-size:12px;color:var(--txd);text-transform:uppercase;letter-spacing:.4px;font-weight:600;text-align:center;}
 
 .tr-contact{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:12px 22px;border-right:1px solid var(--bor);min-width:220px;}
 .tr-cline{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txm);}
 
 .tr-right{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:12px 18px;min-width:160px;}
-.tr-status{display:inline-flex;padding:2px 8px;border-radius:9px;font-size:11px;font-weight:600;white-space:nowrap;}
+.tr-status{display:inline-flex;padding:2px 8px;border-radius:9px;font-size:12px;font-weight:600;white-space:nowrap;}
 .tr-status.aktif{background:rgba(16,185,129,.1);color:var(--gr);border:1px solid rgba(16,185,129,.2);}
 .tr-status.pasif{background:rgba(239,68,68,.08);color:var(--re);border:1px solid rgba(239,68,68,.2);}
 .tr-prog{width:100%;}
 .tr-prog-bar{height:4px;background:var(--sur2);border-radius:3px;overflow:hidden;margin-bottom:3px;}
 .tr-prog-fill{height:100%;border-radius:3px;background:var(--ac);transition:width .5s ease;}
-.tr-prog-pct{font-size:11px;font-weight:700;color:var(--ac);text-align:right;}
+.tr-prog-pct{font-size:12px;font-weight:700;color:var(--ac);text-align:right;}
 
 .icon-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--bor);background:var(--sur2);color:#94a3b8;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0 1px;transition:border-color .15s,color .15s,background .15s;}
 .icon-btn:hover{border-color:var(--ac);color:var(--ac);background:rgba(45,142,255,.1);}
@@ -122,26 +118,8 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 .logo-drop:hover{border-color:var(--ac);background:rgba(14,165,233,.04);}
 .logo-drop svg{opacity:.4;}
 .logo-drop span{font-size:13px;color:var(--txd);}
-.logo-drop small{font-size:11px;color:var(--txd);}
+.logo-drop small{font-size:12px;color:var(--txd);}
 .logo-preview{display:none;width:100%;height:60px;object-fit:contain;border-radius:6px;margin-top:6px;}
-
-/* ===== SIDEBAR ===== */
-* { margin:0; padding:0; box-sizing:border-box; }
-:root { --ac:#0ea5e9; --gr:#10b981; --re:#ef4444; --warn:#f59e0b; --leg:#a855f7; }
-
-[data-theme="dark"]  .icon-sun  { display:block!important; }
-[data-theme="dark"]  .icon-moon { display:none!important; }
-[data-theme="light"] .icon-sun  { display:none!important; }
-[data-theme="light"] .icon-moon { display:block!important; }
-
-/* ===== 4 TEMA SİSTEMİ ===== */
-:root { --ac:#0ea5e9; --gr:#10b981; --re:#ef4444; --warn:#f59e0b; --leg:#a855f7; }
-
-/* ANTRASIT — koyu gri, endüstriyel */
-
-/* NAVY — lacivert, denizcilik kurumsal */
-
-
 
 </style>
 <script src="ares-store.js"></script>
@@ -156,53 +134,59 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 <div class="page">
 
 <!-- BAŞLIK -->
-<div style="margin-bottom:20px;">
-  <div style="font-size:13px;color:var(--txd);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><a href="index.html" style="color:var(--txd);text-decoration:none;">Ana Sayfa</a><span>/</span><span>Tersaneler</span></div>
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;">Tersaneler</div>
-  <div style="font-size:13px;color:var(--txm);margin-top:3px;">Çalıştığımız tersaneler ve iş özeti</div>
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+  <div>
+    <div style="font-size:13px;color:var(--txd);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><a href="index.html" style="color:var(--txd);text-decoration:none;" data-i18n="tr_home">Ana Sayfa</a><span>/</span><span data-i18n="tr_breadcrumb">Tersaneler</span></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;" data-i18n="tr_page_title">Tersaneler</div>
+    <div style="font-size:13px;color:var(--txm);margin-top:3px;" data-i18n="tr_subtitle">Çalıştığımız tersaneler ve iş özeti</div>
+  </div>
+  <button class="bp" onclick="modalAc()" style="height:34px;font-size:13px;flex:none;margin-top:4px;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span data-i18n="tr_btn_new">Yeni Tersane</span>
+  </button>
 </div>
 
 <!-- STAT KARTLARI -->
 <div class="sgrid">
-  <div class="sc sc-ac">
-    <div class="sc-badge ac">TERSANE</div>
-    <div class="sv" id="st-tersane">4</div>
-    <div class="sl">Toplam Tersane</div>
-    <div class="sc-bar"><div class="sc-bar-fill ac" id="bar-tersane" style="width:100%"></div></div>
+  <div class="sc cl-ac">
+    <div class="sc-icon ic-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="tr_stat_total_yard">Toplam Tersane</div>
+      <div class="sc-val"><span id="st-tersane">4</span> <span class="sc-unit" data-i18n="tr_unit_yard">tersane</span></div>
+    </div>
   </div>
-  <div class="sc sc-gr">
-    <div class="sc-badge gr">PROJE</div>
-    <div class="sv" id="st-proje" style="color:var(--gr);">29</div>
-    <div class="sl">Toplam Proje</div>
-    <div class="sc-bar"><div class="sc-bar-fill gr" id="bar-proje" style="width:75%"></div></div>
+  <div class="sc cl-gr">
+    <div class="sc-icon ic-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="tr_stat_total_project">Toplam Proje</div>
+      <div class="sc-val"><span id="st-proje">29</span> <span class="sc-unit" data-i18n="tr_unit_project">proje</span></div>
+    </div>
   </div>
-  <div class="sc sc-warn">
-    <div class="sc-badge warn">SPOOL</div>
-    <div class="sv" id="st-spool">1.393</div>
-    <div class="sl">Toplam Spool</div>
-    <div class="sc-bar"><div class="sc-bar-fill warn" id="bar-spool" style="width:60%"></div></div>
+  <div class="sc cl-warn">
+    <div class="sc-icon ic-violet"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="tr_stat_total_spool">Toplam Spool</div>
+      <div class="sc-val"><span id="st-spool">1.393</span> <span class="sc-unit">spool</span></div>
+    </div>
   </div>
-  <div class="sc sc-re">
-    <div class="sc-badge re">AĞIRLIK</div>
-    <div class="sv" id="st-agirlik">44.820</div>
-    <div class="sl">Toplam Ağırlık (kg)</div>
-    <div class="sc-bar"><div class="sc-bar-fill re" id="bar-agirlik" style="width:55%"></div></div>
+  <div class="sc cl-re">
+    <div class="sc-icon ic-orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="tr_stat_total_weight">Toplam Ağırlık (kg)</div>
+      <div class="sc-val"><span id="st-agirlik">44.820</span> <span class="sc-unit">kg</span></div>
+    </div>
   </div>
 </div>
 
 <!-- FİLTRE SATIRI (Kural F-01) -->
 <div class="cl-warn" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:10px 14px;">
-  <button class="bp" onclick="modalAc()" style="height:34px;font-size:13px;flex:none;">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Yeni Tersane
-  </button>
   <div class="ftab-wrap">
-    <button class="ftab on" onclick="filtrele('tumu',this)">Tümü</button>
-    <button class="ftab" onclick="filtrele('aktif',this)">Aktif</button>
-    <button class="ftab" onclick="filtrele('pasif',this)">Pasif</button>
+    <button class="ftab on" onclick="filtrele('tumu',this)" data-i18n="tr_tab_all">Tümü</button>
+    <button class="ftab" onclick="filtrele('aktif',this)" data-i18n="tr_tab_active">Aktif</button>
+    <button class="ftab" onclick="filtrele('pasif',this)" data-i18n="tr_tab_passive">Pasif</button>
   </div>
   <div style="margin-left:auto;">
-    <input class="inp" id="araInput" placeholder="Tersane ara..." oninput="araFiltrele()" style="width:220px;">
+    <input class="inp" id="araInput" data-i18n-placeholder="tr_search_ph" placeholder="Tersane ara..." oninput="araFiltrele()" style="width:220px;">
   </div>
 </div>
 
@@ -219,8 +203,8 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-middle">
-      <div class="tr-stat"><div class="tr-stat-val">12</div><div class="tr-stat-lbl">Top. Proje</div></div>
-      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">4</div><div class="tr-stat-lbl">Aktif Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val">12</div><div class="tr-stat-lbl" data-i18n="tr_top_project">Top. Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">4</div><div class="tr-stat-lbl" data-i18n="tr_active_project">Aktif Proje</div></div>
       
       <div class="tr-contact">
         <div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>+90 (226) 353 00 00</div>
@@ -229,9 +213,9 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-right" onclick="event.stopPropagation()">
-      <span class="tr-status aktif">Aktif</span>
-      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:67%"></div></div><div class="tr-prog-pct">%67 tamamlandı</div></div>
-      <div><button class="icon-btn" title="Düzenle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
+      <span class="tr-status aktif" data-i18n="tr_status_active">Aktif</span>
+      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:67%"></div></div><div class="tr-prog-pct" data-pct="67">%67 tamamlandı</div></div>
+      <div><button class="icon-btn" title="Düzenle" onclick="tersaneDuzenle(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
     </div>
   </div>
 
@@ -245,8 +229,8 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-middle">
-      <div class="tr-stat"><div class="tr-stat-val">9</div><div class="tr-stat-lbl">Top. Proje</div></div>
-      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">3</div><div class="tr-stat-lbl">Aktif Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val">9</div><div class="tr-stat-lbl" data-i18n="tr_top_project">Top. Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">3</div><div class="tr-stat-lbl" data-i18n="tr_active_project">Aktif Proje</div></div>
       
       <div class="tr-contact">
         <div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>+90 (216) 395 12 00</div>
@@ -255,9 +239,9 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-right" onclick="event.stopPropagation()">
-      <span class="tr-status aktif">Aktif</span>
-      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:67%"></div></div><div class="tr-prog-pct">%67 tamamlandı</div></div>
-      <div><button class="icon-btn" title="Düzenle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
+      <span class="tr-status aktif" data-i18n="tr_status_active">Aktif</span>
+      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:67%"></div></div><div class="tr-prog-pct" data-pct="67">%67 tamamlandı</div></div>
+      <div><button class="icon-btn" title="Düzenle" onclick="tersaneDuzenle(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
     </div>
   </div>
 
@@ -271,8 +255,8 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-middle">
-      <div class="tr-stat"><div class="tr-stat-val">8</div><div class="tr-stat-lbl">Top. Proje</div></div>
-      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">3</div><div class="tr-stat-lbl">Aktif Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val">8</div><div class="tr-stat-lbl" data-i18n="tr_top_project">Top. Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">3</div><div class="tr-stat-lbl" data-i18n="tr_active_project">Aktif Proje</div></div>
       
       <div class="tr-contact">
         <div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>+90 (216) 446 27 70</div>
@@ -281,9 +265,9 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-right" onclick="event.stopPropagation()">
-      <span class="tr-status aktif">Aktif</span>
-      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:63%"></div></div><div class="tr-prog-pct">%63 tamamlandı</div></div>
-      <div><button class="icon-btn" title="Düzenle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
+      <span class="tr-status aktif" data-i18n="tr_status_active">Aktif</span>
+      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:63%"></div></div><div class="tr-prog-pct" data-pct="63">%63 tamamlandı</div></div>
+      <div><button class="icon-btn" title="Düzenle" onclick="tersaneDuzenle(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
     </div>
   </div>
 
@@ -297,8 +281,8 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-middle">
-      <div class="tr-stat"><div class="tr-stat-val">3</div><div class="tr-stat-lbl">Top. Proje</div></div>
-      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--txd);">0</div><div class="tr-stat-lbl">Aktif Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val">3</div><div class="tr-stat-lbl" data-i18n="tr_top_project">Top. Proje</div></div>
+      <div class="tr-stat"><div class="tr-stat-val" style="color:var(--txd);">0</div><div class="tr-stat-lbl" data-i18n="tr_active_project">Aktif Proje</div></div>
       
       <div class="tr-contact">
         <div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--txd)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span style="color:var(--txd);">+90 (262) 229 50 00</span></div>
@@ -307,9 +291,9 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       </div>
     </div>
     <div class="tr-right" onclick="event.stopPropagation()">
-      <span class="tr-status pasif">Pasif</span>
-      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:100%;background:var(--gr);"></div></div><div class="tr-prog-pct" style="color:var(--gr);">%100 tamamlandı</div></div>
-      <div><button class="icon-btn" title="Düzenle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
+      <span class="tr-status pasif" data-i18n="tr_status_passive">Pasif</span>
+      <div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:100%;background:var(--gr);"></div></div><div class="tr-prog-pct" style="color:var(--gr);" data-pct="100">%100 tamamlandı</div></div>
+      <div><button class="icon-btn" title="Düzenle" onclick="tersaneDuzenle(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn del" title="Sil" onclick="tersaneSil(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>
     </div>
   </div>
 
@@ -323,52 +307,53 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 <div class="modal-overlay" id="modalOverlay" onclick="modalKapat(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-head">
-      <div class="modal-title">Yeni Tersane Ekle</div>
+      <div class="modal-title" id="modalBaslik" data-i18n="tr_modal_title">Yeni Tersane Ekle</div>
       <button class="modal-close" onclick="modalKapat()">&#215;</button>
     </div>
     <div class="modal-body">
       <div class="field">
-        <label>Tersane Logosu</label>
+        <label data-i18n="tr_logo_label">Tersane Logosu</label>
         <div class="logo-drop" onclick="document.getElementById('logoInput').click()" id="logoDrop">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--txd)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <span>Logo yüklemek için tıklayın</span>
-          <small>PNG, JPG, SVG — maks 2 MB</small>
+          <span data-i18n="tr_logo_click">Logo yüklemek için tıklayın</span>
+          <small data-i18n="tr_logo_hint">PNG, JPG, SVG — maks 2 MB</small>
           <img id="logoPreview" class="logo-preview" alt="">
         </div>
         <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="logoSec(this)">
+        <input type="hidden" id="duzenlemeIndex" value="">
       </div>
       <div class="field">
-        <label>Tersane Adı <span style="color:var(--re);">*</span></label>
-        <input class="inp" id="fAd" type="text" placeholder="örn. TERSAN Tersanesi">
+        <label><span data-i18n="tr_field_name">Tersane Adı</span> <span style="color:var(--re);">*</span></label>
+        <input class="inp" id="fAd" type="text" data-i18n-placeholder="tr_ph_name" placeholder="örn. TERSAN Tersanesi">
       </div>
       <div class="field-row">
         <div class="field">
-          <label>Şehir <span style="color:var(--re);">*</span></label>
-          <input class="inp" id="fSehir" type="text" placeholder="örn. İstanbul">
+          <label><span data-i18n="tr_field_city">Şehir</span> <span style="color:var(--re);">*</span></label>
+          <input class="inp" id="fSehir" type="text" data-i18n-placeholder="tr_ph_city" placeholder="örn. İstanbul">
         </div>
         <div class="field">
-          <label>Ülke</label>
+          <label data-i18n="tr_field_country">Ülke</label>
           <input class="inp" id="fUlke" type="text" placeholder="Türkiye" value="Türkiye">
         </div>
       </div>
       <div class="field">
-        <label>Telefon</label>
-        <input class="inp" id="fTel" type="tel" placeholder="+90 (000) 000 00 00">
+        <label data-i18n="tr_field_phone">Telefon</label>
+        <input class="inp" id="fTel" type="tel" data-i18n-placeholder="tr_ph_phone" placeholder="+90 (000) 000 00 00">
       </div>
       <div class="field">
-        <label>E-posta</label>
-        <input class="inp" id="fMail" type="email" placeholder="info@tersane.com">
+        <label data-i18n="tr_field_email">E-posta</label>
+        <input class="inp" id="fMail" type="email" data-i18n-placeholder="tr_ph_email" placeholder="info@tersane.com">
       </div>
       <div class="field">
-        <label>Web Sitesi</label>
-        <input class="inp" id="fWeb" type="url" placeholder="www.tersane.com">
+        <label data-i18n="tr_field_web">Web Sitesi</label>
+        <input class="inp" id="fWeb" type="url" data-i18n-placeholder="tr_ph_web" placeholder="www.tersane.com">
       </div>
     </div>
     <div class="modal-foot">
-      <button class="bo" onclick="modalKapat()">İptal</button>
+      <button class="bo" onclick="modalKapat()" data-i18n="tr_btn_cancel">İptal</button>
       <button class="bp" onclick="tersaneKaydet()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Tersane Ekle
+        <span id="modalKaydetMetin" data-i18n="tr_btn_add">Tersane Ekle</span>
       </button>
     </div>
   </div>
@@ -381,28 +366,122 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
       <div class="confirm-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--re)" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
       </div>
-      <div class="confirm-title">Tersaneyi Sil</div>
+      <div class="confirm-title" data-i18n="tr_confirm_title">Tersaneyi Sil</div>
     </div>
     <div class="confirm-msg">
-      <span class="confirm-name" id="confirmAd"></span> tersanesini silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+      <span class="confirm-name" id="confirmAd"></span> <span data-i18n="tr_confirm_msg">tersanesini silmek istediğinize emin misiniz? Bu işlem geri alınamaz.</span>
     </div>
     <div class="confirm-actions">
-      <button class="bo" onclick="confirmKapat()">Vazgeç</button>
+      <button class="bo" onclick="confirmKapat()" data-i18n="tr_btn_dismiss">Vazgeç</button>
       <button class="bp" style="background:var(--re);border:none;" id="confirmBtn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        Evet, Sil
+        <span data-i18n="tr_btn_confirm_del">Evet, Sil</span>
       </button>
     </div>
   </div>
 </div>
 
 <script>
+
+'use strict';
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+// ── D-01 DİL SİSTEMİ ─────────────────────────────────────────
+var _I18N = {
+  en:{
+    tr_page_title:'Shipyards',
+    tr_subtitle:'Shipyards we work with and job summary',
+    tr_home:'Home', tr_breadcrumb:'Shipyards',
+    tr_stat_yard:'SHIPYARD', tr_stat_total_yard:'Total Shipyards',
+    tr_stat_project:'PROJECT', tr_stat_total_project:'Total Projects',
+    tr_stat_spool:'SPOOL', tr_stat_total_spool:'Total Spools',
+    tr_stat_weight:'WEIGHT', tr_stat_total_weight:'Total Weight (kg)',
+    tr_btn_new:'New Shipyard',
+    tr_tab_all:'All', tr_tab_active:'Active', tr_tab_passive:'Passive',
+    tr_search_ph:'Search shipyard...',
+    tr_top_project:'Total Projects', tr_active_project:'Active Projects', tr_top_spool:'Total Spools',
+    tr_status_active:'Active', tr_status_passive:'Passive',
+    tr_pct_done:'% complete',
+    tr_modal_title:'Add New Shipyard',
+    tr_logo_label:'Shipyard Logo',
+    tr_logo_click:'Click to upload logo',
+    tr_logo_hint:'PNG, JPG, SVG — max 2 MB',
+    tr_field_name:'Shipyard Name', tr_field_city:'City', tr_field_country:'Country',
+    tr_field_phone:'Phone', tr_field_email:'E-mail', tr_field_web:'Website',
+    tr_ph_name:'e.g. TERSAN Shipyard', tr_ph_city:'e.g. Istanbul',
+    tr_ph_country:'Turkey', tr_ph_phone:'+90 (000) 000 00 00',
+    tr_ph_email:'info@shipyard.com', tr_ph_web:'www.shipyard.com',
+    tr_btn_cancel:'Cancel', tr_btn_add:'Add Shipyard',
+    tr_confirm_title:'Delete Shipyard',
+    tr_confirm_msg:'Are you sure you want to delete the shipyard? This action cannot be undone.',
+    tr_btn_dismiss:'Dismiss', tr_btn_confirm_del:'Yes, Delete',
+    tr_edit_title:'Edit', tr_del_title:'Delete',
+    tr_unit_yard:'shipyards', tr_unit_project:'projects',
+    tr_modal_edit_title:'Edit Shipyard', tr_btn_save:'Save',
+  },
+  ar:{
+    tr_page_title:'الأحواض',
+    tr_subtitle:'الأحواض التي نعمل معها وملخص الأعمال',
+    tr_home:'الرئيسية', tr_breadcrumb:'الأحواض',
+    tr_stat_yard:'الحوض', tr_stat_total_yard:'إجمالي الأحواض',
+    tr_stat_project:'المشروع', tr_stat_total_project:'إجمالي المشاريع',
+    tr_stat_spool:'البكرة', tr_stat_total_spool:'إجمالي البكرات',
+    tr_stat_weight:'الوزن', tr_stat_total_weight:'الوزن الكلي (كجم)',
+    tr_btn_new:'حوض جديد',
+    tr_tab_all:'الكل', tr_tab_active:'نشط', tr_tab_passive:'غير نشط',
+    tr_search_ph:'بحث عن حوض...',
+    tr_top_project:'إجمالي المشاريع', tr_active_project:'المشاريع النشطة', tr_top_spool:'إجمالي البكرات',
+    tr_status_active:'نشط', tr_status_passive:'غير نشط',
+    tr_pct_done:'% مكتمل',
+    tr_modal_title:'إضافة حوض جديد',
+    tr_logo_label:'شعار الحوض',
+    tr_logo_click:'انقر لرفع الشعار',
+    tr_logo_hint:'PNG, JPG, SVG — الحد الأقصى 2 ميجابايت',
+    tr_field_name:'اسم الحوض', tr_field_city:'المدينة', tr_field_country:'الدولة',
+    tr_field_phone:'الهاتف', tr_field_email:'البريد الإلكتروني', tr_field_web:'الموقع الإلكتروني',
+    tr_ph_name:'مثال: حوض TERSAN', tr_ph_city:'مثال: إسطنبول',
+    tr_ph_country:'تركيا', tr_ph_phone:'+90 (000) 000 00 00',
+    tr_ph_email:'info@shipyard.com', tr_ph_web:'www.shipyard.com',
+    tr_btn_cancel:'إلغاء', tr_btn_add:'إضافة حوض',
+    tr_confirm_title:'حذف الحوض',
+    tr_confirm_msg:'هل أنت متأكد من حذف هذا الحوض؟ لا يمكن التراجع عن هذا الإجراء.',
+    tr_btn_dismiss:'تراجع', tr_btn_confirm_del:'نعم، احذف',
+    tr_edit_title:'تعديل', tr_del_title:'حذف',
+    tr_unit_yard:'أحواض', tr_unit_project:'مشاريع',
+    tr_modal_edit_title:'تعديل الحوض', tr_btn_save:'حفظ',
+  }
+};
+function _getLang(){return document.documentElement.getAttribute('lang')||'tr';}
+function tv(key,tr){var lang=_getLang(),dict=_I18N[lang];if(dict&&dict[key])return dict[key];return tr!==undefined?tr:key;}
+function _applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var isInp=el.tagName==='INPUT'||el.tagName==='TEXTAREA';
+    if(!el.hasAttribute('data-i18n-tr'))el.setAttribute('data-i18n-tr',isInp?el.placeholder:el.textContent.trim());
+    var v=tv(k,el.getAttribute('data-i18n-tr'));
+    if(isInp){el.placeholder=v;}else{el.textContent=v;}
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+    var k=el.getAttribute('data-i18n-placeholder');
+    if(!el.hasAttribute('data-i18n-ph-tr'))el.setAttribute('data-i18n-ph-tr',el.placeholder);
+    el.placeholder=tv(k,el.getAttribute('data-i18n-ph-tr'));
+  });
+}
+function _applyPct(){
+  document.querySelectorAll('[data-pct]').forEach(function(el){
+    var pct=el.getAttribute('data-pct');
+    el.textContent='%'+pct+' '+tv('tr_pct_done','tamamlandı');
+  });
+}
+window._onLangChange=function(){_applyI18n();_applyPct();};
+new MutationObserver(function(){_applyI18n();_applyPct();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 var _silTarget=null;
 function tersaneSil(btn){
   _silTarget=btn.closest('.trow');
   var ad=_silTarget.getAttribute('data-ad')||'Bu tersane';
   document.getElementById('confirmAd').textContent=ad;
   document.getElementById('confirmBtn').onclick=function(){
+    var _ad=_silTarget.getAttribute('data-ad')||'';
+    try{var log=JSON.parse(localStorage.getItem('ares_islemLog')||'[]');log.unshift({id:'L'+Date.now(),tarih:new Date().toLocaleString('tr-TR'),islem:'TERSANE_SIL',kaynak:_ad,aciklama:'Silindi'});localStorage.setItem('ares_islemLog',JSON.stringify(log.slice(0,500)));}catch(e){}
     _silTarget.remove();
     confirmKapat();
     uygula();
@@ -414,6 +493,12 @@ function confirmKapat(){
   _silTarget=null;
 }
 function modalAc(){
+  // Yeni ekleme modu
+  document.getElementById('duzenlemeIndex').value='';
+  document.getElementById('modalBaslik').setAttribute('data-i18n','tr_modal_title');
+  document.getElementById('modalBaslik').textContent=tv('tr_modal_title','Yeni Tersane Ekle');
+  document.getElementById('modalKaydetMetin').setAttribute('data-i18n','tr_btn_add');
+  document.getElementById('modalKaydetMetin').textContent=tv('tr_btn_add','Tersane Ekle');
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -437,11 +522,100 @@ function logoSec(input){
   };
   reader.readAsDataURL(file);
 }
+
+function tersaneDuzenle(btn){
+  var row=btn.closest('.trow');
+  // Mevcut verileri formdan oku
+  var ad   =row.getAttribute('data-ad')||'';
+  var name =row.querySelector('.tr-name');
+  var loc  =row.querySelector('.tr-loc');
+  var lines=row.querySelectorAll('.tr-cline');
+  var tel='',mail='',web='';
+  lines.forEach(function(l){
+    var t=l.textContent.trim();
+    if(t.startsWith('+')) tel=t;
+    else if(t.includes('@')) mail=t;
+    else web=t;
+  });
+  // Formu doldur
+  document.getElementById('fAd').value=ad;
+  var locTxt=loc?loc.textContent.trim():'';
+  var locParts=locTxt.split(',');
+  document.getElementById('fSehir').value=locParts[0]?locParts[0].trim():'';
+  document.getElementById('fUlke').value=locParts[1]?locParts[1].trim():'Türkiye';
+  document.getElementById('fTel').value=tel;
+  document.getElementById('fMail').value=mail;
+  document.getElementById('fWeb').value=web;
+  // Logo önizleme
+  var logo=row.querySelector('.tr-logo');
+  var logoImg=logo?logo.querySelector('img'):null;
+  if(logoImg&&logoImg.src){
+    var preview=document.getElementById('logoPreview');
+    preview.src=logoImg.src;preview.style.display='block';
+    document.getElementById('logoDrop').querySelector('svg').style.display='none';
+    document.getElementById('logoDrop').querySelector('span').style.display='none';
+    document.getElementById('logoDrop').querySelector('small').style.display='none';
+  }
+  // Düzenleme modu ayarla
+  document.getElementById('duzenlemeIndex').value=Array.from(document.querySelectorAll('.trow')).indexOf(row);
+  document.getElementById('modalBaslik').removeAttribute('data-i18n');
+  document.getElementById('modalBaslik').textContent=tv('tr_modal_edit_title',ad+' — Düzenle');
+  document.getElementById('modalKaydetMetin').removeAttribute('data-i18n');
+  document.getElementById('modalKaydetMetin').textContent=tv('tr_btn_save','Kaydet');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
 function tersaneKaydet(){
   var ad=document.getElementById('fAd').value.trim();
   var sehir=document.getElementById('fSehir').value.trim();
-  if(!ad){alert('Tersane adı zorunludur.');document.getElementById('fAd').focus();return;}
-  if(!sehir){alert('Şehir zorunludur.');document.getElementById('fSehir').focus();return;}
+  if(!ad){document.getElementById('fAd').style.borderColor='var(--re)';document.getElementById('fAd').focus();return;}
+  if(!sehir){document.getElementById('fSehir').style.borderColor='var(--re)';document.getElementById('fSehir').focus();return;}
+  document.getElementById('fAd').style.borderColor='';
+  document.getElementById('fSehir').style.borderColor='';
+  // Düzenleme modu kontrolü
+  var duzIdx=document.getElementById('duzenlemeIndex').value;
+  if(duzIdx!==''){
+    var rows=document.querySelectorAll('.trow');
+    var row=rows[parseInt(duzIdx)];
+    if(row){
+      var tel=document.getElementById('fTel').value.trim();
+      var mail=document.getElementById('fMail').value.trim();
+      var web=document.getElementById('fWeb').value.trim();
+      row.setAttribute('data-ad',ad);
+      var nameEl=row.querySelector('.tr-name'); if(nameEl) nameEl.textContent=ad;
+      var locEl=row.querySelector('.tr-loc');
+      if(locEl){var svg=locEl.querySelector('svg');locEl.textContent='';if(svg)locEl.appendChild(svg);locEl.appendChild(document.createTextNode(sehir+(document.getElementById('fUlke').value?', '+document.getElementById('fUlke').value:'')));}
+      // Logo güncelle
+      var preview=document.getElementById('logoPreview');
+      var logoEl=row.querySelector('.tr-logo');
+      if(logoEl){
+        if(preview.src&&preview.style.display!=='none'){
+          var existImg=logoEl.querySelector('img');
+          if(!existImg){existImg=document.createElement('img');existImg.style.cssText='width:100%;height:100%;object-fit:contain;border-radius:6px;';logoEl.appendChild(existImg);}
+          existImg.src=preview.src;logoEl.textContent='';logoEl.appendChild(existImg);
+        }else{var kisa=ad.split(' ')[0].toUpperCase().substring(0,6);logoEl.textContent=kisa;}
+      }
+      // İletişim güncelle
+      var contact=row.querySelector('.tr-contact');
+      if(contact){
+        contact.innerHTML=
+          (tel?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>'+esc(tel)+'</div>':'')+
+          (mail?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>'+esc(mail)+'</div>':'')+
+          (web?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span style="color:var(--ac);">'+esc(web)+'</span></div>':'');
+      }
+      // Log
+      try{var log=JSON.parse(localStorage.getItem('ares_islemLog')||'[]');log.unshift({id:'L'+Date.now(),tarih:new Date().toLocaleString('tr-TR'),islem:'TERSANE_DUZENLE',kaynak:ad,aciklama:sehir});localStorage.setItem('ares_islemLog',JSON.stringify(log.slice(0,500)));}catch(e){}
+      ['fAd','fSehir','fTel','fMail','fWeb'].forEach(function(id){document.getElementById(id).value='';});
+      document.getElementById('fUlke').value='Türkiye';
+      document.getElementById('logoPreview').style.display='none';
+      document.getElementById('logoDrop').querySelector('svg').style.display='';
+      document.getElementById('logoDrop').querySelector('span').style.display='';
+      document.getElementById('logoDrop').querySelector('small').style.display='';
+      document.getElementById('logoInput').value='';
+      modalKapat();
+      return;
+    }
+  }
   var tel=document.getElementById('fTel').value.trim();
   var mail=document.getElementById('fMail').value.trim();
   var web=document.getElementById('fWeb').value.trim();
@@ -457,26 +631,26 @@ function tersaneKaydet(){
   row.setAttribute('data-agirlik','0');
   row.innerHTML=
     '<div class="tr-ident">'+
-      '<div class="tr-logo">'+kisa+'</div>'+
+      '<div class="tr-logo">'+esc(kisa)+'</div>'+
       '<div>'+
-        '<div class="tr-name">'+ad+'</div>'+
-        '<div class="tr-loc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'+sehir+'</div>'+
+        '<div class="tr-name">'+esc(ad)+'</div>'+
+        '<div class="tr-loc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'+esc(sehir)+'</div>'+
       '</div>'+
     '</div>'+
     '<div class="tr-middle">'+
-      '<div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">0</div><div class="tr-stat-lbl">Aktif Proje</div></div>'+
-      '<div class="tr-stat"><div class="tr-stat-val">0</div><div class="tr-stat-lbl">Top. Proje</div></div>'+
-      '<div class="tr-stat"><div class="tr-stat-val">0</div><div class="tr-stat-lbl">Top. Spool</div></div>'+
+      '<div class="tr-stat"><div class="tr-stat-val" style="color:var(--ac);">0</div><div class="tr-stat-lbl" data-i18n="tr_active_project">Aktif Proje</div></div>'+
+      '<div class="tr-stat"><div class="tr-stat-val">0</div><div class="tr-stat-lbl" data-i18n="tr_top_project">Top. Proje</div></div>'+
+      '<div class="tr-stat"><div class="tr-stat-val">0</div><div class="tr-stat-lbl" data-i18n="tr_top_spool">Top. Spool</div></div>'+
       '<div class="tr-contact">'+
-        (tel?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>'+tel+'</div>':'')+
-        (mail?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>'+mail+'</div>':'')+
-        (web?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span style="color:var(--ac);">'+web+'</span></div>':'')+
+        (tel?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.06 6.06l1.27-.55a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>'+esc(tel)+'</div>':'')+
+        (mail?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>'+esc(mail)+'</div>':'')+
+        (web?'<div class="tr-cline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 014-10z"/></svg><span style="color:var(--ac);">'+esc(web)+'</span></div>':'')+
       '</div>'+
     '</div>'+
     '<div class="tr-right" onclick="event.stopPropagation()">'+
-      '<span class="tr-status aktif">Aktif</span>'+
-      '<div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:0%"></div></div><div class="tr-prog-pct">%0 tamamlandı</div></div>'+
-      '<div><button class="icon-btn" title="Düzenle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'+
+      '<span class="tr-status aktif">'+tv('tr_status_active','Aktif')+'</span>'+
+      '<div class="tr-prog"><div class="tr-prog-bar"><div class="tr-prog-fill" style="width:0%"></div></div><div class="tr-prog-pct">%0 '+tv('tr_pct_done','tamamlandı')+'</div></div>'+
+      '<div><button class="icon-btn" title="Düzenle" onclick="tersaneDuzenle(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'+
       '<button class="icon-btn del" title="Sil" ><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>'+
     '</div>';
   liste.appendChild(row);
@@ -488,6 +662,8 @@ function tersaneKaydet(){
   document.getElementById('logoDrop').querySelector('span').style.display='';
   document.getElementById('logoDrop').querySelector('small').style.display='';
   document.getElementById('logoInput').value='';
+  // Log
+  try{var log=JSON.parse(localStorage.getItem('ares_islemLog')||'[]');log.unshift({id:'L'+Date.now(),tarih:new Date().toLocaleString('tr-TR'),islem:'TERSANE_EKLE',kaynak:ad,aciklama:sehir});localStorage.setItem('ares_islemLog',JSON.stringify(log.slice(0,500)));}catch(e){}
   modalKapat();
   uygula();
 }
@@ -527,7 +703,7 @@ function uygula(){
       r.setAttribute('data-durum','pasif');
       r.classList.add('pasif');
       var st=r.querySelector('.tr-status');
-      if(st){st.className='tr-status pasif';st.textContent='Pasif';}
+      if(st){st.className='tr-status pasif';st.textContent=tv('tr_status_passive','Pasif');}
       durum='pasif';
     }
     var txt=r.textContent.toLowerCase();
@@ -562,10 +738,7 @@ function uygula(){
   // Bar = tamamlanan / toplam (tüm filtrelerde aynı kural)
   // Tersane: tümü → pasif/toplam | aktif → %100 (hepsi aktif) | pasif → %100 (hepsi tamamlanmış)
   var tersaneBar = topProje>0 ? Math.round(tamamlananProje/topProje*100) : 0;
-  setW('bar-tersane', tersaneBar);
-  setW('bar-proje',   topProje>0   ? Math.round(tamamlananProje/topProje*100)        : 0);
-  setW('bar-spool',   topSpool>0   ? Math.round(tamamlananSpool/topSpool*100)        : 0);
-  setW('bar-agirlik', topAgirlik>0 ? Math.round(tamamlananAgirlik/topAgirlik*100)    : 0);
+  // bar-* proje_liste stilinde yok — kaldırıldı
 
   var bos=document.getElementById('bos');
   var liste=document.getElementById('tlist');
@@ -574,6 +747,7 @@ function uygula(){
 }
 
 document.addEventListener('DOMContentLoaded', function(){ uygula(); });
+document.documentElement.style.visibility='';
 </script>
 
 </div><!-- /.page -->
