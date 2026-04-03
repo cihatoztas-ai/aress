@@ -22,6 +22,10 @@ a{color:var(--ac);cursor:pointer;text-decoration:none;}
 .bo:hover{border-color:var(--ac);color:var(--ac);}
 .bp{display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:32px;border-radius:6px;border:none;background:var(--ac);color:#fff;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
 .bp:hover{opacity:.85;}
+.btn-outline{display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:34px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--txm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .15s;}
+.btn-outline:hover{border-color:var(--ac);color:var(--ac);}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:34px;border-radius:8px;border:none;background:var(--ac);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;transition:opacity .2s;}
+.btn-primary:hover{opacity:.85;}
 .inp{background:var(--sur2);border:1px solid var(--bor);border-radius:6px;padding:6px 11px;font-family:'Barlow',sans-serif;font-size:14px;color:var(--tx);outline:none;height:34px;}
 .inp:focus{border-color:var(--ac);}
 .inp::placeholder{color:var(--txd);}
@@ -30,37 +34,36 @@ select.inp{cursor:pointer;}
 [data-theme=dark] .sun{display:block;}[data-theme=dark] .moon{display:none;}
 [data-theme=light] .sun{display:none;}[data-theme=light] .moon{display:block;}
 
+/* İkon renk sınıfları (B-02: CSS değişkeni) */
+:root { --ic-blue:#4f46e5; --ic-cyan:#0891b2; --ic-orange:#f97316; }
+.ic-blue   { background:var(--ic-blue);   color:#fff; }
+.ic-green  { background:var(--gr);        color:#fff; }
+.ic-cyan   { background:var(--ic-cyan);   color:#fff; }
+.ic-orange { background:var(--ic-orange); color:#fff; }
+.ic-amber  { background:var(--warn);      color:#fff; }
+.ic-violet { background:var(--leg);       color:#fff; }
+
 /* STAT CARDS */
 .sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
-.sc{background:var(--sur);border:1px solid var(--bor);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden;}
+.sc{background:var(--sur);border:1px solid var(--bor);border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:12px;}
+.sc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sc-body{flex:1;min-width:0;}
+.sc-label{font-size:12px;color:var(--txd);font-weight:600;margin-bottom:4px;}
+.sc-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;line-height:1;color:var(--tx);}
+.sc-unit{font-size:14px;font-weight:500;color:var(--txd);}
 .sc.sc-re{border-left:4px solid var(--re);}
 .sc.sc-warn{border-left:4px solid var(--warn);}
 .sc.sc-ac{border-left:4px solid var(--ac);}
 .sc.sc-gr{border-left:4px solid var(--gr);}
 .sc.sc-leg{border-left:4px solid var(--leg);}
-.sc-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:20px;background:var(--sur2);color:var(--txd);margin-bottom:8px;}
-.sc-badge.re{background:rgba(229,62,62,.12);color:var(--re);}
-.sc-badge.warn{background:rgba(217,119,6,.12);color:var(--warn);}
-.sc-badge.ac{background:rgba(45,142,255,.12);color:var(--ac);}
-.sc-badge.gr{background:rgba(22,163,110,.12);color:var(--gr);}
-.sc-badge.leg{background:rgba(124,58,237,.12);color:var(--leg);}
-.sv{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;line-height:1;}
-.sl{font-size:12px;color:var(--txm);margin-top:3px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:600;}
-.sc-bar{height:4px;background:var(--sur2);border-radius:4px;overflow:hidden;}
-.sc-bar-fill{height:100%;border-radius:4px;transition:width .5s ease;}
-.sc-bar-fill.re{background:var(--re);}
-.sc-bar-fill.warn{background:var(--warn);}
-.sc-bar-fill.ac{background:var(--ac);}
-.sc-bar-fill.gr{background:var(--gr);}
-.sc-bar-fill.leg{background:var(--leg);}
 
 /* TABLE */
-.tbl-wrap{border:1px solid var(--bor);border-radius:14px;overflow:hidden;}
+.tbl-wrap{border:1px solid var(--bor);border-radius:14px;overflow-x:auto;}
 table{width:100%;border-collapse:collapse;white-space:nowrap;}
 thead th{text-align:left;padding:10px 14px;font-size:12px;font-weight:700;color:var(--txd);text-transform:uppercase;letter-spacing:.6px;background:var(--sur2);border-bottom:1px solid var(--bor);}
 thead th.sort{cursor:pointer;user-select:none;}
 thead th.sort:hover{color:var(--tx);}
-thead th.sort::after{content:' ⇅';font-size:10px;opacity:.35;font-weight:400;}
+thead th.sort::after{content:' ⇅';font-size:12px;opacity:.35;font-weight:400;}
 thead th.sort.asc::after{content:' ↑';opacity:1;color:var(--ac);}
 thead th.sort.desc::after{content:' ↓';opacity:1;color:var(--ac);}
 tbody td{padding:11px 14px;font-size:14px;border-bottom:1px solid var(--bor);vertical-align:middle;}
@@ -75,17 +78,13 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 .pill.re{background:rgba(229,62,62,.1);color:var(--re);border:1px solid rgba(229,62,62,.2);}
 
 /* PROGRESS IN TABLE */
-.tprog{display:flex;align-items:center;gap:8px;}
-.tprog-bar{width:72px;height:5px;background:var(--bor);border-radius:3px;flex-shrink:0;overflow:hidden;}
-.tprog-fill{height:100%;border-radius:3px;}
-.tprog-fill.gr{background:var(--gr);}
-.tprog-fill.ac{background:var(--ac);}
-.tprog-fill.warn{background:var(--warn);}
-.tprog-fill.re{background:var(--re);}
-.tprog-pct{font-size:12px;font-weight:700;min-width:32px;}
+.prog-cell{display:flex;align-items:center;gap:8px;}
+.prog-pct{font-size:14px;font-weight:500;min-width:36px;}
+.prog-mini{flex:1;min-width:60px;height:5px;background:var(--bor);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;}
 
 /* ICON BUTTONS */
-.icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--bor);background:var(--sur2);color:#94a3b8;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0 2px;transition:border-color .15s,color .15s,background .15s;}
+.icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--bor);background:var(--sur2);color:var(--txd);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0 2px;transition:border-color .15s,color .15s,background .15s;}
 .icon-btn:hover{border-color:var(--ac);color:var(--ac);background:rgba(14,165,233,.1);}
 .icon-btn.del:hover{border-color:var(--re);color:var(--re);background:rgba(239,68,68,.1);}
 
@@ -150,6 +149,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 
 .page{padding:72px 28px 28px;max-width:1440px;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="ares-store.js"></script>
 <script src="ares-layout.js"></script>
 </head>
@@ -167,49 +167,59 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;" data-i18n="pl_title">Proje Listesi</div>
     <div style="font-size:13px;color:var(--txm);margin-top:3px;" data-i18n="pl_subtitle">Tüm aktif ve tamamlanan projeler</div>
   </div>
-
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="btn-outline" onclick="plExcel()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-i18n="pl_btn_export">Dışa Aktar</span>
+    </button>
+    <button class="btn-primary" onclick="modalAc()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span data-i18n="pl_btn_new">Yeni Proje</span>
+    </button>
+  </div>
 </div>
 
 <!-- STAT CARDS -->
 <div class="sgrid">
   <div class="sc cl-ac">
-    <div class="sc-badge ac" data-i18n="pl_badge_tersane">TERSANE</div>
-    <div class="sv" id="st-tersane">4</div>
-    <div class="sl" data-i18n="pl_sl_tersane">Tersane Sayısı</div>
-    <div class="sc-bar"><div class="sc-bar-fill ac" id="bar-tersane" style="width:0%"></div></div>
+    <div class="sc-icon ic-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="pl_sl_tersane">Tersane Sayısı</div>
+      <div class="sc-val"><span id="st-tersane">4</span> <span class="sc-unit" data-i18n="pl_unit_shipyard">tersane</span></div>
+    </div>
   </div>
   <div class="sc cl-gr">
-    <div class="sc-badge gr" data-i18n="pl_badge_toplam">TOPLAM</div>
-    <div class="sv" id="st-toplam">12</div>
-    <div class="sl" data-i18n="pl_sl_toplam">Toplam Proje</div>
-    <div class="sc-bar"><div class="sc-bar-fill gr" id="bar-toplam" style="width:0%"></div></div>
+    <div class="sc-icon ic-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="pl_sl_toplam">Toplam Proje</div>
+      <div class="sc-val"><span id="st-toplam">12</span> <span class="sc-unit" data-i18n="pl_unit_project">proje</span></div>
+    </div>
   </div>
   <div class="sc cl-warn">
-    <div class="sc-badge warn" data-i18n="pl_badge_devre">DEVRE</div>
-    <div class="sv" id="st-devre">109</div>
-    <div class="sl" data-i18n="pl_sl_devre">Toplam Devre</div>
-    <div class="sc-bar"><div class="sc-bar-fill warn" id="bar-devre" style="width:0%"></div></div>
+    <div class="sc-icon ic-amber"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="pl_sl_devre">Toplam Devre</div>
+      <div class="sc-val"><span id="st-devre">109</span> <span class="sc-unit" data-i18n="pl_unit_circuit">devre</span></div>
+    </div>
   </div>
   <div class="sc cl-leg">
-    <div class="sc-badge leg" data-i18n="pl_badge_spool">SPOOL</div>
-    <div class="sv" id="st-spool">1.393</div>
-    <div class="sl" data-i18n="pl_sl_spool">Toplam Spool</div>
-    <div class="sc-bar"><div class="sc-bar-fill leg" id="bar-spool" style="width:0%"></div></div>
+    <div class="sc-icon ic-violet"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 2v5h-5V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="pl_sl_spool">Toplam Spool</div>
+      <div class="sc-val"><span id="st-spool">1.393</span> <span class="sc-unit">spool</span></div>
+    </div>
   </div>
   <div class="sc cl-re">
-    <div class="sc-badge re" data-i18n="pl_badge_agirlik">AĞIRLIK</div>
-    <div class="sv" id="st-agirlik">44.820</div>
-    <div class="sl" data-i18n="pl_sl_agirlik">Toplam Ağırlık (kg)</div>
-    <div class="sc-bar"><div class="sc-bar-fill re" id="bar-agirlik" style="width:0%"></div></div>
+    <div class="sc-icon ic-orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <div class="sc-body">
+      <div class="sc-label" data-i18n="pl_sl_agirlik">Toplam Ağırlık (kg)</div>
+      <div class="sc-val"><span id="st-agirlik">44.820</span> <span class="sc-unit">kg</span></div>
+    </div>
   </div>
 </div>
 
 <!-- FİLTRE -->
 <div class="cl-warn" style="display:flex;gap:8px;margin-bottom:14px;align-items:center;background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:10px 14px;">
-  <button class="bp" onclick="modalAc()" style="height:34px;font-size:13px;flex:none;">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    <span data-i18n="pl_btn_new">Yeni Proje</span>
-  </button>
   <div style="flex:1;"></div>
   <input class="inp" id="plAra" data-i18n-placeholder="pl_search_placeholder" placeholder="Proje no, gemi adi, tersane..." oninput="plFiltrele()" style="width:240px;flex:none;">
   <select class="inp" id="plTersane" onchange="plFiltrele()" style="width:150px;flex:none;">
@@ -230,9 +240,8 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 </div>
 
 <!-- TABLO -->
-<div style="overflow-x:auto;">
-<div class="tbl-wrap" style="min-width:1100px;">
-  <table style="font-size:16px;">
+<div class="tbl-wrap">
+  <table style="font-size:16px;min-width:1100px;">
     <thead>
       <tr>
         <th style="width:40px;">#</th>
@@ -260,7 +269,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">7</td>
         <td style="text-align:right;">52</td>
         <td style="text-align:right;font-weight:500;">5.406</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:40%"></div></div><span class="tprog-pct" style="color:var(--ac);">%40</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%40</span><div class="prog-mini"><div class="prog-fill" style="width:40%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -277,7 +286,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">111</td>
         <td style="text-align:right;font-weight:500;">2.579</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:80%"></div></div><span class="tprog-pct" style="color:var(--ac);">%80</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%80</span><div class="prog-mini"><div class="prog-fill" style="width:80%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -294,7 +303,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">21</td>
         <td style="text-align:right;">84</td>
         <td style="text-align:right;font-weight:500;">7.812</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -311,7 +320,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">5</td>
         <td style="text-align:right;">55</td>
         <td style="text-align:right;font-weight:500;">2.435</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -328,7 +337,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">10</td>
         <td style="text-align:right;">159</td>
         <td style="text-align:right;font-weight:500;">9.179</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:5%"></div></div><span class="tprog-pct" style="color:var(--warn);">%5</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%5</span><div class="prog-mini"><div class="prog-fill" style="width:5%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -345,7 +354,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">21</td>
         <td style="text-align:right;">141</td>
         <td style="text-align:right;font-weight:500;">7.773</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -362,7 +371,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">269</td>
         <td style="text-align:right;font-weight:500;">5.457</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:15%"></div></div><span class="tprog-pct" style="color:var(--ac);">%15</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%15</span><div class="prog-mini"><div class="prog-fill" style="width:15%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -379,7 +388,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">9</td>
         <td style="text-align:right;">256</td>
         <td style="text-align:right;font-weight:500;">6.474</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:50%"></div></div><span class="tprog-pct" style="color:var(--ac);">%50</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%50</span><div class="prog-mini"><div class="prog-fill" style="width:50%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -396,7 +405,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">8</td>
         <td style="text-align:right;">150</td>
         <td style="text-align:right;font-weight:500;">6.414</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:25%"></div></div><span class="tprog-pct" style="color:var(--ac);">%25</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%25</span><div class="prog-mini"><div class="prog-fill" style="width:25%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -413,7 +422,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">6</td>
         <td style="text-align:right;">234</td>
         <td style="text-align:right;font-weight:500;">2.484</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -430,7 +439,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">15</td>
         <td style="text-align:right;">216</td>
         <td style="text-align:right;font-weight:500;">5.233</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -447,7 +456,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">5</td>
         <td style="text-align:right;">275</td>
         <td style="text-align:right;font-weight:500;">2.945</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:10%"></div></div><span class="tprog-pct" style="color:var(--warn);">%10</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%10</span><div class="prog-mini"><div class="prog-fill" style="width:10%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -464,7 +473,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">6</td>
         <td style="text-align:right;">190</td>
         <td style="text-align:right;font-weight:500;">6.825</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -481,7 +490,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">22</td>
         <td style="text-align:right;">138</td>
         <td style="text-align:right;font-weight:500;">2.039</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:15%"></div></div><span class="tprog-pct" style="color:var(--ac);">%15</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%15</span><div class="prog-mini"><div class="prog-fill" style="width:15%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -498,7 +507,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">188</td>
         <td style="text-align:right;font-weight:500;">2.207</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:40%"></div></div><span class="tprog-pct" style="color:var(--ac);">%40</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%40</span><div class="prog-mini"><div class="prog-fill" style="width:40%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -515,7 +524,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">7</td>
         <td style="text-align:right;">234</td>
         <td style="text-align:right;font-weight:500;">5.454</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:65%"></div></div><span class="tprog-pct" style="color:var(--ac);">%65</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%65</span><div class="prog-mini"><div class="prog-fill" style="width:65%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -532,7 +541,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">15</td>
         <td style="text-align:right;">123</td>
         <td style="text-align:right;font-weight:500;">6.965</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -549,7 +558,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">15</td>
         <td style="text-align:right;">147</td>
         <td style="text-align:right;font-weight:500;">5.274</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -566,7 +575,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">6</td>
         <td style="text-align:right;">127</td>
         <td style="text-align:right;font-weight:500;">4.910</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:5%"></div></div><span class="tprog-pct" style="color:var(--warn);">%5</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%5</span><div class="prog-mini"><div class="prog-fill" style="width:5%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -583,7 +592,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">18</td>
         <td style="text-align:right;">234</td>
         <td style="text-align:right;font-weight:500;">5.322</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -600,7 +609,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">21</td>
         <td style="text-align:right;">152</td>
         <td style="text-align:right;font-weight:500;">6.213</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:15%"></div></div><span class="tprog-pct" style="color:var(--ac);">%15</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%15</span><div class="prog-mini"><div class="prog-fill" style="width:15%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -617,7 +626,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">56</td>
         <td style="text-align:right;font-weight:500;">6.068</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:60%"></div></div><span class="tprog-pct" style="color:var(--ac);">%60</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%60</span><div class="prog-mini"><div class="prog-fill" style="width:60%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -634,7 +643,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">12</td>
         <td style="text-align:right;">73</td>
         <td style="text-align:right;font-weight:500;">4.356</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:75%"></div></div><span class="tprog-pct" style="color:var(--ac);">%75</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%75</span><div class="prog-mini"><div class="prog-fill" style="width:75%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -651,7 +660,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">14</td>
         <td style="text-align:right;">148</td>
         <td style="text-align:right;font-weight:500;">9.079</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -668,7 +677,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">16</td>
         <td style="text-align:right;">274</td>
         <td style="text-align:right;font-weight:500;">3.240</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -685,7 +694,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">12</td>
         <td style="text-align:right;">111</td>
         <td style="text-align:right;font-weight:500;">4.940</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:10%"></div></div><span class="tprog-pct" style="color:var(--warn);">%10</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%10</span><div class="prog-mini"><div class="prog-fill" style="width:10%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -702,7 +711,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">22</td>
         <td style="text-align:right;">259</td>
         <td style="text-align:right;font-weight:500;">7.443</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -719,7 +728,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">15</td>
         <td style="text-align:right;">152</td>
         <td style="text-align:right;font-weight:500;">3.166</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:70%"></div></div><span class="tprog-pct" style="color:var(--ac);">%70</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%70</span><div class="prog-mini"><div class="prog-fill" style="width:70%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -736,7 +745,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">19</td>
         <td style="text-align:right;">86</td>
         <td style="text-align:right;font-weight:500;">1.671</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:25%"></div></div><span class="tprog-pct" style="color:var(--ac);">%25</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%25</span><div class="prog-mini"><div class="prog-fill" style="width:25%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -753,7 +762,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">8</td>
         <td style="text-align:right;">121</td>
         <td style="text-align:right;font-weight:500;">7.816</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:75%"></div></div><span class="tprog-pct" style="color:var(--ac);">%75</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%75</span><div class="prog-mini"><div class="prog-fill" style="width:75%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -770,7 +779,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">6</td>
         <td style="text-align:right;">237</td>
         <td style="text-align:right;font-weight:500;">7.152</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -787,7 +796,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">18</td>
         <td style="text-align:right;">310</td>
         <td style="text-align:right;font-weight:500;">5.019</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -804,7 +813,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">21</td>
         <td style="text-align:right;">45</td>
         <td style="text-align:right;font-weight:500;">2.776</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:10%"></div></div><span class="tprog-pct" style="color:var(--warn);">%10</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%10</span><div class="prog-mini"><div class="prog-fill" style="width:10%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -821,7 +830,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">14</td>
         <td style="text-align:right;">97</td>
         <td style="text-align:right;font-weight:500;">5.708</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -838,7 +847,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">17</td>
         <td style="text-align:right;">120</td>
         <td style="text-align:right;font-weight:500;">8.333</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:15%"></div></div><span class="tprog-pct" style="color:var(--ac);">%15</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%15</span><div class="prog-mini"><div class="prog-fill" style="width:15%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -855,7 +864,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">12</td>
         <td style="text-align:right;">296</td>
         <td style="text-align:right;font-weight:500;">3.827</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:70%"></div></div><span class="tprog-pct" style="color:var(--ac);">%70</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%70</span><div class="prog-mini"><div class="prog-fill" style="width:70%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -872,7 +881,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">7</td>
         <td style="text-align:right;">192</td>
         <td style="text-align:right;font-weight:500;">9.217</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:75%"></div></div><span class="tprog-pct" style="color:var(--ac);">%75</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%75</span><div class="prog-mini"><div class="prog-fill" style="width:75%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -889,7 +898,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">10</td>
         <td style="text-align:right;">118</td>
         <td style="text-align:right;font-weight:500;">7.026</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -906,7 +915,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">9</td>
         <td style="text-align:right;">316</td>
         <td style="text-align:right;font-weight:500;">909</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -923,7 +932,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">14</td>
         <td style="text-align:right;">290</td>
         <td style="text-align:right;font-weight:500;">1.219</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:5%"></div></div><span class="tprog-pct" style="color:var(--warn);">%5</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%5</span><div class="prog-mini"><div class="prog-fill" style="width:5%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -940,7 +949,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">15</td>
         <td style="text-align:right;">197</td>
         <td style="text-align:right;font-weight:500;">4.823</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -957,7 +966,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">5</td>
         <td style="text-align:right;">163</td>
         <td style="text-align:right;font-weight:500;">2.190</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:25%"></div></div><span class="tprog-pct" style="color:var(--ac);">%25</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%25</span><div class="prog-mini"><div class="prog-fill" style="width:25%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -974,7 +983,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">19</td>
         <td style="text-align:right;">75</td>
         <td style="text-align:right;font-weight:500;">2.960</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:30%"></div></div><span class="tprog-pct" style="color:var(--ac);">%30</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%30</span><div class="prog-mini"><div class="prog-fill" style="width:30%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -991,7 +1000,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">19</td>
         <td style="text-align:right;">124</td>
         <td style="text-align:right;font-weight:500;">5.242</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:70%"></div></div><span class="tprog-pct" style="color:var(--ac);">%70</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%70</span><div class="prog-mini"><div class="prog-fill" style="width:70%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1008,7 +1017,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">17</td>
         <td style="text-align:right;">148</td>
         <td style="text-align:right;font-weight:500;">4.195</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1025,7 +1034,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">13</td>
         <td style="text-align:right;">244</td>
         <td style="text-align:right;font-weight:500;">7.018</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill gr" style="width:100%"></div></div><span class="tprog-pct" style="color:var(--gr);">%100</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%100</span><div class="prog-mini"><div class="prog-fill" style="width:100%;"></div></div></div></td>
         <td><span class="pill bt">Tamamlandı</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1042,7 +1051,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">18</td>
         <td style="text-align:right;">304</td>
         <td style="text-align:right;font-weight:500;">8.297</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill warn" style="width:5%"></div></div><span class="tprog-pct" style="color:var(--warn);">%5</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%5</span><div class="prog-mini"><div class="prog-fill" style="width:5%;"></div></div></div></td>
         <td><span class="pill bk">Beklemede</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1059,7 +1068,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">155</td>
         <td style="text-align:right;font-weight:500;">1.949</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill re" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--re);">%0</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%0</span><div class="prog-mini"><div class="prog-fill" style="width:0%;"></div></div></div></td>
         <td><span class="pill re">İptal</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1076,7 +1085,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">14</td>
         <td style="text-align:right;">50</td>
         <td style="text-align:right;font-weight:500;">4.670</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:75%"></div></div><span class="tprog-pct" style="color:var(--ac);">%75</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%75</span><div class="prog-mini"><div class="prog-fill" style="width:75%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1093,7 +1102,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <td style="text-align:right;">11</td>
         <td style="text-align:right;">43</td>
         <td style="text-align:right;font-weight:500;">2.063</td>
-        <td><div class="tprog"><div class="tprog-bar"><div class="tprog-fill ac" style="width:80%"></div></div><span class="tprog-pct" style="color:var(--ac);">%80</span></div></td>
+        <td><div class="prog-cell"><span class="prog-pct" style="color:var(--txd);">%80</span><div class="prog-mini"><div class="prog-fill" style="width:80%;"></div></div></div></td>
         <td><span class="pill dv">Devam Ediyor</span></td>
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <button class="icon-btn" title="Düzenle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
@@ -1102,7 +1111,6 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
       </tr>
     </tbody>
   </table>
-</div>
 </div>
 
 <div id="plBos" style="display:none;padding:40px;text-align:center;color:var(--txd);font-size:14px;background:var(--sur);border:1px solid var(--bor);border-radius:14px;margin-top:8px;" data-i18n="pl_no_results">Filtreyle eşleşen proje bulunamadı.</div>
@@ -1118,7 +1126,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
 <div class="modal-overlay" id="modalOverlay" onclick="modalKapat(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-head">
-      <div class="modal-title" data-i18n="pl_modal_title">Yeni Proje Ekle</div>
+      <div class="modal-title" id="modalTitleText" data-i18n="pl_modal_title">Yeni Proje Ekle</div>
       <button class="modal-close" onclick="modalKapat()">&#215;</button>
     </div>
     <div class="modal-body">
@@ -1133,7 +1141,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
             </div>
             <div>
               <div class="sopt-label" data-i18n="pl_source_shipyard">Tersane</div>
-              <div style="font-size:11px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_shipyard_sub">Kayıtlı tersaneler</div>
+              <div style="font-size:12px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_shipyard_sub">Kayıtlı tersaneler</div>
             </div>
             <div class="sopt-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
@@ -1143,7 +1151,7 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
             </div>
             <div>
               <div class="sopt-label" data-i18n="pl_source_company">Firma</div>
-              <div style="font-size:11px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_company_sub">Kayıtlı firmalar</div>
+              <div style="font-size:12px;color:var(--txd);margin-top:1px;" data-i18n="pl_source_company_sub">Kayıtlı firmalar</div>
             </div>
             <div class="sopt-check"><svg class="chk-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
@@ -1220,12 +1228,24 @@ tbody tr:hover td{background:var(--sur2);cursor:pointer;}
         <textarea class="inp" id="fAciklama" rows="3" data-i18n-placeholder="pl_desc_placeholder" placeholder="Kısa açıklama..." style="resize:vertical;min-height:80px;line-height:1.6;"></textarea>
       </div>
 
+      <!-- Durum (sadece düzenleme modunda görünür) -->
+      <div class="field" id="fDurumField" style="display:none;">
+        <label data-i18n="pl_status_label">Durum</label>
+        <select class="inp" id="fDurum" style="width:100%;font-size:14px;">
+          <option value="Devam Ediyor" data-i18n="pl_status_ongoing">Devam Ediyor</option>
+          <option value="Tamamlandı" data-i18n="pl_status_done">Tamamlandı</option>
+          <option value="Beklemede" data-i18n="pl_status_waiting">Beklemede</option>
+          <option value="İptal" data-i18n="pl_status_cancelled">İptal</option>
+          <option value="Başlamadı" data-i18n="pl_status_not_started">Başlamadı</option>
+        </select>
+      </div>
+
     </div>
     <div class="modal-foot">
       <button class="bo" onclick="modalKapat()" data-i18n="pl_btn_cancel">İptal</button>
-      <button class="bp" onclick="projeKaydet()">
+      <button class="bp" id="btnKaydet" onclick="projeKaydet()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        <span data-i18n="pl_btn_save">Proje Ekle</span>
+        <span id="btnKaydetLabel" data-i18n="pl_btn_save">Proje Ekle</span>
       </button>
     </div>
   </div>
@@ -1241,8 +1261,8 @@ var _I18N = {
     "pl_badge_tersane":"SHIPYARD","pl_badge_toplam":"TOTAL","pl_badge_devre":"CIRCUIT",
     "pl_badge_spool":"SPOOL","pl_badge_agirlik":"WEIGHT",
     "pl_sl_tersane":"Shipyard Count","pl_sl_toplam":"Total Projects",
-    "pl_sl_devre":"Total Circuits","pl_sl_spool":"Total Spools","pl_sl_agirlik":"Total Weight (kg)",
-    "pl_btn_new":"New Project","pl_search_placeholder":"Project no, ship name, shipyard...",
+    "pl_sl_devre":"Total Circuits","pl_sl_spool":"Total Spools","pl_sl_agirlik":"Total Weight (kg)","pl_unit_shipyard":"shipyard","pl_unit_project":"projects","pl_unit_circuit":"circuits",
+    "pl_btn_new":"New Project","pl_btn_export":"Export","pl_search_placeholder":"Project no, ship name, shipyard...",
     "pl_all_shipyards":"All Shipyards","pl_all_statuses":"All Statuses",
     "pl_status_ongoing":"In Progress","pl_status_done":"Completed",
     "pl_status_waiting":"On Hold","pl_status_cancelled":"Cancelled",
@@ -1251,7 +1271,7 @@ var _I18N = {
     "pl_th_start":"Start","pl_th_end":"End","pl_th_circuit":"Circuit",
     "pl_th_spool":"Spool","pl_th_weight":"Weight (kg)","pl_th_progress":"Progress","pl_th_status":"Status",
     "pl_no_results":"No projects found matching the filter.",
-    "pl_modal_title":"Add New Project","pl_source_label":"Source Selection",
+    "pl_modal_title":"Add New Project","pl_modal_edit_title":"Edit Project","pl_btn_update":"Update","pl_status_label":"Status","pl_source_label":"Source Selection",
     "pl_source_shipyard":"Shipyard","pl_source_shipyard_sub":"Registered shipyards",
     "pl_source_company":"Company","pl_source_company_sub":"Registered companies",
     "pl_select_shipyard":"Select shipyard...","pl_select_company":"Select company...",
@@ -1265,6 +1285,7 @@ var _I18N = {
     "pl_status_not_started":"Not Started","pl_pending":"Pending",
     "pl_alert_no":"Project No is required.","pl_alert_source":"Please select a shipyard or company.",
     "pl_confirm_delete":"Are you sure you want to delete this project?",
+    "pl_prompt_ship_type":"New ship type name:",
     "pl_pgn_info":"{total} projects, showing {from}–{to}"
   },
   ar: {
@@ -1272,8 +1293,8 @@ var _I18N = {
     "pl_badge_tersane":"الورشة","pl_badge_toplam":"الإجمالي","pl_badge_devre":"الدوائر",
     "pl_badge_spool":"السبولات","pl_badge_agirlik":"الوزن",
     "pl_sl_tersane":"عدد الورش","pl_sl_toplam":"إجمالي المشاريع",
-    "pl_sl_devre":"إجمالي الدوائر","pl_sl_spool":"إجمالي السبولات","pl_sl_agirlik":"الوزن الإجمالي (كغ)",
-    "pl_btn_new":"مشروع جديد","pl_search_placeholder":"رقم المشروع، اسم السفينة، الورشة...",
+    "pl_sl_devre":"إجمالي الدوائر","pl_sl_spool":"إجمالي السبولات","pl_sl_agirlik":"الوزن الإجمالي (كغ)","pl_unit_shipyard":"ورشة","pl_unit_project":"مشاريع","pl_unit_circuit":"دوائر",
+    "pl_btn_new":"مشروع جديد","pl_btn_export":"تصدير","pl_search_placeholder":"رقم المشروع، اسم السفينة، الورشة...",
     "pl_all_shipyards":"كل الورش","pl_all_statuses":"كل الحالات",
     "pl_status_ongoing":"جارٍ","pl_status_done":"مكتمل",
     "pl_status_waiting":"معلق","pl_status_cancelled":"ملغى",
@@ -1282,7 +1303,7 @@ var _I18N = {
     "pl_th_start":"البداية","pl_th_end":"النهاية","pl_th_circuit":"الدوائر",
     "pl_th_spool":"السبولات","pl_th_weight":"الوزن (كغ)","pl_th_progress":"التقدم","pl_th_status":"الحالة",
     "pl_no_results":"لا توجد مشاريع تطابق الفلتر.",
-    "pl_modal_title":"إضافة مشروع جديد","pl_source_label":"اختيار المصدر",
+    "pl_modal_title":"إضافة مشروع جديد","pl_modal_edit_title":"تعديل المشروع","pl_btn_update":"تحديث","pl_status_label":"الحالة","pl_source_label":"اختيار المصدر",
     "pl_source_shipyard":"الورشة","pl_source_shipyard_sub":"الورش المسجلة",
     "pl_source_company":"الشركة","pl_source_company_sub":"الشركات المسجلة",
     "pl_select_shipyard":"اختر الورشة...","pl_select_company":"اختر الشركة...",
@@ -1296,6 +1317,7 @@ var _I18N = {
     "pl_status_not_started":"لم يبدأ","pl_pending":"قيد الانتظار",
     "pl_alert_no":"رقم المشروع مطلوب.","pl_alert_source":"يرجى اختيار الورشة أو الشركة.",
     "pl_confirm_delete":"هل أنت متأكد من حذف هذا المشروع؟",
+    "pl_prompt_ship_type":"اسم نوع السفينة الجديد:",
     "pl_pgn_info":"{total} مشروع، عرض {from}–{to}"
   }
 };
@@ -1328,7 +1350,7 @@ if (typeof MutationObserver !== 'undefined') {
     .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 }
 // _onLangChange hook
-window._onLangChange = function() { _applyI18n(); };
+window._onLangChange = function() { _applyI18n(); fixStatusPills(); };
 
 // G-01: XSS sanitizer — innerHTML'e kullanıcı verisi yazmadan önce zorunlu
 function esc(s) {
@@ -1337,9 +1359,57 @@ function esc(s) {
   return d.innerHTML;
 }
 
+var _duzenleRow = null; // Düzenlenen satır referansı (null = yeni ekleme modu)
+
 function modalAc(){
+  _duzenleRow = null;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
+  // Başlık ve buton: ekleme modu
+  var title = document.getElementById('modalTitleText');
+  var btnLabel = document.getElementById('btnKaydetLabel');
+  if (title) { title.removeAttribute('data-i18n'); title.textContent = tv('pl_modal_title','Yeni Proje Ekle'); }
+  if (btnLabel) { btnLabel.removeAttribute('data-i18n'); btnLabel.textContent = tv('pl_btn_save','Proje Ekle'); }
+  // Durum alanını gizle
+  var df = document.getElementById('fDurumField');
+  if (df) df.style.display = 'none';
+}
+
+function projeDuzenle(btn) {
+  var tr = btn.closest('tr');
+  if (!tr) return;
+  _duzenleRow = tr;
+  var tds = tr.querySelectorAll('td');
+  var tersane = (tds[1]||{}).textContent||'';
+  var projeNo = (tds[2]||{}).textContent||'';
+  var gemiAdi = (tds[3]||{}).textContent||'';
+  var durum   = tr.getAttribute('data-durum') || 'Devam Ediyor';
+
+  // Modalı aç
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Başlık ve buton: düzenleme modu
+  var title = document.getElementById('modalTitleText');
+  var btnLabel = document.getElementById('btnKaydetLabel');
+  if (title) { title.removeAttribute('data-i18n'); title.textContent = tv('pl_modal_edit_title','Projeyi Düzenle'); }
+  if (btnLabel) { btnLabel.removeAttribute('data-i18n'); btnLabel.textContent = tv('pl_btn_update','Güncelle'); }
+
+  // Durum alanını göster ve seç
+  var df = document.getElementById('fDurumField');
+  if (df) df.style.display = '';
+  var fDurum = document.getElementById('fDurum');
+  if (fDurum) fDurum.value = durum;
+
+  // Tersane seç
+  kaynakSec('tersane');
+  var fTersane = document.getElementById('fTersane');
+  if (fTersane) fTersane.value = tersane;
+
+  // Alanları doldur
+  document.getElementById('fProjeNo').value = projeNo;
+  document.getElementById('fGemiAdi').value = gemiAdi;
+  document.getElementById('fAciklama').value = '';
 }
 function modalKapat(e){
   if(e && e.target!==document.getElementById('modalOverlay')) return;
@@ -1369,7 +1439,7 @@ function projeTuruSec(tip, id){
 }
 
 function yeniGemiTuruEkle(){
-  var yeni=prompt('Yeni gemi türü adı:');
+  var yeni=prompt(tv('pl_prompt_ship_type','Yeni gemi türü adı:'));
   if(!yeni||!yeni.trim()) return;
   yeni=yeni.trim();
   var sel=document.getElementById('fGemiTuru');
@@ -1379,7 +1449,34 @@ function yeniGemiTuruEkle(){
   sel.value=yeni;
 }
 
-// UI-03: İlerleme renk standardı — progColor()
+// D-02: Statik tablo satırlarındaki durum badge'lerini tv() ile güncelle
+var _DURUM_KEY = {
+  'Devam Ediyor': 'pl_status_ongoing',
+  'Tamamlandı':   'pl_status_done',
+  'Beklemede':    'pl_status_waiting',
+  'İptal':        'pl_status_cancelled',
+  'Başlamadı':    'pl_status_not_started'
+};
+function fixStatusPills() {
+  document.querySelectorAll('#plBody tr').forEach(function(tr) {
+    var durum = tr.getAttribute('data-durum') || '';
+    var pill  = tr.querySelector('.pill');
+    if (!pill || !durum) return;
+    var key = _DURUM_KEY[durum];
+    if (key) pill.textContent = tv(key, durum);
+  });
+}
+
+// UI-03: Tüm .prog-fill barlarını progColor() ile yeniden renklendir
+function fixProgressBars() {
+  document.querySelectorAll('.prog-fill').forEach(function(fill) {
+    var pct = parseInt(fill.style.width) || 0;
+    fill.style.background = progColor(pct);
+    var cell = fill.closest ? fill.closest('.prog-cell') : null;
+    var pctEl = cell ? cell.querySelector('.prog-pct') : null;
+    if (pctEl) pctEl.style.color = progColor(pct);
+  });
+}
 function progColor(p) {
   return p === 0 ? 'var(--txd)' : p < 30 ? 'var(--re)' : p < 70 ? 'var(--warn)' : 'var(--gr)';
 }
@@ -1416,6 +1513,33 @@ function projeKaydet(){
   var kaynak='';
   if(_kaynak==='tersane') kaynak=document.getElementById('fTersane').value;
   else if(_kaynak==='firma') kaynak=document.getElementById('fFirma').value;
+
+  // ── DÜZENLEME MODU ──────────────────────────────
+  if (_duzenleRow) {
+    var tr = _duzenleRow;
+    var tds = tr.querySelectorAll('td');
+    var durum = document.getElementById('fDurum').value;
+    var durumMap = {'Devam Ediyor':'dv','Tamamlandı':'bt','Beklemede':'bk','İptal':'re','Başlamadı':'pl'};
+    // Hücreleri güncelle
+    if (kaynak && tds[1]) tds[1].textContent = kaynak;
+    if (tds[2]) tds[2].textContent = no;
+    if (tds[3]) tds[3].textContent = gemi;
+    // Durum pill
+    if (tds[10]) {
+      var pill = tds[10].querySelector('.pill');
+      if (pill) {
+        pill.className = 'pill ' + (durumMap[durum]||'pl');
+        pill.textContent = tv(_DURUM_KEY[durum]||'', durum);
+      }
+    }
+    // data-durum güncelle (filtre için)
+    tr.setAttribute('data-durum', durum);
+    if (kaynak) tr.setAttribute('data-tersane', kaynak);
+    _duzenleRow = null;
+    modalKapat();
+    plFiltrele();
+    return;
+  }
   if(!kaynak){alert(tv('pl_alert_source','Tersane veya firma seçiniz.'));return;}
   var bugun=new Date();
   var bas=bugun.getDate().toString().padStart(2,'0')+'.'+(bugun.getMonth()+1).toString().padStart(2,'0')+'.'+bugun.getFullYear();
@@ -1454,21 +1578,22 @@ function projeKaydet(){
 
   tr.appendChild(tdText(gemi, 'font-weight:500;'));
   tr.appendChild(tdText(bas, 'color:var(--txm);'));
-  tr.appendChild(tdText('Bekleniyor', 'color:var(--txd);font-style:italic;'));
+  tr.appendChild(tdText(tv('pl_pending','Bekleniyor'), 'color:var(--txd);font-style:italic;'));
   tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
   tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
   tr.appendChild(tdText('—', 'text-align:right;color:var(--txd);'));
 
   // İlerleme
   var tdIler = document.createElement('td');
-  tdIler.innerHTML = '<div class="tprog"><div class="tprog-bar"><div class="tprog-fill pl" style="width:0%"></div></div><span class="tprog-pct" style="color:var(--txd);">%0</span></div>';
+  tdIler.innerHTML = '<div class="prog-cell"><span class="prog-pct" style="color:' + progColor(0) + ';">%0</span>' +
+    '<div class="prog-mini"><div class="prog-fill" style="width:0%;background:' + progColor(0) + ';"></div></div></div>';
   tr.appendChild(tdIler);
 
   // Durum
   var tdDurum = document.createElement('td');
   var span = document.createElement('span');
   span.className = 'pill pl';
-  span.textContent = 'Başlamadı';
+  span.textContent = tv('pl_status_not_started','Başlamadı');
   tdDurum.appendChild(span);
   tr.appendChild(tdDurum);
 
@@ -1499,7 +1624,32 @@ function projeKaydet(){
   plFiltrele();
 }
 
-// SAYFALAMA
+// DIŞA AKTAR — Excel
+function plExcel() {
+  if (typeof XLSX === 'undefined') { alert('Excel kütüphanesi yüklenemedi.'); return; }
+  var rows = [['Tersane','Proje No','Gemi Adı','Başlangıç','Bitiş','Devre','Spool','Ağırlık (kg)','İlerleme (%)','Durum']];
+  _plFiltreli.forEach(function(tr) {
+    var tds = tr.querySelectorAll('td');
+    var pct = (tds[9] && tds[9].querySelector('.prog-pct')) ? tds[9].querySelector('.prog-pct').textContent.replace('%','').trim() : '';
+    rows.push([
+      (tds[1]||{}).textContent||'',
+      (tds[2]||{}).textContent||'',
+      (tds[3]||{}).textContent||'',
+      (tds[4]||{}).textContent||'',
+      (tds[5]||{}).textContent||'',
+      (tds[6]||{}).textContent||'',
+      (tds[7]||{}).textContent||'',
+      ((tds[8]||{}).textContent||'').replace(/\./g,'').replace(',','.'),
+      pct,
+      (tds[10]||{}).textContent||''
+    ]);
+  });
+  var wb = XLSX.utils.book_new();
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [10,12,24,12,12,8,8,14,12,14].map(function(w){return{wch:w};});
+  XLSX.utils.book_append_sheet(wb, ws, 'Projeler');
+  XLSX.writeFile(wb, 'AresPipe_Projeler_' + new Date().toISOString().slice(0,10) + '.xlsx');
+}
 var PL_SAYFA_BOYUT = 25;
 var _plSayfa = 1;
 var _plFiltreli = [];
@@ -1547,16 +1697,11 @@ function _plHesapla(){
   var tamamTersane=Object.keys(tamamTersaneSet).length;
   var pct=function(a,b){return b>0?Math.round(a/b*100):0;};
   var set=function(id,val){var el=document.getElementById(id);if(el)el.textContent=val;};
-  var setW=function(id,p){var el=document.getElementById(id);if(el)el.style.width=p+'%';};
-  set('st-tersane',tersaneSayisi); set('st-toplam',toplam);
+  set('st-tersane',tersaneSayisi);
+  set('st-toplam',toplam);
   set('st-devre',topDevre.toLocaleString('tr-TR'));
   set('st-spool',topSpool.toLocaleString('tr-TR'));
   set('st-agirlik',Math.round(topKg).toLocaleString('tr-TR'));
-  setW('bar-tersane',pct(tamamTersane,tersaneSayisi));
-  setW('bar-toplam',pct(tamam,toplam));
-  setW('bar-devre',pct(tamamDevre,topDevre));
-  setW('bar-spool',pct(tamamSpool,topSpool));
-  setW('bar-agirlik',pct(Math.round(tamamKg),Math.round(topKg)));
   var toplamSayfa=Math.max(1,Math.ceil(_plFiltreli.length/PL_SAYFA_BOYUT));
   if(_plSayfa>toplamSayfa) _plSayfa=toplamSayfa;
   var bas=(_plSayfa-1)*PL_SAYFA_BOYUT;
@@ -1668,10 +1813,21 @@ function projeyeGit(row){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+  // Düzenle butonları — event delegation
+  var plBody = document.getElementById('plBody');
+  if (plBody) {
+    plBody.addEventListener('click', function(e) {
+      var btn = e.target.closest('.icon-btn:not(.del)');
+      if (btn) { e.stopPropagation(); projeDuzenle(btn); }
+    });
+  }
+
   // T-01: Varsayılan sırayı kaydet
   _plOriginalOrder = Array.from(document.querySelectorAll('#plBody tr'));
   _applyI18n();
   plFiltrele();
+  fixProgressBars(); // UI-03: progColor() ile tüm barları düzelt
+  fixStatusPills();  // D-02: durum badge'lerini tv() ile güncelle
   // B-03: visibility restore
   document.documentElement.style.visibility = '';
 });
