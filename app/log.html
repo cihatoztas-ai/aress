@@ -263,7 +263,20 @@ var _I18N = {
     log_csv_indirildi:  'CSV downloaded',
     log_temizlendi:     'Log cleared',
     log_yenilendi:      'Refreshed',
-    log_temizle_onay:   'All log records will be deleted. Are you sure?'
+    log_temizle_onay:   'All log records will be deleted. Are you sure?',
+    log_il_giris:        'Login',
+    log_il_kk_gonder:    'QC Submitted',
+    log_il_kk_onayla:    'QC Approved',
+    log_il_kk_red:       'QC Rejected',
+    log_il_sevk:         'Shipment',
+    log_il_test_olustur: 'Test Created',
+    log_il_test_sonuc:   'Test Result',
+    log_il_devre_durdur: 'Circuit Stopped',
+    log_il_spool_durdur: 'Spool Stopped',
+    log_il_is_baslat:    'Work Started',
+    log_il_is_bitir:     'Work Completed',
+    log_il_tanim_ekle:   'Definition Added',
+    log_il_tanim_sil:    'Definition Deleted'
   },
   ar: {
     cmn_anasayfa:       'الرئيسية',
@@ -305,7 +318,20 @@ var _I18N = {
     log_csv_indirildi:  'تم تنزيل CSV',
     log_temizlendi:     'تم مسح السجل',
     log_yenilendi:      'تم التحديث',
-    log_temizle_onay:   'سيتم حذف جميع سجلات العمليات. هل أنت متأكد؟'
+    log_temizle_onay:   'سيتم حذف جميع سجلات العمليات. هل أنت متأكد؟',
+    log_il_giris:        'تسجيل الدخول',
+    log_il_kk_gonder:    'تم إرسال مراقبة الجودة',
+    log_il_kk_onayla:    'تمت الموافقة على مراقبة الجودة',
+    log_il_kk_red:       'رُفضت مراقبة الجودة',
+    log_il_sevk:         'شحن',
+    log_il_test_olustur: 'تم إنشاء الاختبار',
+    log_il_test_sonuc:   'نتيجة الاختبار',
+    log_il_devre_durdur: 'تم إيقاف الدائرة',
+    log_il_spool_durdur: 'تم إيقاف Spool',
+    log_il_is_baslat:    'بدأ العمل',
+    log_il_is_bitir:     'اكتمل العمل',
+    log_il_tanim_ekle:   'تمت إضافة التعريف',
+    log_il_tanim_sil:    'تم حذف التعريف'
   }
 };
 
@@ -413,6 +439,25 @@ function islemRenk(islem) {
   return 'ib-varsayilan';
 }
 
+function islemLabel(islem) {
+  if (!islem) return '—';
+  var i = islem.toUpperCase();
+  if (i === 'GİRİŞ'        || i === 'GIRIS')        return tv('log_il_giris',        'Giriş');
+  if (i === 'KK_GONDER')                             return tv('log_il_kk_gonder',    'KK Gönderildi');
+  if (i === 'KK_ONAYLA')                             return tv('log_il_kk_onayla',    'KK Onaylandı');
+  if (i === 'KK_RED')                                return tv('log_il_kk_red',       'KK Reddedildi');
+  if (i === 'SEVKİYAT'     || i === 'SEVKIYAT')      return tv('log_il_sevk',         'Sevkiyat');
+  if (i === 'TEST_OLUSTUR')                          return tv('log_il_test_olustur', 'Test Oluşturuldu');
+  if (i === 'TEST_SONUC')                            return tv('log_il_test_sonuc',   'Test Sonucu');
+  if (i === 'DEVRE_DURDUR')                          return tv('log_il_devre_durdur', 'Devre Durduruldu');
+  if (i === 'SPOOL_DURDUR')                          return tv('log_il_spool_durdur', 'Spool Durduruldu');
+  if (i === 'IS_BASLAT')                             return tv('log_il_is_baslat',    'İş Başlatıldı');
+  if (i === 'IS_BITIR')                              return tv('log_il_is_bitir',     'İş Bitirildi');
+  if (i === 'TANIM_EKLE')                            return tv('log_il_tanim_ekle',   'Tanım Eklendi');
+  if (i === 'TANIM_SIL')                             return tv('log_il_tanim_sil',    'Tanım Silindi');
+  return islem;
+}
+
 function islemIkon(islem) {
   if (!islem) return '⚙️';
   const i = islem.toUpperCase();
@@ -508,7 +553,7 @@ function renderTable(kayitlar) {
         <tr>
           <td style="font-size:14px;color:var(--txd);font-family:'Barlow Condensed',sans-serif;">${FILTERED.indexOf(l)+1}</td>
           <td class="td-zaman"><span class="zaman-tarih">${esc(zamanParca(l.tarih).tarih)}</span><span class="zaman-saat">${esc(zamanParca(l.tarih).saat)}</span></td>
-          <td><span class="islem-badge ${islemRenk(l.islem)}">${islemIkon(l.islem)} ${esc(l.islem||'—')}</span></td>
+          <td><span class="islem-badge ${islemRenk(l.islem)}">${islemIkon(l.islem)} ${esc(islemLabel(l.islem))}</span></td>
           <td style="font-size:14px;font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(l.yapan||'—')}</td>
           <td style="font-size:14px;color:var(--txm);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(l.kaynak||'—')}</td>
           <td style="font-size:14px;color:var(--txm);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(l.aciklama||'')}">${esc(l.aciklama||'—')}</td>
@@ -528,7 +573,7 @@ function renderTimeline(kayitlar) {
             ${i < kayitlar.length-1 ? '<div class="tl-cizgi-hat"></div>' : ''}
           </div>
           <div class="tl-ic">
-            <div class="tl-islem"><span class="islem-badge ${islemRenk(l.islem)}">${islemIkon(l.islem)} ${esc(l.islem||'—')}</span></div>
+            <div class="tl-islem"><span class="islem-badge ${islemRenk(l.islem)}">${islemIkon(l.islem)} ${esc(islemLabel(l.islem))}</span></div>
             <div class="tl-kaynak">${esc(l.yapan||'—')} <span style="color:var(--txd);font-weight:400;">· ${esc(l.kaynak||'—')}</span></div>
             <div class="tl-aciklama">${esc(l.aciklama||'—')}</div>
           </div>
