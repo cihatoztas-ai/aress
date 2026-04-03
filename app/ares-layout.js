@@ -780,6 +780,8 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
       updateLangToggle();
       // ✅ D-01: Sayfa hazır olduktan sonra hook'u tetikle
       if (typeof window._onLangChange === 'function') window._onLangChange(initLang);
+      // Çeviri uygulandıktan SONRA sayfayı göster — flash önleme
+      document.documentElement.style.visibility = '';
     });
 
     // Logo tıklayınca ana sayfa
@@ -791,12 +793,12 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
 
     updateLogoFromSettings();
 
-    // Transition'ı geri aç + sayfayı göster
+    // Transition'ı geri aç (visibility artık loadLang callback'inde)
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         var el = document.getElementById('ares-no-transition');
         if (el) el.remove();
-        document.documentElement.style.visibility = '';
+      });
       });
     });
   });
