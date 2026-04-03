@@ -27,13 +27,14 @@
     .stat-row { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
     .sc       { background:var(--sur); border:1px solid var(--bor); border-radius:14px; padding:14px 18px; display:flex; align-items:center; gap:12px; flex:1; min-width:150px; transition:border-color .18s; }
     .sc-icon  { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    /* B-02: Sadece CSS değişkeni karşılığı olmayanlar hardcoded kalır */
-    .ic-blue   { background:#4f46e5; color:#fff; }
-    .ic-green  { background:var(--gr); color:#fff; }
-    .ic-cyan   { background:#0891b2; color:#fff; }
-    .ic-orange { background:#f97316; color:#fff; }
-    .ic-amber  { background:var(--warn); color:#fff; }
-    .ic-violet { background:var(--leg); color:#fff; }
+    /* B-02: CSS değişkeni karşılığı olmayanlar değişkene alındı */
+    :root { --ic-blue:#4f46e5; --ic-cyan:#0891b2; --ic-orange:#f97316; }
+    .ic-blue   { background:var(--ic-blue);   color:#fff; }
+    .ic-green  { background:var(--gr);        color:#fff; }
+    .ic-cyan   { background:var(--ic-cyan);   color:#fff; }
+    .ic-orange { background:var(--ic-orange); color:#fff; }
+    .ic-amber  { background:var(--warn);      color:#fff; }
+    .ic-violet { background:var(--leg);       color:#fff; }
     .sc-body  { flex:1; min-width:0; }
     .sc-label { font-size:13px; color:var(--txd); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; }
     .sc-val   { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; line-height:1.1; color:var(--tx); }
@@ -86,7 +87,7 @@
     .sira-input:hover  { border-color:var(--bor); }
     .sira-input:focus  { border-color:var(--ac); color:var(--tx); }
     .sira-input.has-val { border-color:var(--re); color:var(--re); font-weight:800; }
-    .sira-input::placeholder { color:var(--bor); font-weight:400; font-size:10px; }
+    .sira-input::placeholder { color:var(--bor); font-weight:400; font-size:12px; }
     .act-btn { display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;border:1px solid var(--bor);background:transparent;color:var(--txd);cursor:pointer;transition:all .15s;flex-shrink:0; }
     .act-btn:hover { background:var(--sur2); }
     .act-btn.edit:hover   { border-color:var(--ac);color:var(--ac); }
@@ -883,9 +884,25 @@ var _STAR_CFG = [
 function yildizToggle(id) {
   var d = DEVRELER.find(function(x) { return x.id === id; });
   if (!d) return;
-  // Her tıklamada modal açılır — renk mlKaydet'te kaydedilirken otomatik set edilir
-  if (!getML(id)) setML(id, mockMalzemeUret(d));
-  mlKontrolAc(id);
+  var state = getStarState(id);
+
+  if (state === 0) {
+    // 1. tıklama — yıldızı kırmızı yap, modal açma
+    var m = getStarMap();
+    m[id] = 1;
+    setStarMap(m);
+    var el = document.getElementById('star_' + id);
+    if (el) {
+      var cfg = _STAR_CFG[1];
+      el.className = 'star-icon ' + cfg.cls;
+      el.innerHTML = cfg.icon;
+    }
+    guncelleMLButonu();
+  } else {
+    // 2. tıklama (1/2/3) — modal aç, ML yoksa üret
+    if (!getML(id)) setML(id, mockMalzemeUret(d));
+    mlKontrolAc(id);
+  }
 }
 
 // ── DEMO MALZEME ÜRETİCİ ─────────────────────────────────────────
