@@ -191,8 +191,8 @@
     <strong style="color:var(--tx);">Hemen yap:</strong> Aksiyon Planı + Sayfa Şartnameleri sekmelerini oku → "Dosyayı okudum, sıradaki: [X]. Devam edelim mi?" de<br><br>
     <strong style="color:var(--tx);">Her zaman:</strong> Kural ihlali varsa yapma / söyle · Sayfa değişince şartname kartını güncelle · M-09 Supabase'de her seferinde hatırlat<br><br>
     <strong style="color:var(--tx);">Mevcut durum:</strong><br>
-    • Tamamlanan: tanimlar ✅ · bukum (yapısal) ✅ · spool_detay ⚠ revizyon · devre_detay ✅ · devreler ✅ · proje_liste ✅ · devre_yeni ✅ · tersaneler ✅<br>
-    • Sıradaki: bukum.html tam revizyonu · Supabase kurulumu
+    • Tamamlanan: tanimlar ✅ · bukum ✅ · spool_detay ⚠ revizyon · devre_detay ✅ · devreler ✅ · proje_liste ✅ · devre_yeni ✅ · tersaneler ✅<br>
+    • Sıradaki: spool_detay revizyonu · Supabase kurulumu
   </div>
 </div>
 
@@ -219,7 +219,7 @@
     <div style="font-size:12px;color:var(--txm);line-height:2.6;">
       <strong style="color:var(--tx);">B1</strong> &nbsp;B-01: <code>.cl-ac / .cl-gr / .cl-re / .cl-warn / .cl-leg</code> CSS tanımlı mı?<br>
       <strong style="color:var(--tx);">B2</strong> &nbsp;B-02: PDF/yazdır bloğu (<code>document.write</code>) DIŞINDA hardcoded <code>#xxxxxx</code> renk var mı? (istisna: <code>color:#fff</code> buton metni)<br>
-      <strong style="color:var(--tx);">B3</strong> &nbsp;F-02: PDF bloğu DIŞINDA <code>font-size:10px</code> veya <code>font-size:11px</code> var mı? → her biri satır numarasıyla listele<br>
+      <strong style="color:var(--tx);">B3</strong> &nbsp;F-02: PDF bloğu DIŞINDA <code>font-size:10px</code>, <code>font-size:11px</code>, <code>font-size:12px</code> veya <code>font-size:13px</code> var mı? → her biri satır numarasıyla listele<br>
       <strong style="color:var(--ac);">B4</strong> &nbsp;<em>[Manuel]</em> F-01: Filtre barı — sol: aksiyon butonu, sağ: arama + filtreler yapısı doğru mu?<br>
       <strong style="color:var(--tx);">B5</strong> &nbsp;UI-03: <code>progColor()</code> tanımlı VE <code>renderTable</code> içinde <code>progColor(d.ilerleme)</code> veya benzeri ile bar renklendirilmiş mi?
     </div>
@@ -509,11 +509,11 @@
 
 <div class="kural-kart cl-ac"><div class="kural-head" onclick="tog(this.parentElement)">
   <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">F-02</span>
-  <span class="kural-baslik">Minimum Font Boyutu — 12px</span>
+  <span class="kural-baslik">Minimum Font Boyutu — 14px</span>
   <div style="margin-left:auto;"><span class="kural-arrow">▼</span></div>
 </div><div class="kural-body">
-  <div class="kural-aciklama">Kullanıcıya görünen hiçbir metin 12px altında olamaz. Badge, meta bilgi, tablo başlığı dahil. Disabled/placeholder metinler için 12px geçerli.</div>
-  <div class="kod-blok"><span class="e">// YASAK</span><br>font-size: 10px; font-size: 11px;<br><br><span class="v">// DOĞRU — minimum</span><br>font-size: 12px;</div>
+  <div class="kural-aciklama">Kullanıcıya görünen hiçbir metin 14px altında olamaz. Badge, meta bilgi, tablo başlığı dahil. Disabled/placeholder metinler için 14px geçerli.</div>
+  <div class="kod-blok"><span class="e">// YASAK</span><br>font-size: 10px; font-size: 11px; font-size: 12px; font-size: 13px;<br><br><span class="v">// DOĞRU — minimum</span><br>font-size: 14px;</div>
 </div></div>
 
 <!-- CAP-01 -->
@@ -933,24 +933,22 @@
   <div style="font-size:12px;color:var(--gr);margin-top:8px;">✅ Bekleyen değişiklik yok.</div>
 </div></div>
 
-<div class="sartname-kart cl-warn"><div class="sartname-head" onclick="togS(this.parentElement)">
-  <div class="sartname-icon" style="background:rgba(217,119,6,.12);">🔄</div>
-  <div class="sartname-meta"><div class="sartname-baslik">Büküm Yönetimi <span class="durum-badge d-revizyon" style="font-size:12px;vertical-align:middle;">⚠ Revizyon</span></div><div class="sartname-dosya">bukum.html</div></div>
-  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+<div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(22,163,110,.12);">🔄</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Büküm Yönetimi <span class="durum-badge d-tamam" style="font-size:12px;vertical-align:middle;">✓ Tamamlandı</span></div><div class="sartname-dosya">bukum.html</div></div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-guncellendi">GÜNCELLENDİ</span><span class="sartname-arrow">▼</span></div>
 </div><div class="sartname-body">
-  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Büküm bekleyen spoolları listeler, fason büküm dosyalarını yönetir.</div></div>
-  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger"><code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_bukumler</code>, <code style="background:var(--sur2);padding:1px 6px;border-radius:4px;font-size:12px;">ares_fasonlar</code></div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Büküm bekleyen boruları listeler, fason büküm dosyalarını yönetir. Tablo, QR, fason büküm oluşturma, bükülenler arşivi.</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Sekmeler</div><div class="sartname-deger">Bükülecekler (bekleyen tablo) · Fason Büküm (dosya yönetimi) · Bükülenler (tamamlanan arşiv)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Pagination</div><div class="sartname-deger">25 satır/sayfa · renderRow() ayrıştırıldı · pgGit() ile önceki/sonraki</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Özel</div><div class="sartname-deger">Min font 14px · Tersane sütunu var(--txm) · Spool No normal ağırlık · --bukum-c:#7c3aed sabit · .ref-badge CSS düzeltildi</div></div>
   <hr class="sartname-divider">
-  <div style="font-size:12px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Uygulanan Kurallar</div>
-  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02</div><div class="kural-detay-aciklama">Yapısal düzeltme yapıldı.</div></div>
+  <div style="font-size:12px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Uygulanan Kurallar</div>
+  <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">A1 · A2 · A3 · B-01 · B-02 · B-03 · F-02(14px) · G-01 · D-01 · D-02 · L-01 · P-01 · K-01</div><div class="kural-detay-aciklama">use strict · ares_lang · 12/13px→14px (80 satır) · --bukum-c sabitlendi · .ref-badge nokta hatası düzeltildi · _I18N inline (bk_ prefix) · 34 data-i18n · tv() TR fallback · MutationObserver · BUKUM_TAMAMLA + BUKUM_SIL log · SAYFA_BOYUT=25 · renderRow() · JS syntax OK</div></div>
   <hr class="sartname-divider">
-  <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen Değişiklikler</div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">D-01</span><span class="bekleyen-aciklama">Dil desteği yok. Inline _I18N + MutationObserver sistemi kullanılacak (dış JSON gerekmez).</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">F-01</span><span class="bekleyen-aciklama">Filtre barı eski yapıda. Sol aksiyon + sağ filtreler düzenine alınacak.</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">F-02</span><span class="bekleyen-aciklama">Font boyutları kontrol edilmeli — 12px altı tüm metinler standartlaştırılacak.</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">P-01</span><span class="bekleyen-aciklama">Pagination yok. 25 satır/sayfa eklenecek.</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">L-01</span><span class="bekleyen-aciklama">Büküm tamamlandığında _log() çağrısı yok.</span></div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">tarihFormat()</span><span class="bekleyen-aciklama">Tarihler gg/aa/yyyy formatına alınmalı.</span></div>
+  <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen (Supabase Sonrası)</div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">Veri</span><span class="bekleyen-aciklama">bukumler/fasonlar/firmalar dizileri Supabase tablolarından okunacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">QR</span><span class="bekleyen-aciklama">QR gerçek üretim — Supabase + mobil uygulama ile gelecek (NOT-02).</span></div>
 </div></div>
 
 <div class="sartname-kart cl-warn"><div class="sartname-head" onclick="togS(this.parentElement)">
@@ -968,7 +966,7 @@
   <div class="kural-detay-item cl-ac"><div class="kural-detay-kod" style="color:var(--ac);">B-01 · B-02 · B-03 · G-01 · G-02 · L-01 · L-03 · M-09 · D-01 · K-01</div><div class="kural-detay-aciklama">Tüm kurallar uygulandı. esc() + tv() eklendi. 144 data-i18n attribute. lang/en.json + lang/ar.json 187 key. _onLangChange tüm render fonksiyonlarını çağırıyor. JS syntax OK.</div></div>
   <hr class="sartname-divider">
   <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen Değişiklikler (R-03 — Yeni Standartlar)</div>
-  <div class="bekleyen-item"><span class="bekleyen-kural">F-02</span><span class="bekleyen-aciklama">Font boyutları kontrol edilmeli — 10px/11px badge ve meta metinler 12px'e çıkarılacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">F-02</span><span class="bekleyen-aciklama">Font boyutları kontrol edilmeli — 14px altı badge ve meta metinler standartlaştırılacak.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">tarihFormat()</span><span class="bekleyen-aciklama">Tarih gösterimi gg/aa/yyyy formatına alınmalı — tarihFormat() helper eklenerek tüm tarihler standartlaştırılacak.</span></div>
   <div class="bekleyen-item"><span class="bekleyen-kural">D-01 Inline</span><span class="bekleyen-aciklama">Dil sistemi external JSON yerine inline _I18N + MutationObserver'a geçirilmeli — lang/en.json + lang/ar.json deploy sorununu ortadan kaldırır.</span></div>
   <hr class="sartname-divider">
@@ -1193,7 +1191,7 @@
 
 <div class="aksiyon-item"><div class="aksiyon-no">9</div><div style="flex:1;"><div class="aksiyon-baslik">devre_yeni.html — Yeni Devre Oluşturma</div><div class="aksiyon-aciklama">use strict · syos_→ares_ · Flash prevention · cl-* · esc() · D-01 inline (_I18N + tv() TR fallback) · 82 data-i18n · Yüzey radio · K-01 OK</div></div><span class="durum-badge d-tamam">✓</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">10</div><div style="flex:1;"><div class="aksiyon-baslik">tersaneler.html — Tersaneler Sayfası</div><div class="aksiyon-aciklama">use strict · syos_→ares_ · Flash prevention · cl-* · esc() · D-01 · 63 data-i18n · data-pct · Düzenle modal · Stat kartlar güncellendi · K-01 OK</div></div><span class="durum-badge d-tamam">✓</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html tam revizyon</div><div class="aksiyon-aciklama">D-01 (tv()+data-i18n) + F-01 (filtre barı) + P-01 (pagination) + L-01 (log kaydı) + G-01 (esc())</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">11</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html — Büküm Yönetimi</div><div class="aksiyon-aciklama">use strict · ares_lang · F-02(14px) · --bukum-c fix · .ref-badge CSS fix · D-01 inline · 34 data-i18n · D3 log · P-01 (25/sayfa) · renderRow · K-01 OK</div></div><span class="durum-badge d-tamam">✓</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01 + G-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">ares-layout.js — #lang-toggle CSS fix</div><div class="aksiyon-aciklama">injectGlobalCSS() içine ekle: #lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</div></div><span class="durum-badge d-revizyon">⚠ Bekliyor</span></div>
 
