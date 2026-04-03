@@ -210,10 +210,10 @@ textarea.fi{resize:vertical;min-height:72px;}
     <div class="fg">
       <label class="fl" data-i18n="dny_surface">Yüzey İşlemi</label>
       <div class="radio-grup" id="yuzeyGrup">
-        <label class="radio-btn aktif"><input type="checkbox" name="yuzey" value="Asit" checked> <span data-i18n="dny_surf_acid">Asit</span></label>
-        <label class="radio-btn"><input type="checkbox" name="yuzey" value="Galvaniz"> <span data-i18n="dny_surf_galv">Galvaniz</span></label>
-        <label class="radio-btn"><input type="checkbox" name="yuzey" value="Siyah"> <span data-i18n="dny_surf_black">Siyah</span></label>
-        <label class="radio-btn"><input type="checkbox" name="yuzey" value="Boyalı"> <span data-i18n="dny_surf_paint">Boyalı</span></label>
+        <label class="radio-btn aktif"><input type="radio" name="yuzey" value="Asit" checked> <span data-i18n="dny_surf_acid">Asit</span></label>
+        <label class="radio-btn"><input type="radio" name="yuzey" value="Galvaniz"> <span data-i18n="dny_surf_galv">Galvaniz</span></label>
+        <label class="radio-btn"><input type="radio" name="yuzey" value="Siyah"> <span data-i18n="dny_surf_black">Siyah</span></label>
+        <label class="radio-btn"><input type="radio" name="yuzey" value="Boyalı"> <span data-i18n="dny_surf_paint">Boyalı</span></label>
       </div>
     </div>
   </div>
@@ -571,9 +571,23 @@ var _I18N = {
 function _getLang(){return document.documentElement.getAttribute('lang')||'tr';}
 function tv(key,tr){var lang=_getLang(),dict=_I18N[lang];if(dict&&dict[key])return dict[key];return tr!==undefined?tr:key;}
 function _applyI18n(){
-  document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');var v=tv(k);if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){el.placeholder=v;}else{el.textContent=v;}});
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){el.placeholder=tv(el.getAttribute('data-i18n-placeholder'));});
-  document.querySelectorAll('[data-i18n-html]').forEach(function(el){el.innerHTML=tv(el.getAttribute('data-i18n-html'));});
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var isInp=el.tagName==='INPUT'||el.tagName==='TEXTAREA';
+    if(!el.hasAttribute('data-i18n-tr'))el.setAttribute('data-i18n-tr',isInp?el.placeholder:el.textContent.trim());
+    var v=tv(k,el.getAttribute('data-i18n-tr'));
+    if(isInp){el.placeholder=v;}else{el.textContent=v;}
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+    var k=el.getAttribute('data-i18n-placeholder');
+    if(!el.hasAttribute('data-i18n-ph-tr'))el.setAttribute('data-i18n-ph-tr',el.placeholder);
+    el.placeholder=tv(k,el.getAttribute('data-i18n-ph-tr'));
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    var k=el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-html-tr'))el.setAttribute('data-i18n-html-tr',el.innerHTML);
+    el.innerHTML=tv(k,el.getAttribute('data-i18n-html-tr'));
+  });
 }
 window._onLangChange=function(){_applyI18n();spoolTableGuncelle();};
 new MutationObserver(function(){_applyI18n();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
@@ -830,7 +844,7 @@ document.querySelectorAll('.radio-btn').forEach(btn => {
         document.getElementById('malzemeDiger').style.display = inp.value === 'Diğer' ? 'block' : 'none';
       }
     } else {
-      // checkbox
+      // checkbox (gelecekte kullanılabilir)
       inp.checked = !inp.checked;
       btn.classList.toggle('aktif', inp.checked);
     }
@@ -1036,7 +1050,7 @@ function kaydet() {
   if (!validate()) { toast(tv('dny_required_fields','Zorunlu alanları doldurun'), 'er'); return; }
 
   const malzemeSecili = document.querySelector('input[name="malzeme"]:checked')?.value || '';
-  const yuzeySecili   = [...document.querySelectorAll('input[name="yuzey"]:checked')].map(c => c.value);
+  const yuzeySecili   = document.querySelector('input[name="yuzey"]:checked')?.value || '';
 
   const devre = {
     isEmri:      _isEmriNo,
