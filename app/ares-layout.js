@@ -55,11 +55,15 @@
     fetch('lang/' + lang + '.json?nocache=' + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(data){
+        // Race condition fix: fetch biterken kullanıcı başka dile geçmiş olabilir
+        // Sadece hâlâ aynı dil seçiliyse uygula
+        if (getLang() !== lang) return;
         _langData = data;
         _langLoaded = true;
         if (cb) cb();
       })
       .catch(function(){
+        if (getLang() !== lang) return;
         _langLoaded = true;
         if (cb) cb();
       });
