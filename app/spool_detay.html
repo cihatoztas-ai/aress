@@ -724,7 +724,15 @@ async function spoolYukle(supaId) {
     SP.stopped    = s.durduruldu  || false;
     SP.durdurmaAciklama = s.durdurma_sebebi || '';
     SP.alistirma  = s.alistirma   || null;
-    SP.trackerCurrent = s.aktif_basamak || 0;
+    // aktif_basamak sistem_adi string → tracker index'e çevir
+    var _snap = s.basamak_snapshot || [];
+    var _aktifStr = s.aktif_basamak || '';
+    if (_aktifStr && _snap.length) {
+      var _idx = _snap.findIndex(function(b){ return b.sistem_adi === _aktifStr; });
+      SP.trackerCurrent = _idx >= 0 ? _idx + 1 : 0;
+    } else {
+      SP.trackerCurrent = 0;
+    }
     SP.diainch    = {
       kg:      s.imalat_kg  || null,
       imalat:  s.imalat_di  || null,

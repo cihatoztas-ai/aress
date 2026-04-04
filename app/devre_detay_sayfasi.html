@@ -779,7 +779,13 @@ async function spoolYukle() {
     SPOOLS = (spRes.data || []).map(function(s, i) {
       var snap    = s.basamak_snapshot || [];
       var total   = snap.length || 6;
-      var aktif   = s.aktif_basamak || 0;
+      // aktif_basamak sistem_adi string → index'e çevir
+      var _aktifStr = s.aktif_basamak || '';
+      var aktif = 0;
+      if (_aktifStr && snap.length) {
+        var _idx = snap.findIndex(function(b){ return b.sistem_adi === _aktifStr; });
+        aktif = _idx >= 0 ? _idx + 1 : 0; // tamamlanan basamak sayısı
+      }
       // adimlar dizisi: 1=tamam, 3=aktif, 0=bekliyor
       var adimlar = [];
       for (var a = 0; a < total; a++) {
