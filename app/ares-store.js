@@ -1,7 +1,14 @@
 /**
- * AresPipe Store — v2.1
+ * AresPipe Store — v2.2
  * Supabase entegrasyonlu veri katmanı.
  * Supabase CDN'i otomatik yükler — HTML'e ek script gerekmez.
+ *
+ * Değişiklikler v2.2:
+ * - CDN yüklenince mod otomatik 'supabase'e geçer
+ * - girisYap sonrası mod otomatik güncellenir
+ * - sonrakiNo → Supabase sequence (G-07)
+ * - oturumKontrol → JWT'den okur, DB'ye gitmez (G-06)
+ * - soft_delete() entegrasyonu (G-12)
  */
 
 const ARES = (function () {
@@ -10,19 +17,23 @@ const ARES = (function () {
   const SUPA_URL = 'https://ochvbepfiatzvyknkvsn.supabase.co';
   const SUPA_KEY = 'sb_publishable_82EjJYZH9phnFC1MlIxnwQ_92Ic-4eb';
   const SUPA_CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  const SUPA_CDN_FALLBACK = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js';
 
-  let _supa = null;
+  let _supa      = null;
   let _supaHazir = false;
-  let _supaKuyruk = []; // CDN yüklenene kadar bekleyen resolve'lar
+  let _supaKuyruk = [];
 
-  function _supabasiBaslat() {
+  function _supaBaslat() {
     try {
       if (typeof window !== 'undefined' && window.supabase) {
-        _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        _supa      = window.supabase.createClient(SUPA_URL, SUPA_KEY);
         _supaHazir = true;
         console.log('[ARES] Supabase bağlantısı kuruldu');
+        // Modu otomatik supabase'e al
+        _modSetLocal('supabase');
+        mod = 'supabase';
         // Kuyruktaki bekleyenleri çöz
-        _supaKuyruk.forEach(function(fn){ fn(); });
+        _supaKuyruk.forEach(function (fn) { fn(); });
         _supaKuyruk = [];
         return true;
       }
@@ -32,82 +43,113 @@ const ARES = (function () {
     return false;
   }
 
-  // Supabase CDN'i dinamik olarak yükle
   function _cdnYukle() {
     if (document.querySelector('script[data-ares-supa]')) return;
-    var s = document.createElement('script');
-    s.src = SUPA_CDN;
+    var s   = document.createElement('script');
+    s.src   = SUPA_CDN;
     s.setAttribute('data-ares-supa', '1');
-    s.onload = function() { _supabasiBaslat(); };
-    s.onerror = function() { console.warn('[ARES] Supabase CDN yüklenemedi'); };
+    s.onload  = function () { _supaBaslat(); };
+    s.onerror = function () {
+      console.warn('[ARES] Ana CDN başarısız, yedek deneniyor...');
+      var s2   = document.createElement('script');
+      s2.src   = SUPA_CDN_FALLBACK;
+      s2.setAttribute('data-ares-supa', '1');
+      s2.onload  = function () { _supaBaslat(); };
+      s2.onerror = function () { console.warn('[ARES] Supabase CDN yüklenemedi'); };
+      document.head.appendChild(s2);
+    };
     document.head.appendChild(s);
   }
 
-  // Supabase hazır olana kadar bekle
   function _supaHazirBekle() {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
       if (_supaHazir && _supa) { resolve(); return; }
       _supaKuyruk.push(resolve);
     });
   }
 
-  // ── MOD: 'local' veya 'supabase' ────────────────────────
-  // localStorage'da 'ares_mod' yoksa 'local' başlar
-  // Supabase hazır olunca 'supabase' moduna geçilir
+  // ── MOD ──────────────────────────────────────────────────
+  function _modSetLocal(yeniMod) {
+    localStorage.setItem('ares_mod', yeniMod);
+  }
   let mod = localStorage.getItem('ares_mod') || 'local';
 
   function modDegistir(yeniMod) {
     mod = yeniMod;
-    localStorage.setItem('ares_mod', yeniMod);
+    _modSetLocal(yeniMod);
     console.log('[ARES] Mod:', yeniMod);
   }
 
   // ── OTURUM ───────────────────────────────────────────────
-  let _oturum = null; // { id, tenant_id, ad_soyad, rol }
+  let _oturum = null;
 
   async function girisYap(email, sifre) {
     await _supaHazirBekle();
     if (!_supa) return { hata: 'Supabase bağlı değil' };
     const { data, error } = await _supa.auth.signInWithPassword({ email, password: sifre });
     if (error) return { hata: error.message };
-    // Kullanıcı bilgilerini çek
-    const { data: kul } = await _supa
-      .from('kullanicilar')
-      .select('*')
-      .eq('id', data.user.id)
-      .single();
-    _oturum = kul || null;
+
+    // G-06: JWT claims'den tenant_id ve rol oku
+    const jwt     = data.session?.access_token;
+    const claims  = jwt ? JSON.parse(atob(jwt.split('.')[1])) : {};
+
+    _oturum = {
+      id:        data.user.id,
+      tenant_id: claims.tenant_id || null,
+      rol:       claims.rol       || null,
+      ad_soyad:  data.user.user_metadata?.ad_soyad || email,
+    };
+
+    // Mod supabase'e geç
+    modDegistir('supabase');
     return { kullanici: _oturum };
   }
 
   async function cikisYap() {
     if (_supa) await _supa.auth.signOut();
     _oturum = null;
+    modDegistir('local');
     localStorage.removeItem('ares_oturum');
   }
 
+  // G-06: DB'ye gitmeden JWT'den oku
   async function oturumKontrol() {
     if (!_supa) return null;
     const { data: { session } } = await _supa.auth.getSession();
     if (!session) return null;
-    const { data: kul } = await _supa
-      .from('kullanicilar')
-      .select('*')
-      .eq('id', session.user.id)
-      .single();
-    _oturum = kul || null;
+
+    const jwt    = session.access_token;
+    const claims = jwt ? JSON.parse(atob(jwt.split('.')[1])) : {};
+
+    _oturum = {
+      id:        session.user.id,
+      tenant_id: claims.tenant_id || null,
+      rol:       claims.rol       || null,
+      ad_soyad:  session.user.user_metadata?.ad_soyad || session.user.email,
+    };
+
+    // Claims dolu değilse (eski token) DB'den tamamla
+    if (!_oturum.tenant_id) {
+      const { data: kul } = await _supa
+        .from('kullanicilar')
+        .select('tenant_id, rol, ad_soyad')
+        .eq('id', session.user.id)
+        .single();
+      if (kul) {
+        _oturum.tenant_id = kul.tenant_id;
+        _oturum.rol       = kul.rol;
+        _oturum.ad_soyad  = kul.ad_soyad;
+      }
+    }
+
+    modDegistir('supabase');
     return _oturum;
   }
 
-  function oturumAl() {
-    return _oturum;
-  }
+  function oturumAl()  { return _oturum; }
+  function tenantId()  { return _oturum?.tenant_id || null; }
 
-  function tenantId() {
-    return _oturum?.tenant_id || null;
-  }
-
-  // ── LOCALSTORAGE YARDIMCILARI (local mod) ───────────────
+  // ── LOCALSTORAGE YARDIMCILARI ────────────────────────────
   function _lget(key) {
     try { return JSON.parse(localStorage.getItem('ares_' + key)) || null; }
     catch { return null; }
@@ -122,20 +164,19 @@ const ARES = (function () {
   async function logEkle(islem, aciklama, katman, katmanId, meta) {
     if (mod === 'supabase' && _supa) {
       const { error } = await _supa.from('islem_log').insert({
-        tenant_id:  tenantId(),
+        tenant_id: tenantId(),
         islem,
         aciklama,
-        katman:     katman   || 'sistem',
-        katman_id:  katmanId || null,
-        yapan_id:   _oturum?.id || null,
-        meta:       meta || null,
-        spool_id:   meta?.spool_id   || null,
-        devre_id:   meta?.devre_id   || null,
-        proje_id:   meta?.proje_id   || null,
+        katman:    katman   || 'sistem',
+        katman_id: katmanId || null,
+        yapan_id:  _oturum?.id || null,
+        meta:      meta || null,
+        spool_id:  meta?.spool_id  || null,
+        devre_id:  meta?.devre_id  || null,
+        proje_id:  meta?.proje_id  || null,
       });
       if (error) console.warn('[ARES] Log hatası:', error.message);
     } else {
-      // localStorage
       const log = _lget('islemLog') || [];
       log.unshift({
         id:       'L' + Date.now(),
@@ -149,22 +190,44 @@ const ARES = (function () {
     }
   }
 
-  // ── NUMARA ÜRETİCİ ───────────────────────────────────────
-  function sonrakiNo(tip) {
+  // ── NUMARA ÜRETİCİ — G-07 Sequence ──────────────────────
+  async function sonrakiNo(tip) {
     const yil = new Date().getFullYear().toString().slice(-2);
-    // local modda localStorage sayaç
-    const sayaclar = _lget('sayaclar') || { kk:1, sevk:3, test:17, hakedis:1 };
-    const no = tip + yil + '-' + String(sayaclar[tip] || 1).padStart(3, '0');
-    sayaclar[tip] = (sayaclar[tip] || 1) + 1;
-    _lset('sayaclar', sayaclar);
-    return no;
-    // Supabase modda: sequence veya max()+1 sorgusu ile yapılacak
+
+    if (mod === 'supabase' && _supa) {
+      // tip: 'is_emri' | 'spool_no' | 'hakedis_no'
+      const { data, error } = await _supa.rpc('sonraki_no', { p_tip: tip });
+      if (error) {
+        console.warn('[ARES] Sequence hatası:', error.message);
+        // Hata durumunda local fallback
+        return _sonrakiNoLocal(tip, yil);
+      }
+      // Prefix ekle: is_emri → I26-001, hakedis_no → H26-001
+      const prefix = tip === 'is_emri' ? 'I' : tip === 'hakedis_no' ? 'H' : 'S';
+      return prefix + yil + '-' + String(data).padStart(3, '0');
+    }
+
+    return _sonrakiNoLocal(tip, yil);
   }
 
-  // ─────────────────────────────────────────────────────────
-  // SUPABASE CRUD YARDIMCILARI
-  // Her fonksiyon mod'a göre localStorage veya Supabase kullanır
-  // -────────────────────────────────────────────────────────
+  function _sonrakiNoLocal(tip, yil) {
+    const sayaclar = _lget('sayaclar') || { is_emri: 1, spool_no: 1, hakedis_no: 1 };
+    const no       = tip + yil + '-' + String(sayaclar[tip] || 1).padStart(3, '0');
+    sayaclar[tip]  = (sayaclar[tip] || 1) + 1;
+    _lset('sayaclar', sayaclar);
+    return no;
+  }
+
+  // ── SOFT DELETE — G-12 ───────────────────────────────────
+  async function softSil(tablo, id) {
+    if (mod === 'supabase' && _supa) {
+      const { error } = await _supa.rpc('soft_delete', { p_tablo: tablo, p_id: id });
+      if (error) { console.warn('[ARES] Soft delete hatası:', error.message); return false; }
+      await logEkle('SİLİNDİ', tablo + ' kaydı silindi', tablo, id, {});
+      return true;
+    }
+    return false;
+  }
 
   // ── TERSANELER ───────────────────────────────────────────
   async function tersaneleriGetir() {
@@ -180,7 +243,7 @@ const ARES = (function () {
     return _lget('tersaneler') || [];
   }
 
-  // ── PROJELERi ────────────────────────────────────────────
+  // ── PROJELER ─────────────────────────────────────────────
   async function projeleriGetir(tersaneId) {
     if (mod === 'supabase' && _supa) {
       let q = _supa.from('projeler').select('*, tersaneler(ad)').eq('aktif', true).order('proje_no');
@@ -196,7 +259,9 @@ const ARES = (function () {
   // ── DEVRELER ─────────────────────────────────────────────
   async function devreleriGetir(projeId) {
     if (mod === 'supabase' && _supa) {
-      let q = _supa.from('devreler').select('*, projeler(proje_no, gemi_adi, tersaneler(ad))').order('devre_no');
+      let q = _supa.from('devreler')
+        .select('*, projeler(proje_no, gemi_adi, tersaneler(ad))')
+        .order('devre_no');
       if (projeId) q = q.eq('proje_id', projeId);
       const { data, error } = await q;
       if (error) { console.warn(error); return []; }
@@ -269,9 +334,8 @@ const ARES = (function () {
       if (error) { console.warn(error); return null; }
       return data;
     }
-    // localStorage
     const liste = _lget('spooller') || [];
-    const idx = liste.findIndex(s => s.id === id);
+    const idx   = liste.findIndex(s => s.id === id);
     if (idx === -1) return null;
     liste[idx] = { ...liste[idx], ...degisiklikler };
     _lset('spooller', liste);
@@ -279,12 +343,11 @@ const ARES = (function () {
   }
 
   async function spoolDurdur(id, sebep, aciklama) {
-    const guncelleme = {
-      durduruldu: true,
-      durdurma_sebebi: sebep + ': ' + aciklama,
-      durdurma_tarihi: new Date().toISOString(),
-    };
-    await spoolGuncelle(id, guncelleme);
+    await spoolGuncelle(id, {
+      durduruldu:       true,
+      durdurma_sebebi:  sebep + ': ' + aciklama,
+      durdurma_tarihi:  new Date().toISOString(),
+    });
     await logEkle('DURDURMA', sebep + ' — ' + aciklama, 'spool', id, { spool_id: id });
     return true;
   }
@@ -306,17 +369,19 @@ const ARES = (function () {
       if (error) { console.warn(error); return []; }
       return data;
     }
-    return (_lget('malzemeler_' + spoolId)) || [];
+    return _lget('malzemeler_' + spoolId) || [];
   }
 
   // ── İŞLEM LOGU ───────────────────────────────────────────
   async function loguGetir(filtre, limit) {
     if (mod === 'supabase' && _supa) {
-      let q = _supa.from('islem_log').select('*, kullanicilar(ad_soyad)').order('olusturma', { ascending: false });
-      if (filtre?.katman)   q = q.eq('katman', filtre.katman);
-      if (filtre?.spoolId)  q = q.eq('spool_id', filtre.spoolId);
-      if (filtre?.devreId)  q = q.eq('devre_id', filtre.devreId);
-      if (limit)            q = q.limit(limit);
+      let q = _supa.from('islem_log')
+        .select('*, kullanicilar(ad_soyad)')
+        .order('olusturma', { ascending: false });
+      if (filtre?.katman)  q = q.eq('katman', filtre.katman);
+      if (filtre?.spoolId) q = q.eq('spool_id', filtre.spoolId);
+      if (filtre?.devreId) q = q.eq('devre_id', filtre.devreId);
+      if (limit)           q = q.limit(limit);
       const { data, error } = await q;
       if (error) { console.warn(error); return []; }
       return data;
@@ -327,13 +392,11 @@ const ARES = (function () {
   }
 
   // ── UYARILAR ─────────────────────────────────────────────
-  function uyarilariGetir() {
-    return _lget('uyarilar') || [];
-  }
+  function uyarilariGetir() { return _lget('uyarilar') || []; }
 
   function uyariEkle(kategori, seviye, baslik, aciklama, kaynak, link, ikon) {
     const liste = _lget('uyarilar') || [];
-    const no = 'U' + Date.now();
+    const no    = 'U' + Date.now();
     liste.unshift({
       id: no, kategori, seviye, goruldu: false,
       baslik, aciklama, kaynak, link: link || '',
@@ -346,7 +409,7 @@ const ARES = (function () {
 
   function uyariGoruldu(id) {
     const liste = _lget('uyarilar') || [];
-    const u = liste.find(x => x.id === id);
+    const u     = liste.find(x => x.id === id);
     if (u) { u.goruldu = true; _lset('uyarilar', liste); }
   }
 
@@ -375,19 +438,18 @@ const ARES = (function () {
     ];
   }
 
-  // Spool oluşturulunca çağrılır — o anki basamak listesini snapshot alır
   async function basamakSnapshotOlustur() {
     const basamaklar = await basamaklariGetir();
     return basamaklar.map(b => ({
-      sistem_adi:  b.sistem_adi,
-      gorunen_ad:  b.gorunen_ad,
-      sira:        b.sira
+      sistem_adi: b.sistem_adi,
+      gorunen_ad: b.gorunen_ad,
+      sira:       b.sira
     }));
   }
 
   // ── UI: BELL GÜNCELLE ────────────────────────────────────
   function bellGuncelle() {
-    const n = uyariYeniSayisi();
+    const n         = uyariYeniSayisi();
     const bellSayac = document.getElementById('bellSayac');
     const navBadge  = document.getElementById('navBadge');
     if (n > 0) {
@@ -410,10 +472,8 @@ const ARES = (function () {
   (function _init() {
     if (typeof window !== 'undefined') {
       if (window.supabase) {
-        // Zaten yüklü
-        _supabasiBaslat();
+        _supaBaslat();
       } else {
-        // CDN'i dinamik yükle
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', _cdnYukle);
         } else {
@@ -429,10 +489,9 @@ const ARES = (function () {
 
   // ── PUBLIC API ───────────────────────────────────────────
   return {
-    // Durum
-    mod,
+    get mod() { return mod; },
     modDegistir,
-    supabase: function() { return _supa; },
+    supabase: function () { return _supa; },
 
     // Oturum
     girisYap, cikisYap, oturumKontrol, oturumAl, tenantId,
@@ -450,8 +509,11 @@ const ARES = (function () {
     // Uyarılar
     uyarilariGetir, uyariEkle, uyariGoruldu, uyariYeniSayisi,
 
-    // Numara
+    // Numara (async — G-07)
     sonrakiNo,
+
+    // Silme (G-12)
+    softSil,
 
     // UI
     bellGuncelle,
@@ -462,5 +524,5 @@ const ARES = (function () {
 
 })();
 
-// Geriye dönük uyumluluk — eski sayfalar SYOS kullanıyorsa
+// Geriye dönük uyumluluk
 const SYOS = ARES;
