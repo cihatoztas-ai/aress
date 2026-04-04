@@ -930,9 +930,45 @@ function klKaydet(klId){
 function renderArc(){
   var cont=document.getElementById('arcContainer');if(!cont)return;
   var kapalilar=kesimListeleri.filter(kl=>kl.kapali);
-  if(!kapalilar.length){
-    cont.innerHTML='<div class="empty-state"><div class="empty-icon">✓</div><div style="font-size:16px;font-weight:600;">Henüz kesilen liste yok</div></div>';return;
+  // Listeye ait olmayan bireysel tamamlananlar
+  var listedeOlanIds=new Set();
+  kesimListeleri.forEach(function(kl){
+    (kl.arsiv||[]).forEach(function(arc){
+      (arc.kesilmisIds||[]).forEach(function(id){ listedeOlanIds.add(id); });
+    });
+  });
+  var tekil=borular.filter(function(k){ return k.durum==='tamamlandi' && !listedeOlanIds.has(k.id); });
+
+  if(!kapalilar.length && !tekil.length){
+    cont.innerHTML='<div class="empty-state"><div class="empty-icon">✓</div><div style="font-size:16px;font-weight:600;">Henüz kesilen yok</div></div>';return;
   }
+  var html = '';
+
+  // Bireysel kesilenler bölümü
+  if(tekil.length){
+    html += '<div style="margin-bottom:16px;">'
+      +'<div style="font-size:11px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bor);">✂️ Tekil Kesilenler (' + tekil.length + ')</div>'
+      +'<div style="background:var(--sur);border:1px solid var(--bor);border-radius:12px;overflow:hidden;">'
+      +'<table class="data-table" style="min-width:700px;"><thead><tr>'
+      +'<th>#</th><th>Spool No</th><th>Malzeme</th><th>Çap</th><th style="color:var(--warn);">Kesim (mm)</th><th>Uç A</th><th>Uç B</th><th>Tarih</th>'
+      +'</tr></thead><tbody>'
+      +tekil.map(function(k,i){
+        return '<tr>'
+          +'<td style="color:var(--txd);font-size:12px;">'+(i+1)+'</td>'
+          +'<td style="font-size:12px;font-weight:600;">'+esc(k.spool||k.spoolNo||'—')+'</td>'
+          +'<td style="font-size:12px;">'+esc(k.malzeme||'—')+'</td>'
+          +'<td style="font-size:12px;color:var(--ac);">'+esc(k.cap||'—')+'</td>'
+          +'<td style="font-size:13px;font-weight:700;color:var(--warn);">'+esc(String(k.kesimOlcusu||'—'))+' mm</td>'
+          +'<td style="font-size:12px;">'+esc(k.ucA||'—')+'</td>'
+          +'<td style="font-size:12px;">'+esc(k.ucB||'—')+'</td>'
+          +'<td style="font-size:12px;color:var(--txd);">'+esc(k.kesimTarih||'—')+'</td>'
+          +'</tr>';
+      }).join('')
+      +'</tbody></table></div></div>';
+  }
+
+  // Kesim listeleri
+  if(!kapalilar.length){ cont.innerHTML=html; return; }
   var totalPagesArc=Math.ceil(kapalilar.length/PG_ARC)||1;
   if(pgArc>totalPagesArc)pgArc=totalPagesArc;
   var sliceArc=kapalilar.slice((pgArc-1)*PG_ARC,pgArc*PG_ARC);
@@ -980,6 +1016,7 @@ function renderArc(){
   var pgArcEl=document.getElementById('arcPg');
   if(totalPagesArc>1){pgArcEl.style.display='flex';pgArcEl.innerHTML=buildPgHtml(pgArc,totalPagesArc,'goArc');}
   else pgArcEl.style.display='none';
+  cont.innerHTML = html + cont.innerHTML;
 }
 function goArc(p){pgArc=p;renderArc();}
 function toggleArc(uid){var c=document.getElementById('arccard-'+uid);if(c)c.classList.toggle('open');}
