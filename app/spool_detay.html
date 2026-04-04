@@ -1383,7 +1383,10 @@ document.addEventListener('DOMContentLoaded',function(){
       var _supa = ARES.supabase();
       if (_supa) {
         var _ses = await _supa.auth.getSession();
-        if (_ses.data && _ses.data.session) break;
+        if (_ses.data && _ses.data.session) {
+          await ARES.oturumKontrol(); // _oturum'u doldur
+          break;
+        }
         if (_bekle > 20) { location.href = 'giris.html'; return; }
       }
       await new Promise(function(r){ setTimeout(r, 100); });

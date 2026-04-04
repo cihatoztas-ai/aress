@@ -2048,7 +2048,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var _supa = ARES.supabase();
       if (_supa) {
         var _ses = await _supa.auth.getSession();
-        if (_ses.data && _ses.data.session) break; // oturum var, devam
+        if (_ses.data && _ses.data.session) { await ARES.oturumKontrol(); break; } // oturum var, devam
         if (_bekle > 20) { location.href = 'giris.html'; return; } // 2 sn bekledik, oturum yok
       }
       await new Promise(function(r){ setTimeout(r, 100); });
