@@ -1,419 +1,318 @@
 /**
- * SYOS Store — Sayfalararası Paylaşımlı Veri Katmanı
- * localStorage tabanlı, backend hazır olduğunda her fonksiyon
- * fetch() çağrısına dönüştürülecek.
+ * AresPipe Store — v2.0
+ * Supabase entegrasyonlu veri katmanı.
  *
- * Kullanım: Her HTML sayfasına <script src="syos-store.js"></script> ekle
+ * Mod:
+ *   ARES.mod = 'local'    → localStorage (offline / fallback)
+ *   ARES.mod = 'supabase' → Supabase (production)
+ *
+ * HTML'de Supabase CDN'i ares-store.js'den ÖNCE ekleyin:
+ *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+ *   <script src="ares-store.js"></script>
  */
 
-const SYOS = (function () {
+const ARES = (function () {
 
-  // ── Yardımcı: localStorage okuma/yazma ──────────────────
-  function _get(key) {
-    try { return JSON.parse(localStorage.getItem('syos_' + key)) || null; }
+  // ── SUPABASE BAĞLANTI ────────────────────────────────────
+  const SUPA_URL = 'https://ochvbepfiatzvyknkvsn.supabase.co';
+  const SUPA_KEY = 'sb_publishable_82EjJYZH9phnFC1MlIxnwQ_92Ic-4eb';
+
+  let _supa = null;
+
+  function _supabasiBaslat() {
+    try {
+      if (typeof window !== 'undefined' && window.supabase) {
+        _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        console.log('[ARES] Supabase bağlantısı kuruldu');
+        return true;
+      }
+    } catch (e) {
+      console.warn('[ARES] Supabase başlatılamadı:', e.message);
+    }
+    return false;
+  }
+
+  // ── MOD: 'local' veya 'supabase' ────────────────────────
+  // localStorage'da 'ares_mod' yoksa 'local' başlar
+  // Supabase hazır olunca 'supabase' moduna geçilir
+  let mod = localStorage.getItem('ares_mod') || 'local';
+
+  function modDegistir(yeniMod) {
+    mod = yeniMod;
+    localStorage.setItem('ares_mod', yeniMod);
+    console.log('[ARES] Mod:', yeniMod);
+  }
+
+  // ── OTURUM ───────────────────────────────────────────────
+  let _oturum = null; // { id, tenant_id, ad_soyad, rol }
+
+  async function girisYap(email, sifre) {
+    if (!_supa) return { hata: 'Supabase bağlı değil' };
+    const { data, error } = await _supa.auth.signInWithPassword({ email, password: sifre });
+    if (error) return { hata: error.message };
+    // Kullanıcı bilgilerini çek
+    const { data: kul } = await _supa
+      .from('kullanicilar')
+      .select('*')
+      .eq('id', data.user.id)
+      .single();
+    _oturum = kul || null;
+    return { kullanici: _oturum };
+  }
+
+  async function cikisYap() {
+    if (_supa) await _supa.auth.signOut();
+    _oturum = null;
+    localStorage.removeItem('ares_oturum');
+  }
+
+  async function oturumKontrol() {
+    if (!_supa) return null;
+    const { data: { session } } = await _supa.auth.getSession();
+    if (!session) return null;
+    const { data: kul } = await _supa
+      .from('kullanicilar')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+    _oturum = kul || null;
+    return _oturum;
+  }
+
+  function oturumAl() {
+    return _oturum;
+  }
+
+  function tenantId() {
+    return _oturum?.tenant_id || null;
+  }
+
+  // ── LOCALSTORAGE YARDIMCILARI (local mod) ───────────────
+  function _lget(key) {
+    try { return JSON.parse(localStorage.getItem('ares_' + key)) || null; }
     catch { return null; }
   }
-  function _set(key, val) {
-    try { localStorage.setItem('syos_' + key, JSON.stringify(val)); return true; }
+  function _lset(key, val) {
+    try { localStorage.setItem('ares_' + key, JSON.stringify(val)); return true; }
     catch { return false; }
   }
-  function _del(key) { localStorage.removeItem('syos_' + key); }
+  function _ldel(key) { localStorage.removeItem('ares_' + key); }
 
-  // ── Varsayılan veri yapısı ──────────────────────────────
-  function _varsayilan() {
-    return {
-      spooller: [
-        {
-          id: 'SP-1277', no: 'S02', spoolKodu: 'NB1137-Y100-817-007-S02',
-          projeNo: 'NB1137', devre: 'Y100-817-007', tersane: 'TERSAN',
-          gemi: '', cap: '114,3 mm', agirlik: 26.82,
-          durum: 'imalat',   // imalat | kk_hazir | kk_bekliyor | kk_onaylandi | sevk_hazir | sevkiyatta | tamamlandi | durduruldu
-          kkDurum: null,     // null | 'bekliyor' | 'onaylandi' | 'reddedildi'
-          sevkDurum: null,   // null | 'hazir' | 'gonderildi'
-          durduruldu: false,
-          durdurmaAciklama: '',
-          testDurum: null,   // null | 'bekliyor' | 'gecti' | 'hatali'
-          islemler: {
-            kesim:    { toplam: 1, tamamlanan: 1 },
-            bukum:    { toplam: 0, tamamlanan: 0 },
-            markalama:{ toplam: 2, tamamlanan: 0 },
-            test:     { toplam: 0, tamamlanan: 0 },
-          },
-          notlar: [],
-          fotograflar: [],
-          sonGuncelleme: new Date().toISOString(),
-        }
-      ],
-
-      // Kalite kontrol davet paketleri
-      kkPaketler: [],
-
-      // Sevkiyat paketleri
-      sevkiyatlar: [
-        {
-          id:'S26-001', no:'S26-001', tip:'giden', durum:'gonderildi',
-          tersane:'Sedef Tersanesi', projeNo:'NB1099', gemi:'MV Atlas',
-          arac:'34 ABC 001', irsaliye:'İRS-2026-001', tarih:'15.03.2026',
-          teslimKisi:'Ahmet Yılmaz', teslimTel:'0532 111 2233',
-          not:'Sorunsuz teslim.',
-          spooller:[{spool:'S01',devre:'fw-bypass',agirlik:7.2},{spool:'S02',devre:'fw-bypass',agirlik:5.8}],
-          belgeler:['Sevkiyat Listesi','İrsaliye'], fotograflar:[],
-        },
-        {
-          id:'S26-002', no:'S26-002', tip:'gelen', durum:'gonderildi',
-          tersane:'Sedef Tersanesi', projeNo:'NB1099', gemi:'MV Atlas',
-          arac:'34 XYZ 456', irsaliye:'TRS-2026-044', tarih:'18.03.2026',
-          teslimKisi:'Mehmet Demir', teslimTel:'', not:'Tersaneden gelen flanş malzemeleri.',
-          icerik:'Kaynak boyunlu flanş PN16 x 12 adet',
-          spooller:[], belgeler:['İrsaliye'], fotograflar:[],
-        },
-      ],
-
-      // Test paketleri
-      testler: [
-        {
-          id:'T26-016', no:'T26-016', durum:'bekleyen',
-          tersane:'Cemre Shipyard', projeNo:'NB-124', gemi:'',
-          devre:'FW-305', tip:'PT', tipAd:'Basınç Testi',
-          not:'10 bar basınç altında 60 dk bekleme',
-          tarih:'22.04.2026', firma:'Montaj Şefi Uğur Demir',
-          spooller:[
-            {no:'S01',sonuc:'bekliyor',hataKaynagi:'',spoolNot:''},
-            {no:'S02',sonuc:'bekliyor',hataKaynagi:'',spoolNot:''},
-          ],
-          sonucBilgi:null, fotograflar:[], belgeler:[]
-        },
-      ],
-
-      // Uyarılar
-      uyarilar: [
-        {
-          id:'U001', kategori:'devre', seviye:'kritik', goruldu:false,
-          baslik:'Hareketsiz Devre: bilge-001',
-          aciklama:'NB1099 / MV Atlas — bilge-001 devresinde 72 saat hareketsizlik tespit edildi.',
-          kaynak:'Sedef Tersanesi / NB1099',
-          link:'devre_detay_sayfasi.html',
-          olusturma:'26.03.2026 14:22', ikon:'⏸️'
-        },
-        {
-          id:'U002', kategori:'personel', seviye:'uyari', goruldu:false,
-          baslik:'Sağlık Raporu Süresi Dolmak Üzere',
-          aciklama:'Mehmet Demir — Sağlık raporu 12 gün içinde sona erecek.',
-          kaynak:'Mehmet Demir', link:'personel.html',
-          olusturma:'27.03.2026 08:00', ikon:'🏥'
-        },
-      ],
-
-      // Log
-      islemLog: [],
-
-      // Sayaçlar
-      sayaclar: { kk: 1, sevk: 3, test: 17, uyari: 3 },
-    };
-  }
-
-  // ── İlk yüklemede varsayılan veriyi kur ─────────────────
-  function _init() {
-    if (!_get('initialized')) {
-      const v = _varsayilan();
-      _set('spooller',    v.spooller);
-      _set('kkPaketler',  v.kkPaketler);
-      _set('sevkiyatlar', v.sevkiyatlar);
-      _set('testler',     v.testler);
-      _set('uyarilar',    v.uyarilar);
-      _set('islemLog',    v.islemLog);
-      _set('sayaclar',    v.sayaclar);
-      _set('initialized', true);
+  // ── LOG ──────────────────────────────────────────────────
+  async function logEkle(islem, aciklama, katman, katmanId, meta) {
+    if (mod === 'supabase' && _supa) {
+      const { error } = await _supa.from('islem_log').insert({
+        tenant_id:  tenantId(),
+        islem,
+        aciklama,
+        katman:     katman   || 'sistem',
+        katman_id:  katmanId || null,
+        yapan_id:   _oturum?.id || null,
+        meta:       meta || null,
+        spool_id:   meta?.spool_id   || null,
+        devre_id:   meta?.devre_id   || null,
+        proje_id:   meta?.proje_id   || null,
+      });
+      if (error) console.warn('[ARES] Log hatası:', error.message);
+    } else {
+      // localStorage
+      const log = _lget('islemLog') || [];
+      log.unshift({
+        id:       'L' + Date.now(),
+        tarih:    new Date().toLocaleString('tr-TR'),
+        islem, aciklama,
+        katman:   katman   || 'sistem',
+        katmanId: katmanId || '',
+        meta:     meta || {}
+      });
+      _lset('islemLog', log.slice(0, 1000));
     }
   }
 
-  // ── Log yardımcısı ───────────────────────────────────────
-  function _log(islem, kaynak, aciklama, katman, katmanId, ust) {
-    const log = _get('islemLog') || [];
-    log.unshift({
-      id: 'L' + Date.now(),
-      tarih: new Date().toLocaleString('tr-TR'),
-      islem, kaynak, aciklama,
-      katman:   katman   || 'sistem',   // sistem | spool | devre | proje | personel | tersane
-      katmanId: katmanId || '',
-      ust: ust || {}                    // { spool, devre, proje, tersane } üst bağlamlar
-    });
-    _set('islemLog', log.slice(0, 1000)); // max 1000 kayıt
-  }
-
-  // ── Sayaç ────────────────────────────────────────────────
-  function _sonrakiNo(tip) {
-    const s = _get('sayaclar') || { kk:1, sevk:1, test:1, uyari:1 };
+  // ── NUMARA ÜRETİCİ ───────────────────────────────────────
+  function sonrakiNo(tip) {
     const yil = new Date().getFullYear().toString().slice(-2);
-    const no = tip + yil + '-' + String(s[tip] || 1).padStart(3, '0');
-    s[tip] = (s[tip] || 1) + 1;
-    _set('sayaclar', s);
+    // local modda localStorage sayaç
+    const sayaclar = _lget('sayaclar') || { kk:1, sevk:3, test:17, hakedis:1 };
+    const no = tip + yil + '-' + String(sayaclar[tip] || 1).padStart(3, '0');
+    sayaclar[tip] = (sayaclar[tip] || 1) + 1;
+    _lset('sayaclar', sayaclar);
     return no;
+    // Supabase modda: sequence veya max()+1 sorgusu ile yapılacak
   }
 
-  // ═══════════════════════════════════════════════════════════
-  // PUBLIC API
-  // ═══════════════════════════════════════════════════════════
+  // ─────────────────────────────────────────────────────────
+  // SUPABASE CRUD YARDIMCILARI
+  // Her fonksiyon mod'a göre localStorage veya Supabase kullanır
+  // -────────────────────────────────────────────────────────
 
-  // ── SPOOL ────────────────────────────────────────────────
-
-  function spoolGetir(spoolKodu) {
-    const liste = _get('spooller') || [];
-    return liste.find(s => s.spoolKodu === spoolKodu || s.id === spoolKodu) || null;
+  // ── TERSANELER ───────────────────────────────────────────
+  async function tersaneleriGetir() {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('tersaneler')
+        .select('*')
+        .eq('aktif', true)
+        .order('ad');
+      if (error) { console.warn(error); return []; }
+      return data;
+    }
+    return _lget('tersaneler') || [];
   }
 
-  function spoolGuncelle(spoolKodu, degisiklikler) {
-    const liste = _get('spooller') || [];
-    const idx = liste.findIndex(s => s.spoolKodu === spoolKodu || s.id === spoolKodu);
-    if (idx === -1) return false;
-    liste[idx] = { ...liste[idx], ...degisiklikler, sonGuncelleme: new Date().toISOString() };
-    _set('spooller', liste);
+  // ── PROJELERi ────────────────────────────────────────────
+  async function projeleriGetir(tersaneId) {
+    if (mod === 'supabase' && _supa) {
+      let q = _supa.from('projeler').select('*, tersaneler(ad)').eq('aktif', true).order('proje_no');
+      if (tersaneId) q = q.eq('tersane_id', tersaneId);
+      const { data, error } = await q;
+      if (error) { console.warn(error); return []; }
+      return data;
+    }
+    const tum = _lget('projeler') || [];
+    return tersaneId ? tum.filter(p => p.tersaneId === tersaneId) : tum;
+  }
+
+  // ── DEVRELER ─────────────────────────────────────────────
+  async function devreleriGetir(projeId) {
+    if (mod === 'supabase' && _supa) {
+      let q = _supa.from('devreler').select('*, projeler(proje_no, gemi_adi, tersaneler(ad))').order('devre_no');
+      if (projeId) q = q.eq('proje_id', projeId);
+      const { data, error } = await q;
+      if (error) { console.warn(error); return []; }
+      return data;
+    }
+    const tum = _lget('devreler') || [];
+    return projeId ? tum.filter(d => d.projeId === projeId) : tum;
+  }
+
+  async function devreGetir(id) {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('devreler')
+        .select('*, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad,kod))')
+        .eq('id', id)
+        .single();
+      if (error) { console.warn(error); return null; }
+      return data;
+    }
+    return (_lget('devreler') || []).find(d => d.id === id) || null;
+  }
+
+  // ── SPOOLLER ─────────────────────────────────────────────
+  async function spoollariGetir(devreId) {
+    if (mod === 'supabase' && _supa) {
+      let q = _supa.from('spooller')
+        .select('*, devreler(devre_no, proje_id, projeler(proje_no, gemi_adi))')
+        .order('spool_no');
+      if (devreId) q = q.eq('devre_id', devreId);
+      const { data, error } = await q;
+      if (error) { console.warn(error); return []; }
+      return data;
+    }
+    const tum = _lget('spooller') || [];
+    return devreId ? tum.filter(s => s.devreId === devreId) : tum;
+  }
+
+  async function spoolGetir(id) {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('spooller')
+        .select(`
+          *,
+          devreler(devre_no, alistirma_devresi,
+            projeler(proje_no, gemi_adi, is_emri_no,
+              tersaneler(ad, kod)
+            )
+          ),
+          spool_malzemeleri(*),
+          notlar(*),
+          fotograflar(*),
+          belgeler(*)
+        `)
+        .eq('id', id)
+        .single();
+      if (error) { console.warn(error); return null; }
+      return data;
+    }
+    return (_lget('spooller') || []).find(s => s.id === id) || null;
+  }
+
+  async function spoolGuncelle(id, degisiklikler) {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('spooller')
+        .update({ ...degisiklikler, guncelleme: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) { console.warn(error); return null; }
+      return data;
+    }
+    // localStorage
+    const liste = _lget('spooller') || [];
+    const idx = liste.findIndex(s => s.id === id);
+    if (idx === -1) return null;
+    liste[idx] = { ...liste[idx], ...degisiklikler };
+    _lset('spooller', liste);
     return liste[idx];
   }
 
-  function spoolKKyeGonder(spoolKodu, tersane, projeNo, gemi, devre, agirlik) {
-    // 1. Spool durumunu güncelle
-    spoolGuncelle(spoolKodu, { durum: 'kk_hazir', kkDurum: null });
-
-    // 2. KK hazır listesine ekle (KK sayfası buradan okuyacak)
-    const kkHazir = _get('kkHazir') || [];
-    const zatenVar = kkHazir.find(s => s.spoolKodu === spoolKodu);
-    if (!zatenVar) {
-      kkHazir.push({
-        id: 'h-' + Date.now(),
-        spoolKodu, tersane, projeNo, gemi, devre, agirlik,
-        kaynak: 'spool_detay',
-        tarih: new Date().toLocaleString('tr-TR')
-      });
-      _set('kkHazir', kkHazir);
-    }
-
-    _log('KK_GONDER', spoolKodu, tersane+' / '+devre+' — Kalite kontrole gönderildi', 'spool', spoolKodu, {devre:devre,tersane:tersane});
-    return true;
-  }
-
-  function spoolSevkiyataGonder(spoolKodu, tersane, projeNo, gemi, devre, agirlik) {
-    spoolGuncelle(spoolKodu, { durum: 'sevk_hazir', sevkDurum: 'hazir' });
-
-    const sevkHazir = _get('sevkHazir') || [];
-    const zatenVar = sevkHazir.find(s => s.spoolKodu === spoolKodu);
-    if (!zatenVar) {
-      sevkHazir.push({
-        id: 'hs-' + Date.now(),
-        spoolKodu, tersane, projeNo, gemi, devre, agirlik,
-        kaynak: 'direkt',
-        tarih: new Date().toLocaleString('tr-TR')
-      });
-      _set('sevkHazir', sevkHazir);
-    }
-
-    _log('SEVK_HAZIR', spoolKodu, tersane+' / '+devre+' — Sevkiyat hazırlık listesine eklendi', 'spool', spoolKodu, {devre:devre,tersane:tersane});
-    return true;
-  }
-
-  function spoolDurdur(spoolKodu, sebep, aciklama) {
-    spoolGuncelle(spoolKodu, {
+  async function spoolDurdur(id, sebep, aciklama) {
+    const guncelleme = {
       durduruldu: true,
-      durum: 'durduruldu',
-      durdurmaAciklama: sebep + ': ' + aciklama,
-      durdurulmaTarihi: new Date().toLocaleString('tr-TR')
-    });
-
-    // Uyarı ekle
-    uyariEkle('devre', 'kritik',
-      'Spool Durduruldu: ' + spoolKodu,
-      sebep + ' — ' + aciklama,
-      spoolKodu,
-      'spool_detay.html?durduruldu=1&sebep=' + encodeURIComponent(sebep),
-      '⛔'
-    );
-
-    _log('SPOOL_DURDUR', spoolKodu, sebep+': '+aciklama, 'spool', spoolKodu, {});
-    return true;
-  }
-
-  function spoolDurdurmaKaldir(spoolKodu) {
-    spoolGuncelle(spoolKodu, {
-      durduruldu: false,
-      durum: 'imalat',
-      durdurmaAciklama: '',
-      durdurulmaTarihi: null
-    });
-    _log('SPOOL_BASLAT', spoolKodu, 'Durdurma kaldırıldı, yeniden aktif', 'spool', spoolKodu, {});
-    return true;
-  }
-
-  // ── KALİTE KONTROL ──────────────────────────────────────
-
-  function kkHazirListesi() {
-    return _get('kkHazir') || [];
-  }
-
-  function kkPaketOlustur(spoolIdler, tersane, projeNo, gemi, davetTarihi, kontrolTarihi, not, mail) {
-    const hazir = _get('kkHazir') || [];
-    const secili = hazir.filter(s => spoolIdler.includes(s.id));
-    if (!secili.length) return null;
-
-    const no = 'KD-' + _sonrakiNo('kk');
-    const paket = {
-      id: no, no,
-      tersane, projeNo, gemi,
-      davetTarihi, kontrolTarihi, not, mail,
-      durum: 'bekleyen',
-      onay: null,
-      spooller: secili.map(s => ({ ...s, durumOnay: null })),
-      olusturma: new Date().toLocaleString('tr-TR')
+      durdurma_sebebi: sebep + ': ' + aciklama,
+      durdurma_tarihi: new Date().toISOString(),
     };
-
-    const paketler = _get('kkPaketler') || [];
-    paketler.unshift(paket);
-    _set('kkPaketler', paketler);
-
-    // Gönderilenleri hazır listesinden çıkar
-    const kalanlar = hazir.filter(s => !spoolIdler.includes(s.id));
-    _set('kkHazir', kalanlar);
-
-    // Spool durumlarını güncelle
-    secili.forEach(s => spoolGuncelle(s.spoolKodu, { durum: 'kk_bekliyor', kkDurum: 'bekliyor' }));
-
-    _log('KK_PAKET', no, tersane + ' / ' + projeNo + ' — ' + secili.length + ' spool');
-    return paket;
+    await spoolGuncelle(id, guncelleme);
+    await logEkle('DURDURMA', sebep + ' — ' + aciklama, 'spool', id, { spool_id: id });
+    return true;
   }
 
-  function kkPaketleri() {
-    return _get('kkPaketler') || [];
+  async function spoolDurdurmaKaldir(id) {
+    await spoolGuncelle(id, { durduruldu: false, durdurma_sebebi: null, durdurma_tarihi: null });
+    await logEkle('DURDURMA_KALDIRILDI', '', 'spool', id, { spool_id: id });
+    return true;
   }
 
-  function kkOnayKaydet(paketId, karar, tarih, kisi, not) {
-    const paketler = _get('kkPaketler') || [];
-    const idx = paketler.findIndex(p => p.id === paketId);
-    if (idx === -1) return false;
-
-    paketler[idx].durum = karar === 'onay' ? 'onaylandi' : 'reddedildi';
-    paketler[idx].onay = { karar, tarih, kisi, not };
-    paketler[idx].spooller.forEach(s => s.durumOnay = karar);
-    _set('kkPaketler', paketler);
-
-    // Onaylananları sevkiyat hazır listesine aktar
-    if (karar === 'onay') {
-      const sevkHazir = _get('sevkHazir') || [];
-      paketler[idx].spooller.forEach(s => {
-        if (!sevkHazir.find(x => x.spoolKodu === s.spoolKodu)) {
-          sevkHazir.push({
-            id: 'hs-' + Date.now() + Math.random(),
-            spoolKodu: s.spoolKodu,
-            tersane: s.tersane || paketler[idx].tersane,
-            projeNo: s.projeNo || paketler[idx].projeNo,
-            gemi: s.gemi || paketler[idx].gemi,
-            devre: s.devre || '',
-            agirlik: s.agirlik || 0,
-            kaynak: 'kalite_onay',
-            tarih: tarih
-          });
-        }
-        spoolGuncelle(s.spoolKodu, { durum: 'sevk_hazir', kkDurum: 'onaylandi', sevkDurum: 'hazir' });
-      });
-      _set('sevkHazir', sevkHazir);
-    } else {
-      paketler[idx].spooller.forEach(s =>
-        spoolGuncelle(s.spoolKodu, { kkDurum: 'reddedildi', durum: 'imalat' })
-      );
+  // ── MALZEME LİSTESİ ──────────────────────────────────────
+  async function malzemeleriGetir(spoolId) {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('spool_malzemeleri')
+        .select('*')
+        .eq('spool_id', spoolId)
+        .order('olusturma');
+      if (error) { console.warn(error); return []; }
+      return data;
     }
-
-    _log('KK_ONAY', paketId, (karar === 'onay' ? 'Onaylandı' : 'Reddedildi') + ' — ' + kisi);
-    return true;
+    return (_lget('malzemeler_' + spoolId)) || [];
   }
 
-  // ── SEVKİYAT ────────────────────────────────────────────
-
-  function sevkHazirListesi() {
-    return _get('sevkHazir') || [];
-  }
-
-  function sevkPaketOlustur(tip, spoolIdler, tersane, projeNo, arac, irsaliye, tarih, teslimKisi, teslimTel, not, icerik) {
-    const no = 'S26-' + String((_get('sayaclar') || {}).sevk || 1).padStart(3, '0');
-    const s = _get('sayaclar') || {};
-    s.sevk = (s.sevk || 1) + 1;
-    _set('sayaclar', s);
-
-    const hazir = _get('sevkHazir') || [];
-    const secili = tip === 'giden' ? hazir.filter(x => spoolIdler.includes(x.id)) : [];
-
-    const paket = {
-      id: no, no, tip, durum: 'gonderildi',
-      tersane, projeNo, gemi: secili[0]?.gemi || '',
-      arac, irsaliye, tarih,
-      teslimKisi, teslimTel, not, icerik: icerik || '',
-      spooller: secili.map(s => ({ spool: s.spoolKodu?.split('-').pop() || s.spoolKodu, devre: s.devre, agirlik: s.agirlik })),
-      belgeler: tip === 'giden' ? ['Sevkiyat Listesi', 'İrsaliye'] : ['İrsaliye'],
-      fotograflar: [],
-      olusturma: new Date().toLocaleString('tr-TR')
-    };
-
-    const liste = _get('sevkiyatlar') || [];
-    liste.unshift(paket);
-    _set('sevkiyatlar', liste);
-
-    // Gönderilenleri hazır listesinden çıkar
-    if (tip === 'giden') {
-      _set('sevkHazir', hazir.filter(x => !spoolIdler.includes(x.id)));
-      secili.forEach(s => spoolGuncelle(s.spoolKodu, { durum: 'sevkiyatta', sevkDurum: 'gonderildi' }));
+  // ── İŞLEM LOGU ───────────────────────────────────────────
+  async function loguGetir(filtre, limit) {
+    if (mod === 'supabase' && _supa) {
+      let q = _supa.from('islem_log').select('*, kullanicilar(ad_soyad)').order('olusturma', { ascending: false });
+      if (filtre?.katman)   q = q.eq('katman', filtre.katman);
+      if (filtre?.spoolId)  q = q.eq('spool_id', filtre.spoolId);
+      if (filtre?.devreId)  q = q.eq('devre_id', filtre.devreId);
+      if (limit)            q = q.limit(limit);
+      const { data, error } = await q;
+      if (error) { console.warn(error); return []; }
+      return data;
     }
-
-    _log('SEVKİYAT', no, tip + ' — ' + tersane + (projeNo ? ' / ' + projeNo : ''));
-    return paket;
+    let log = _lget('islemLog') || [];
+    if (filtre?.spoolId) log = log.filter(l => l.meta?.spool_id === filtre.spoolId);
+    return limit ? log.slice(0, limit) : log;
   }
 
-  function sevkiyatlar() {
-    return _get('sevkiyatlar') || [];
-  }
-
-  // ── TESTLER ─────────────────────────────────────────────
-
-  function testler() {
-    return _get('testler') || [];
-  }
-
-  function testOlustur(tersane, projeNo, gemi, devre, tip, tipAd, not, tarih, firma, spoollar) {
-    const no = _sonrakiNo('test');
-    const paket = {
-      id: no, no, durum: 'bekleyen',
-      tersane, projeNo, gemi, devre, tip, tipAd, not, tarih, firma,
-      spooller: spoollar.map(s => ({ no: s, sonuc: 'bekliyor', hataKaynagi: '', spoolNot: '' })),
-      sonucBilgi: null, fotograflar: [], belgeler: [],
-      olusturma: new Date().toLocaleString('tr-TR')
-    };
-    const liste = _get('testler') || [];
-    liste.unshift(paket);
-    _set('testler', liste);
-    _log('TEST_OLUSTUR', no, tip+' — '+tersane+' / '+devre, 'devre', devre, {tersane:tersane,proje:projeNo});
-    return paket;
-  }
-
-  function testSonucKaydet(testId, tarih, bas, bit, kisi, genel, spoolSonuclari, notMetni) {
-    const liste = _get('testler') || [];
-    const idx = liste.findIndex(t => t.id === testId);
-    if (idx === -1) return false;
-
-    liste[idx].sonucBilgi = { tarih, bas, bit, kisi, genel, not: notMetni };
-    liste[idx].spooller = spoolSonuclari;
-    if (genel === 'gecti')       liste[idx].durum = 'tamamlandi';
-    else if (genel === 'kismi')  liste[idx].durum = 'hatali';
-    else if (genel === 'kaldi')  liste[idx].durum = 'hatali';
-
-    _set('testler', liste);
-    _log('TEST_SONUC', testId, genel+' — '+kisi, 'sistem', testId, {});
-    return true;
-  }
-
-  // ── UYARILAR ────────────────────────────────────────────
-
-  function uyarilar() {
-    return _get('uyarilar') || [];
+  // ── UYARILAR ─────────────────────────────────────────────
+  function uyarilariGetir() {
+    return _lget('uyarilar') || [];
   }
 
   function uyariEkle(kategori, seviye, baslik, aciklama, kaynak, link, ikon) {
-    const liste = _get('uyarilar') || [];
+    const liste = _lget('uyarilar') || [];
     const no = 'U' + Date.now();
     liste.unshift({
       id: no, kategori, seviye, goruldu: false,
@@ -421,196 +320,125 @@ const SYOS = (function () {
       olusturma: new Date().toLocaleString('tr-TR'),
       ikon: ikon || '⚠️'
     });
-    _set('uyarilar', liste);
+    _lset('uyarilar', liste);
     return no;
   }
 
   function uyariGoruldu(id) {
-    const liste = _get('uyarilar') || [];
+    const liste = _lget('uyarilar') || [];
     const u = liste.find(x => x.id === id);
-    if (u) { u.goruldu = true; _set('uyarilar', liste); }
-  }
-
-  function uyariSil(id) {
-    _set('uyarilar', (_get('uyarilar') || []).filter(u => u.id !== id));
+    if (u) { u.goruldu = true; _lset('uyarilar', liste); }
   }
 
   function uyariYeniSayisi() {
-    return (_get('uyarilar') || []).filter(u => !u.goruldu).length;
+    return (_lget('uyarilar') || []).filter(u => !u.goruldu).length;
   }
 
-  // ── DEVRE DURDURMA ───────────────────────────────────────
-
-  function devreDurdur(devreKodu, kapsam, spoollar, sebep, aciklama, tahminiTarih) {
-    // Durdurulan devreleri sakla
-    const durdurulmusDev = _get('durdurulmusDevreler') || [];
-    const mevcutIdx = durdurulmusDev.findIndex(d => d.devreKodu === devreKodu);
-
-    const kayit = {
-      devreKodu, kapsam,
-      durdurulmusSspooller: spoollar,
-      sebep, aciklama, tahminiTarih,
-      tarih: new Date().toLocaleString('tr-TR'),
-      aktif: true
-    };
-
-    if (mevcutIdx > -1) durdurulmusDev[mevcutIdx] = kayit;
-    else durdurulmusDev.push(kayit);
-    _set('durdurulmusDevreler', durdurulmusDev);
-
-    // Her spool için durdurma işle
-    spoollar.forEach(spoolKodu => spoolDurdur(spoolKodu, sebep, aciklama));
-
-    // Uyarı oluştur
-    uyariEkle('devre', 'kritik',
-      'Devre Durduruldu: ' + devreKodu,
-      sebep + ' — ' + aciklama + (tahminiTarih ? ' (Tahmini kaldırma: ' + tahminiTarih + ')' : ''),
-      devreKodu,
-      'devre_detay_sayfasi.html',
-      '⛔'
-    );
-
-    _log('DEVRE_DURDUR', devreKodu, sebep+' — '+spoollar.length+' spool', 'devre', devreKodu, {});
-    return true;
-  }
-
-  function devreninDurumuGetir(devreKodu) {
-    const liste = _get('durdurulmusDevreler') || [];
-    return liste.find(d => d.devreKodu === devreKodu && d.aktif) || null;
-  }
-
-  function devreDurdurmayiKaldir(devreKodu) {
-    const liste = _get('durdurulmusDevreler') || [];
-    const idx = liste.findIndex(d => d.devreKodu === devreKodu);
-    if (idx > -1) {
-      liste[idx].durdurulmusSspooller.forEach(sk => spoolDurdurmaKaldir(sk));
-      liste[idx].aktif = false;
-      _set('durdurulmusDevreler', liste);
+  // ── BASAMAK SNAPSHOT (M-09) ──────────────────────────────
+  async function basamaklariGetir() {
+    if (mod === 'supabase' && _supa) {
+      const { data, error } = await _supa
+        .from('basamak_tanimlari')
+        .select('*')
+        .eq('aktif', true)
+        .order('sira');
+      if (error) { console.warn(error); return []; }
+      return data;
     }
-    _log('DEVRE_BASLAT', devreKodu, 'Durdurma kaldırıldı', 'devre', devreKodu, {});
-    return true;
+    return _lget('basamakTanimlari') || [
+      { sistem_adi: 'on_imalat',  gorunen_ad: 'Ön İmalat',  sira: 1 },
+      { sistem_adi: 'imalat',     gorunen_ad: 'İmalat',     sira: 2 },
+      { sistem_adi: 'kaynak',     gorunen_ad: 'Kaynak',     sira: 3 },
+      { sistem_adi: 'on_kontrol', gorunen_ad: 'Ön Kontrol', sira: 4 },
+      { sistem_adi: 'kk',         gorunen_ad: 'KK',         sira: 5 },
+      { sistem_adi: 'sevkiyat',   gorunen_ad: 'Sevkiyat',   sira: 6 },
+    ];
   }
 
-  // ── İŞLEM LOGU ──────────────────────────────────────────
-
-  function islemLogu(limit, filtre) {
-    let log = _get('islemLog') || [];
-    if (filtre) {
-      if (filtre.katman)   log = log.filter(l => l.katman === filtre.katman);
-      if (filtre.katmanId) log = log.filter(l => l.katmanId === filtre.katmanId);
-      if (filtre.islem)    log = log.filter(l => (l.islem||'').includes(filtre.islem));
-      if (filtre.tarihBas) log = log.filter(l => l.tarih >= filtre.tarihBas);
-      if (filtre.tarihBit) log = log.filter(l => l.tarih <= filtre.tarihBit);
-      if (filtre.tersane)  log = log.filter(l => l.kaynak && l.kaynak.includes(filtre.tersane) || (l.ust && l.ust.tersane === filtre.tersane));
-    }
-    return limit ? log.slice(0, limit) : log;
+  // Spool oluşturulunca çağrılır — o anki basamak listesini snapshot alır
+  async function basamakSnapshotOlustur() {
+    const basamaklar = await basamaklariGetir();
+    return basamaklar.map(b => ({
+      sistem_adi:  b.sistem_adi,
+      gorunen_ad:  b.gorunen_ad,
+      sira:        b.sira
+    }));
   }
 
-  // ── BELL DURUMU ─────────────────────────────────────────
-  // Her sayfanın header'ında çağrılır
-
+  // ── UI: BELL GÜNCELLE ────────────────────────────────────
   function bellGuncelle() {
     const n = uyariYeniSayisi();
-    // Bell ikonu varsa güncelle
-    const bell = document.getElementById('bellBtn');
     const bellSayac = document.getElementById('bellSayac');
-    const navBadge = document.getElementById('navBadge');
-    if (!bell && !bellSayac) return;
-
+    const navBadge  = document.getElementById('navBadge');
     if (n > 0) {
-      if (bell) bell.classList.add('uyari-bell-yeni');
       if (bellSayac) { bellSayac.textContent = n; bellSayac.style.display = 'flex'; }
-      if (navBadge)  { navBadge.textContent = n; navBadge.style.display = 'flex'; }
+      if (navBadge)  { navBadge.textContent  = n; navBadge.style.display  = 'flex'; }
     } else {
-      if (bell) bell.classList.remove('uyari-bell-yeni');
       if (bellSayac) bellSayac.style.display = 'none';
-      if (navBadge)  navBadge.style.display = 'none';
+      if (navBadge)  navBadge.style.display  = 'none';
     }
-  }
-
-  // ── DÖKÜMANLAR ───────────────────────────────────────────
-  // Dökümanlar devre bazlı saklanır: ares_dok_<devreId>
-  // Her kayıt: { id, ad, tur, dosyaAdi, uzanti, boyutBytes, base64, tarih, yukleyen }
-
-  function dokumanGetir(devreId) {
-    return _get('dok_' + devreId) || [];
-  }
-
-  function dokumanEkle(devreId, ad, tur, dosyaAdi, uzanti, boyutBytes, base64, yukleyen) {
-    const liste = dokumanGetir(devreId);
-    const kayit = {
-      id: 'DOK-' + Date.now(),
-      ad: ad || dosyaAdi,
-      tur: tur || 'Diğer',
-      dosyaAdi,
-      uzanti,
-      boyutBytes,
-      base64,
-      yukleyen: yukleyen || 'Admin',
-      tarih: new Date().toLocaleDateString('tr-TR')
-    };
-    liste.unshift(kayit);
-    _set('dok_' + devreId, liste);
-    _log('DOK_EKLE', devreId, ad+' ('+tur+')', 'devre', devreId, {});
-    return kayit;
-  }
-
-  function dokumanSil(devreId, dokId) {
-    const liste = dokumanGetir(devreId).filter(d => d.id !== dokId);
-    _set('dok_' + devreId, liste);
-    _log('DOK_SIL', devreId, dokId, 'devre', devreId, {});
-    return true;
   }
 
   // ── SIFIRLA (debug) ──────────────────────────────────────
   function sifirla() {
-    ['spooller','kkHazir','kkPaketler','sevkHazir','sevkiyatlar','testler',
-     'uyarilar','islemLog','sayaclar','durdurulmusDevreler','initialized']
-      .forEach(k => _del(k));
-    console.log('[SYOS] Store sıfırlandı');
+    ['spooller','devreler','projeler','tersaneler','uyarilar',
+     'islemLog','sayaclar','initialized','mod'].forEach(k => _ldel(k));
+    console.log('[ARES] Store sıfırlandı');
   }
 
-  // ── INIT ────────────────────────────────────────────────
-  _init();
+  // ── INIT ─────────────────────────────────────────────────
+  (function _init() {
+    // Supabase CDN yüklüyse bağlan
+    if (typeof window !== 'undefined') {
+      if (window.supabase) {
+        _supabasiBaslat();
+      } else {
+        // CDN henüz yüklenmediyse kısa bekle
+        window.addEventListener('load', function() {
+          if (window.supabase) _supabasiBaslat();
+        });
+      }
+    }
+  })();
 
-  // DOMContentLoaded'da bell durumunu güncelle
   document.addEventListener('DOMContentLoaded', function () {
     bellGuncelle();
   });
 
-  // ── PUBLIC ───────────────────────────────────────────────
+  // ── PUBLIC API ───────────────────────────────────────────
   return {
-    // Spool
-    spoolGetir, spoolGuncelle,
-    spoolKKyeGonder, spoolSevkiyataGonder,
+    // Durum
+    mod,
+    modDegistir,
+    supabase: function() { return _supa; },
+
+    // Oturum
+    girisYap, cikisYap, oturumKontrol, oturumAl, tenantId,
+
+    // Veri
+    tersaneleriGetir,
+    projeleriGetir,
+    devreleriGetir, devreGetir,
+    spoollariGetir, spoolGetir, spoolGuncelle,
     spoolDurdur, spoolDurdurmaKaldir,
+    malzemeleriGetir,
+    loguGetir, logEkle,
+    basamaklariGetir, basamakSnapshotOlustur,
 
-    // KK
-    kkHazirListesi, kkPaketOlustur, kkPaketleri, kkOnayKaydet,
+    // Uyarılar
+    uyarilariGetir, uyariEkle, uyariGoruldu, uyariYeniSayisi,
 
-    // Sevkiyat
-    sevkHazirListesi, sevkPaketOlustur, sevkiyatlar,
-
-    // Test
-    testler, testOlustur, testSonucKaydet,
-
-    // Uyarı
-    uyarilar, uyariEkle, uyariGoruldu, uyariSil, uyariYeniSayisi,
-
-    // Devre durdurma
-    devreDurdur, devreninDurumuGetir, devreDurdurmayiKaldir,
-
-    // Log
-    islemLogu,
+    // Numara
+    sonrakiNo,
 
     // UI
     bellGuncelle,
-
-    // Dökümanlar
-    dokumanGetir, dokumanEkle, dokumanSil,
 
     // Debug
     sifirla,
   };
 
 })();
+
+// Geriye dönük uyumluluk — eski sayfalar SYOS kullanıyorsa
+const SYOS = ARES;
