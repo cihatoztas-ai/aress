@@ -243,7 +243,14 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 <!-- TRACKER -->
 <div class="tracker-bar">
   <div class="tracker-stages" id="trackerStages"></div>
-  <div class="tracker-chip" id="trackerChip"></div>
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    <div class="tracker-chip" id="trackerChip"></div>
+    <button id="btnSonrakiBasamak" onclick="sonrakiBasamakGec()"
+      style="display:none;padding:6px 12px;border-radius:99px;border:none;background:var(--gr);color:#fff;font-size:12px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;white-space:nowrap;transition:opacity .15s;"
+      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      ✓ <span id="btnSonrakiLabel">Sonraki</span>
+    </button>
+  </div>
 </div>
 
 <!-- SEKMELER -->
@@ -724,6 +731,7 @@ async function spoolYukle(supaId) {
     SP.stopped    = s.durduruldu  || false;
     SP.durdurmaAciklama = s.durdurma_sebebi || '';
     SP.alistirma  = s.alistirma   || null;
+    SP._basamakSnapshot = s.basamak_snapshot || []; // ilerletme için sakla
     // aktif_basamak sistem_adi string → tracker index'e çevir
     var _snap = s.basamak_snapshot || [];
     var _aktifStr = s.aktif_basamak || '';
@@ -896,9 +904,73 @@ function renderTracker(){
   var cd=CHIPS[Math.min(cur,6)];
   var chip=T('trackerChip');
   if(chip){chip.style.background=cd.bg;chip.style.color=cd.c;chip.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+cd.c+';display:inline-block;margin-right:6px;"></span>'+esc(tv(cd.t,cd.tr));}
+  // Sonraki basamak butonu
+  var btn=T('btnSonrakiBasamak'), lbl2=T('btnSonrakiLabel');
+  if(btn){
+    var sonrakiIdx=cur; // cur kadar tamamlandı, sonraki = cur index'i
+    if(!SP.stopped && sonrakiIdx < STAGES.length){
+      if(lbl2) lbl2.textContent=STAGES[sonrakiIdx]+' Tamamla';
+      btn.style.display='inline-flex';
+    } else {
+      btn.style.display='none';
+    }
+  }
 }
 
-// ── FOTOĞRAF ──────────────────────────────────────────────────
+// ── BASAMAK İLERLETME ─────────────────────────────────────────
+async function sonrakiBasamakGec() {
+  var cur = parseInt(SP.trackerCurrent, 10) || 0;
+  var snap = SP._basamakSnapshot || [];
+  // Snapshot yoksa STAGES'den üret
+  if (!snap.length) {
+    snap = STAGES.map(function(s, i) {
+      return { sistem_adi: STAGE_KEYS[i].replace('sp_stage_',''), gorunen_ad: s, sira: i+1 };
+    });
+  }
+  if (cur >= snap.length) { toast('Tüm basamaklar tamamlandı', 'ok'); return; }
+  var hedefBasamak = snap[cur]; // 0-based: cur kadar tamamlandı, snap[cur] = sonraki
+  if (!hedefBasamak) return;
+
+  var btn = T('btnSonrakiBasamak');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
+
+  try {
+    var supa = ARES.supabase();
+    if (supa && SP.supaId) {
+      var { error } = await supa
+        .from('spooller')
+        .update({
+          aktif_basamak: hedefBasamak.sistem_adi,
+          guncelleme: new Date().toISOString()
+        })
+        .eq('id', SP.supaId);
+      if (error) { toast('Güncelleme hatası: ' + error.message, 'err'); return; }
+      // Log ekle
+      await supa.from('islem_log').insert({
+        tenant_id: ARES.tenantId(),
+        islem: 'BASAMAK',
+        aciklama: (snap[cur-1] ? snap[cur-1].gorunen_ad : 'Başlangıç') + ' → ' + hedefBasamak.gorunen_ad,
+        katman: 'spool',
+        katman_id: SP.supaId,
+        spool_id: SP.supaId,
+        yapan_id: ARES.oturumAl()?.id || null
+      });
+    }
+    // SP güncelle
+    SP.trackerCurrent = cur + 1;
+    SP._aktifBasamakStr = hedefBasamak.sistem_adi;
+    try { localStorage.setItem('ares_aktif_spool', JSON.stringify(SP)); } catch(e) {}
+    renderTracker();
+    logEkle('BASAMAK', (snap[cur-1] ? snap[cur-1].gorunen_ad : 'Başlangıç') + ' → ' + hedefBasamak.gorunen_ad);
+    toast(hedefBasamak.gorunen_ad + ' aşamasına geçildi', 'ok');
+  } catch(e) {
+    toast('Hata: ' + e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+  }
+}
+
+
 function renderFotolar(){
   var w=T('swiperW'),em=T('photoEmpty'),outer=T('photoOuter'),cnt=T('fotoCnt'),band=T('slideBand');
   if(!w)return;
