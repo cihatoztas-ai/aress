@@ -875,7 +875,7 @@ var CHIPS=[
 ];
 function renderTracker(){
   var cont=T('trackerStages');if(!cont)return;
-  var cur=SP.trackerCurrent||2;
+  var cur = parseInt(SP.trackerCurrent, 10) || 0;
   cont.innerHTML='';
   STAGES.forEach(function(s,i){
     var idx=i+1,done=idx<cur,aktif=idx===cur;
