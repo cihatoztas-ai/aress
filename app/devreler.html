@@ -859,19 +859,19 @@ async function veriYukle() {
     var devRes = await supa
       .from('devreler')
       .select('*, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad, kod))')
-      .order('created_at', { ascending: false });
+      .order('olusturma', { ascending: false });
     if (devRes.error) { console.warn('Devre yükleme:', devRes.error); renderTable(); return; }
 
     // Spool istatistikleri
     var spoolRes = await supa
       .from('spooller')
-      .select('id, devre_id, agirlik, ilerleme, cap_mm');
+      .select('id, devre_id, agirlik_kg, aktif_basamak, dis_cap_mm, malzeme, yuzey_islemi');
 
     // Son işlem tarihleri
     var logRes = await supa
       .from('islem_log')
-      .select('devre_id, created_at')
-      .order('created_at', { ascending: false });
+      .select('devre_id, olusturma')
+      .order('olusturma', { ascending: false });
 
     // devre_id → spooller ve loglar
     var spoolByDevre = {}, logByDevre = {};
@@ -880,7 +880,7 @@ async function veriYukle() {
       spoolByDevre[s.devre_id].push(s);
     });
     (logRes.data || []).forEach(function(l) {
-      if (!logByDevre[l.devre_id]) logByDevre[l.devre_id] = l.created_at;
+      if (!logByDevre[l.devre_id]) logByDevre[l.devre_id] = l.olusturma;
     });
 
     // Filtre için unique tersane/proje
@@ -892,31 +892,45 @@ async function veriYukle() {
       var uiId   = i + 1;
       _supaIdMap[uiId] = d.id;
       var spools = spoolByDevre[d.id] || [];
-      var totalAg = spools.reduce(function(s, x) { return s + (parseFloat(x.agirlik) || 0); }, 0);
-      var avgIler = spools.length
-        ? Math.round(spools.reduce(function(s, x) { return s + (x.ilerleme || 0); }, 0) / spools.length)
-        : (d.ilerleme || 0);
-      var caps = spools.map(function(s) { return s.cap_mm ? String(s.cap_mm) : null; }).filter(Boolean);
+      var totalAg = spools.reduce(function(s, x) { return s + (parseFloat(x.agirlik_kg) || 0); }, 0);
+      // İlerleme: aktif_basamak / snapshot uzunluğu
+      var avgIler = spools.length ? Math.round(
+        spools.reduce(function(s, x) {
+          var snap = x.basamak_snapshot;
+          var total = (snap && snap.length) ? snap.length : 6;
+          var aktif = x.aktif_basamak || 0;
+          return s + Math.round((aktif / total) * 100);
+        }, 0) / spools.length
+      ) : 0;
+      var caps = spools.map(function(s) { return s.dis_cap_mm ? String(s.dis_cap_mm) : null; }).filter(Boolean);
+      // Malzeme ve yüzey — spool listesinden unique değerler
+      var malzemeSet = {}, yuzeySet = {};
+      spools.forEach(function(s) {
+        if (s.malzeme)      malzemeSet[s.malzeme.toLowerCase()] = true;
+        if (s.yuzey_islemi) yuzeySet[s.yuzey_islemi]            = true;
+      });
+      var malzemeArr = Object.keys(malzemeSet).length ? Object.keys(malzemeSet) : ['celik'];
+      var yuzeyArr   = Object.keys(yuzeySet);
       var prj  = d.projeler || {};
       var trs  = prj.tersaneler || {};
       var sonIslem = logByDevre[d.id]
         ? new Date(logByDevre[d.id]).toLocaleString('tr-TR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
         : '—';
-      if (trs.ad)      tersaneSet[trs.ad]      = true;
-      if (prj.gemi_adi) projeSet[prj.gemi_adi] = true;
+      if (trs.ad)       tersaneSet[trs.ad]       = true;
+      if (prj.gemi_adi) projeSet[prj.gemi_adi]   = true;
       return {
         id:       uiId,
         supaId:   d.id,
         isEmri:   prj.is_emri_no  || '—',
         tersane:  trs.ad          || '—',
         gemi:     prj.gemi_adi    || '—',
-        devre:    d.devre_no      || '—',
-        zone:     d.zone          || '—',
+        devre:    d.devre_no      || d.ad || '—',
+        zone:     d.zone_no       || '—',
         spool:    spools.length,
         agirlik:  totalAg,
-        malzeme:  d.malzeme      ? d.malzeme.split(',').map(function(m){return m.trim();})      : ['celik'],
-        yuzey:    d.yuzey_islemi ? d.yuzey_islemi.split(',').map(function(y){return y.trim();}) : [],
-        ilerleme: d.ilerleme !== undefined ? d.ilerleme : avgIler,
+        malzeme:  malzemeArr,
+        yuzey:    yuzeyArr,
+        ilerleme: avgIler,
         durum:    d.durum         || 'baslamadi',
         sonIslem: sonIslem,
         caps:     caps
