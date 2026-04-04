@@ -2028,8 +2028,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── AUTH KONTROLÜ ─────────────────────────────────────────────
   try {
-    var oturum = await ARES.oturumKontrol();
-    if (!oturum) { location.href = 'giris.html'; return; }
+    // Supabase CDN + session hazır olana kadar bekle (max 8 sn)
+    var _bekle = 0;
+    while (_bekle < 80) {
+      var _supa = ARES.supabase();
+      if (_supa) {
+        var _ses = await _supa.auth.getSession();
+        if (_ses.data && _ses.data.session) break; // oturum var, devam
+        if (_bekle > 20) { location.href = 'giris.html'; return; } // 2 sn bekledik, oturum yok
+      }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      _bekle++;
+    }
+    // Session varsa _oturum'u doldur
+    await ARES.oturumKontrol();
   } catch(e) { /* offline modu — devam */ }
 
   // Modal kapama
