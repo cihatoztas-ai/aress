@@ -9,7 +9,7 @@
 <script>
 // Tema hemen uygula — flash önleme
 (function(){
-  try{var t=localStorage.getItem('syos_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+  (function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);var l=localStorage.getItem('ares_lang')||'tr';document.documentElement.setAttribute('lang',l);document.documentElement.style.visibility='hidden';})()
 })();
 </script>
 <style>
@@ -453,35 +453,58 @@ mark{background:rgba(217,119,6,.3);color:var(--tx);border-radius:2px;padding:0 2
 // ════════════════════════════════════
 // VERİ
 // ════════════════════════════════════
-var borular = [
-  {id:'K001',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-S01',spoolId:'1001',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1250',ucA:'duz',   ucB:'yiv',   sertifika:true, durum:'bekliyor'},
-  {id:'K002',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-S02',spoolId:'1002',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'850', ucA:'duz',   ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K003',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-S03',spoolId:'1003',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'2300',ucA:'kaynak',ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K004',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-S04',spoolId:'1004',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'400', ucA:'yiv',   ucB:'yiv',   sertifika:true, durum:'bekliyor'},
-  {id:'K005',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-S05',spoolId:'1005',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1800',ucA:'duz',   ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K006',isEmir:'I26-048',tersane:'TERSAN',  spool:'NB1099C-D100-803-002-S01',spoolId:'1006',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'3100',ucA:'duz',   ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K007',isEmir:'I26-048',tersane:'TERSAN',  spool:'NB1099C-D100-803-002-S02',spoolId:'1007',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'750', ucA:'kaynak',ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K008',isEmir:'I26-048',tersane:'TERSAN',  spool:'NB1099C-D100-803-002-S03',spoolId:'1008',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1100',ucA:'duz',   ucB:'yiv',   sertifika:true, durum:'bekliyor'},
-  {id:'K009',isEmir:'I26-048',tersane:'TERSAN',  spool:'NB1099C-D100-803-002-S04',spoolId:'1009',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'2800',ucA:'yiv',   ucB:'kaynak',sertifika:false,durum:'bekliyor'},
-  {id:'K010',isEmir:'I26-048',tersane:'TERSANNB',spool:'NB1099C-D100-803-002-S05',spoolId:'1010',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'560', ucA:'duz',   ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K011',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-S01',spoolId:'1011',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'900', ucA:'kaynak',ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K012',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-S02',spoolId:'1012',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1650',ucA:'duz',   ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K013',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-S03',spoolId:'1013',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'2150',ucA:'yiv',   ucB:'duz',   sertifika:false,durum:'bekliyor'},
-  {id:'K014',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-S04',spoolId:'1014',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'480', ucA:'duz',   ucB:'yiv',   sertifika:true, durum:'bekliyor'},
-  {id:'K015',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-S05',spoolId:'1015',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1380',ucA:'kaynak',ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K016',isEmir:'I26-021',tersane:'TERSANNB',spool:'NB1099C-D100-803-025C-S03',spoolId:'1046',malzeme:'Karbon Celik',kalite:'St44',cap:'88,9 mm', kalinlik:'5,0 mm',kesimOlcusu:'2100',ucA:'kaynak',ucB:'kaynak',sertifika:true, durum:'bekliyor'},
-  {id:'K017',isEmir:'I26-041',tersane:'TERSANNB',spool:'NB1099C-D200-801-011-S01', spoolId:'1088',malzeme:'Karbon Celik',kalite:'St37',cap:'168,3 mm',kalinlik:'6,3 mm',kesimOlcusu:'2500',ucA:'kaynak',ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K018',isEmir:'I26-015',tersane:'TERSAN',  spool:'NB1137-Y100-817-007-S02',  spoolId:'1277',malzeme:'Paslanmaz',  kalite:'316L',cap:'114,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1800',ucA:'duz',   ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K019',isEmir:'I26-082',tersane:'TERSAN',  spool:'NB1137-F300-809-014-S01',  spoolId:'1310',malzeme:'Paslanmaz',  kalite:'304L',cap:'114,3 mm',kalinlik:'6,0 mm',kesimOlcusu:'2200',ucA:'duz',   ucB:'duz',   sertifika:true, durum:'bekliyor'},
-  {id:'K020',isEmir:'I26-090',tersane:'TERSANNB',spool:'NB1099C-C100-802-007-S01', spoolId:'1155',malzeme:'Bakir Alasim',kalite:'CuNi90/10',cap:'33,7 mm',kalinlik:'2,6 mm',kesimOlcusu:'520',ucA:'duz',ucB:'duz', sertifika:true, durum:'bekliyor'},
-  {id:'K021',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-B01',spoolId:'1021',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'920', ucA:'bukum',ucB:'',sertifika:true, durum:'bekliyor'},
-  {id:'K022',isEmir:'I26-012',tersane:'TERSAN',  spool:'NB1099C-D100-803-001-B02',spoolId:'1022',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1450',ucA:'bukum',ucB:'',sertifika:true, durum:'bekliyor'},
-  {id:'K023',isEmir:'I26-048',tersane:'TERSAN',  spool:'NB1099C-D100-803-002-B01',spoolId:'1023',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'2100',ucA:'bukum',ucB:'',sertifika:true, durum:'bekliyor'},
-  {id:'K024',isEmir:'I26-048',tersane:'TERSANNB',spool:'NB1099C-D100-803-002-B02',spoolId:'1024',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'650', ucA:'bukum',ucB:'',sertifika:false,durum:'bekliyor'},
-  {id:'K025',isEmir:'I26-055',tersane:'TERSANNB',spool:'NB1099C-D100-803-003-B01',spoolId:'1025',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',kesimOlcusu:'1780',ucA:'bukum',ucB:'',sertifika:true, durum:'bekliyor'},
-];
+var borular = []; // Supabase'den yüklenecek
+
+// ── SUPABASE VERİ YÜKLEYİCİ ─────────────────────────────────
+async function veriYukle() {
+  try {
+    var supa = ARES.supabase();
+    if (!supa) return;
+
+    // kesim_kalemleri → spool_malzemeleri → spooller → devreler → projeler → tersaneler
+    var res = await supa
+      .from('kesim_kalemleri')
+      .select('*, spool_malzemeleri(aciklama, malzeme, kalite, dis_cap_mm, et_mm, sertifikali), spooller(spool_no, devre_id, devreler(devre_no, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad))))')
+      .order('olusturma', { ascending: false });
+
+    if (res.error) { console.warn('[ARES] Kesim yükleme:', res.error); return; }
+
+    borular = (res.data || []).map(function(k, i) {
+      var mal  = k.spool_malzemeleri || {};
+      var sp   = k.spooller          || {};
+      var dv   = sp.devreler         || {};
+      var prj  = dv.projeler         || {};
+      var trs  = prj.tersaneler      || {};
+      var spoolLabel = [prj.gemi_adi, dv.devre_no, sp.spool_no].filter(Boolean).join('-');
+      return {
+        id:          k.id,
+        supaId:      k.id,
+        isEmir:      prj.is_emri_no  || '—',
+        tersane:     trs.ad          || '—',
+        spool:       spoolLabel      || sp.spool_no || '—',
+        spoolId:     sp.id           || '',
+        malzeme:     mal.malzeme     || '—',
+        kalite:      mal.kalite      || '—',
+        cap:         mal.dis_cap_mm  ? String(parseFloat(mal.dis_cap_mm).toFixed(1)).replace('.',',') + ' mm' : '—',
+        kalinlik:    mal.et_mm       ? String(mal.et_mm).replace('.',',') + ' mm' : '—',
+        kesimOlcusu: k.olcu_mm       ? String(k.olcu_mm) : '—',
+        ucA:         k.uc_a          || 'duz',
+        ucB:         k.uc_b          || 'duz',
+        sertifika:   mal.sertifikali || false,
+        durum:       k.kesildi       ? 'kesildi' : 'bekliyor'
+      };
+    });
+
+    populateFilters();
+    applyFilters();
+  } catch(e) {
+    console.warn('[ARES] veriYukle hatası:', e);
+    applyFilters();
+  }
+}
 
 var kesimListeleri = [];
+
 var klSayac = 1;
 var aktifTab = 'bekliyor';
 var filtreData = [], secilenIsEmir = new Set(), aramaMetni = '', sortKey = '', sortDir = 1;
@@ -1219,11 +1242,35 @@ function toast(msg,type){
 // BAŞLAT
 // ════════════════════════════════════
 document.addEventListener('DOMContentLoaded',function(){
-  populateFilters();applyFilters();
+  (async function() {
+  // ── AUTH KONTROLÜ ───────────────────────────────────────────
+  try {
+    var _bekle = 0;
+    while (_bekle < 80) {
+      var _supa = ARES.supabase();
+      if (_supa) {
+        var _ses = await _supa.auth.getSession();
+        if (_ses.data && _ses.data.session) { await ARES.oturumKontrol(); break; }
+        if (_bekle > 20) { location.href = 'giris.html'; return; }
+      }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      _bekle++;
+    }
+  } catch(e) {}
+
+  // ── VERİ YÜKLE ──────────────────────────────────────────────
+  if (ARES.mod === 'supabase') {
+    await veriYukle();
+  } else {
+    populateFilters(); applyFilters();
+  }
   var lm=document.getElementById('listeModal');
   if(lm)lm.addEventListener('click',function(e){if(e.target===e.currentTarget)closeListeModal();});
   var fm=document.getElementById('formModal');
   if(fm)fm.addEventListener('click',function(e){if(e.target===e.currentTarget)closeFormModal();});
+
+  document.documentElement.style.visibility = '';
+  })(); // async wrapper sonu
 });
 </script>
 
