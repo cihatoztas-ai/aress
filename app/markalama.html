@@ -595,19 +595,17 @@ function manuelMarkalaOnayla(){
   m.markalandi=true;
   m.durum='tamamlandi';
   m.manuelTarih=new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  // Spool detay sayfasına geri yaz (store entegrasyonu gelince fetch'e dönüşür)
-  try{
-    var spoolKey='syos_spool_'+m.spoolId;
-    var spoolData=localStorage.getItem(spoolKey);
-    if(spoolData){
-      var sd=JSON.parse(spoolData);
-      if(sd.markalamalar){
-        var sm=sd.markalamalar.find(function(x){return x.id===m.id;});
-        if(sm){sm.markalandi=true;sm.durum='tamamlandi';}
-      }
-      localStorage.setItem(spoolKey,JSON.stringify(sd));
-    }
-  }catch(e){}
+  // Supabase'e yaz
+  if(m.supaId && ARES.mod==='supabase'){
+    ARES.supabase().from('markalama_kalemleri').update({markalandi:true,guncelleme:new Date().toISOString()}).eq('id',m.supaId).then(function(r){
+      if(r.error) console.warn('[ARES] Markalama güncelleme:',r.error.message);
+    });
+    ARES.supabase().from('islem_log').insert({
+      tenant_id:ARES.tenantId(),islem:'MARKALAMA_TAMAMLA',
+      aciklama:(m.yuzey||'')+(m.cap?' Ø'+m.cap:''),
+      katman:'spool',spool_id:m.spoolId||null,yapan_id:ARES.oturumAl()?.id||null
+    }).then(function(){});
+  }
   document.getElementById('manuelMarkModal').style.display='none';
   _manuelMarkId=null;
   applyFilters();updateStats();

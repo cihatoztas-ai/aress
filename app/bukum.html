@@ -766,13 +766,27 @@ function renderBekliyor(){
 
 function buktu(id){
   var b=bukumler.find(function(x){return x.id===id;});if(!b)return;
+  // Onay popup
+  if(!confirm(b.olcu+'mm — '+b.malzeme+' '+b.kalite+'\nBüküm tamamlandı olarak işaretlensin mi?'))return;
   b.durum='tamamlandi';
   b.bukulduZaman=new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  // Supabase'e yaz
+  if(b.supaId && ARES.mod==='supabase'){
+    ARES.supabase().from('bukum_kalemleri').update({bukuldumu:true,guncelleme:new Date().toISOString()}).eq('id',b.supaId).then(function(r){
+      if(r.error) console.warn('[ARES] Büküm güncelleme:',r.error.message);
+    });
+    // İşlem logu
+    ARES.supabase().from('islem_log').insert({
+      tenant_id:ARES.tenantId(),islem:'BUKUM_TAMAMLA',
+      aciklama:b.malzeme+' '+b.cap+' '+b.olcu+'mm',
+      katman:'spool',katman_id:b.spoolId||null,
+      spool_id:b.spoolId||null,yapan_id:ARES.oturumAl()?.id||null
+    }).then(function(){});
+  }
   try{var _log=JSON.parse(localStorage.getItem('ares_islemLog')||'[]');_log.unshift({id:'L'+Date.now(),tarih:new Date().toLocaleString('tr-TR'),islem:'BUKUM_TAMAMLA',kaynak:b.spoolNo||b.id,aciklama:b.malzeme+' '+b.cap+'mm'});localStorage.setItem('ares_islemLog',JSON.stringify(_log.slice(0,500)));}catch(e){}
   applyFilters();updateStats();
-  // Fason detay açıksa yenile
   if(aktifFasonId&&aktifTab==='fason') openFasonDetay(aktifFasonId);
-  toast(b.olcu+'mm bukuldu','success');
+  toast(b.olcu+'mm büküldü','success');
 }
 
 function showQR(id){

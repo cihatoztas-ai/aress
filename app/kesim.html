@@ -1203,27 +1203,17 @@ function kesimTamamla(){
   var k = borular.find(x=>x.id===_kesimOnayId); if(!k) return;
   k.durum = 'tamamlandi';
   k.kesimTarih = new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  // Spool detay'a localStorage üzerinden bildir
-  try{
-    var spoolKey = 'syos_spool_'+k.spoolId;
-    var raw = localStorage.getItem(spoolKey);
-    if(raw){
-      var sd = JSON.parse(raw);
-      // kesimler dizisinde eşleşen kesimi tamamlandı yap
-      if(sd.kesimler){
-        sd.kesimler.forEach(function(ks){
-          if(String(ks.spoolId)===String(k.spoolId)||ks.spool===k.spool){
-            ks.kesildi=true; ks.kesimTarih=k.kesimTarih;
-          }
-        });
-      }
-      // kesim istatistiği
-      if(!sd.islemler) sd.islemler={};
-      if(!sd.islemler.kesim) sd.islemler.kesim={toplam:0,tamamlanan:0};
-      sd.islemler.kesim.tamamlanan=(sd.islemler.kesim.tamamlanan||0)+1;
-      localStorage.setItem(spoolKey, JSON.stringify(sd));
-    }
-  }catch(e){}
+  // Supabase'e yaz
+  if(k.supaId && ARES.mod==='supabase'){
+    ARES.supabase().from('kesim_kalemleri').update({kesildi:true,guncelleme:new Date().toISOString()}).eq('id',k.supaId).then(function(r){
+      if(r.error) console.warn('[ARES] Kesim güncelleme:',r.error.message);
+    });
+    ARES.supabase().from('islem_log').insert({
+      tenant_id:ARES.tenantId(),islem:'KESİM_TAMAMLA',
+      aciklama:k.malzeme+' '+k.cap+' '+k.kesimOlcusu+'mm',
+      katman:'spool',spool_id:k.spoolId||null,yapan_id:ARES.oturumAl()?.id||null
+    }).then(function(){});
+  }
   document.getElementById('kesimOnayModal').style.display='none';
   _kesimOnayId=null;
   applyFilters(); updateStats();
