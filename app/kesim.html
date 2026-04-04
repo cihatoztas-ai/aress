@@ -367,7 +367,7 @@ mark{background:rgba(217,119,6,.3);color:var(--tx);border-radius:2px;padding:0 2
     <div id="arcPg" class="pg-wrap" style="display:none;"></div>
   </div>
 
-  <div class="panel" id="panel-tekil" style="display:none;">
+  <div class="panel" id="panel-tekil">
     <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--ac);margin-bottom:20px;">⚡ Tekil Kesilenler</h2>
     <div id="tekilContainer"></div>
   </div>
@@ -1317,6 +1317,7 @@ document.addEventListener('DOMContentLoaded',function(){
   } else {
     populateFilters(); applyFilters();
   }
+  renderTekil(); // badge için
   var lm=document.getElementById('listeModal');
   if(lm)lm.addEventListener('click',function(e){if(e.target===e.currentTarget)closeListeModal();});
   var fm=document.getElementById('formModal');
