@@ -1,14 +1,7 @@
 /**
- * AresPipe Store — v2.0
+ * AresPipe Store — v2.1
  * Supabase entegrasyonlu veri katmanı.
- *
- * Mod:
- *   ARES.mod = 'local'    → localStorage (offline / fallback)
- *   ARES.mod = 'supabase' → Supabase (production)
- *
- * HTML'de Supabase CDN'i ares-store.js'den ÖNCE ekleyin:
- *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
- *   <script src="ares-store.js"></script>
+ * Supabase CDN'i otomatik yükler — HTML'e ek script gerekmez.
  */
 
 const ARES = (function () {
@@ -16,20 +9,46 @@ const ARES = (function () {
   // ── SUPABASE BAĞLANTI ────────────────────────────────────
   const SUPA_URL = 'https://ochvbepfiatzvyknkvsn.supabase.co';
   const SUPA_KEY = 'sb_publishable_82EjJYZH9phnFC1MlIxnwQ_92Ic-4eb';
+  const SUPA_CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
 
   let _supa = null;
+  let _supaHazir = false;
+  let _supaKuyruk = []; // CDN yüklenene kadar bekleyen resolve'lar
 
   function _supabasiBaslat() {
     try {
       if (typeof window !== 'undefined' && window.supabase) {
         _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        _supaHazir = true;
         console.log('[ARES] Supabase bağlantısı kuruldu');
+        // Kuyruktaki bekleyenleri çöz
+        _supaKuyruk.forEach(function(fn){ fn(); });
+        _supaKuyruk = [];
         return true;
       }
     } catch (e) {
       console.warn('[ARES] Supabase başlatılamadı:', e.message);
     }
     return false;
+  }
+
+  // Supabase CDN'i dinamik olarak yükle
+  function _cdnYukle() {
+    if (document.querySelector('script[data-ares-supa]')) return;
+    var s = document.createElement('script');
+    s.src = SUPA_CDN;
+    s.setAttribute('data-ares-supa', '1');
+    s.onload = function() { _supabasiBaslat(); };
+    s.onerror = function() { console.warn('[ARES] Supabase CDN yüklenemedi'); };
+    document.head.appendChild(s);
+  }
+
+  // Supabase hazır olana kadar bekle
+  function _supaHazirBekle() {
+    return new Promise(function(resolve) {
+      if (_supaHazir && _supa) { resolve(); return; }
+      _supaKuyruk.push(resolve);
+    });
   }
 
   // ── MOD: 'local' veya 'supabase' ────────────────────────
@@ -47,6 +66,7 @@ const ARES = (function () {
   let _oturum = null; // { id, tenant_id, ad_soyad, rol }
 
   async function girisYap(email, sifre) {
+    await _supaHazirBekle();
     if (!_supa) return { hata: 'Supabase bağlı değil' };
     const { data, error } = await _supa.auth.signInWithPassword({ email, password: sifre });
     if (error) return { hata: error.message };
@@ -388,15 +408,17 @@ const ARES = (function () {
 
   // ── INIT ─────────────────────────────────────────────────
   (function _init() {
-    // Supabase CDN yüklüyse bağlan
     if (typeof window !== 'undefined') {
       if (window.supabase) {
+        // Zaten yüklü
         _supabasiBaslat();
       } else {
-        // CDN henüz yüklenmediyse kısa bekle
-        window.addEventListener('load', function() {
-          if (window.supabase) _supabasiBaslat();
-        });
+        // CDN'i dinamik yükle
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', _cdnYukle);
+        } else {
+          _cdnYukle();
+        }
       }
     }
   })();
