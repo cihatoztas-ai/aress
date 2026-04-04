@@ -800,6 +800,54 @@ body { background: var(--bg); color: var(--tx); font-family: 'Barlow', sans-seri
         if (el) el.remove();
       });
     });
+
+    // ── DEBUG BADGE (SB-05) ───────────────────────────────────
+    // Sadece geliştirme ortamında gösterilir — production'da kaldırılacak
+    (function _debugBadge() {
+      var badge = document.createElement('div');
+      badge.id = 'ares-debug-badge';
+      badge.style.cssText = [
+        'position:fixed', 'bottom:14px', 'right:14px', 'z-index:99999',
+        'font-family:monospace', 'font-size:11px', 'font-weight:700',
+        'padding:5px 10px', 'border-radius:8px', 'cursor:pointer',
+        'border:1px solid', 'transition:opacity .2s', 'opacity:.85',
+        'box-shadow:0 2px 8px rgba(0,0,0,.3)', 'user-select:none'
+      ].join(';');
+
+      function _guncelle() {
+        var mod     = (typeof ARES !== 'undefined') ? ARES.mod : 'yükleniyor';
+        var oturum  = (typeof ARES !== 'undefined' && ARES.oturumAl) ? ARES.oturumAl() : null;
+        var tamam   = mod === 'supabase' && oturum;
+        badge.textContent = tamam
+          ? '🟢 Supabase · ' + (oturum.rol || '?')
+          : mod === 'supabase'
+            ? '🟡 Supabase · oturum yok'
+            : '🔴 Local mod';
+        badge.style.background  = tamam ? 'rgba(22,163,110,.15)'  : mod === 'supabase' ? 'rgba(217,119,6,.15)' : 'rgba(229,62,62,.15)';
+        badge.style.color       = tamam ? '#16a36e' : mod === 'supabase' ? '#d97706' : '#e53e3e';
+        badge.style.borderColor = tamam ? 'rgba(22,163,110,.35)' : mod === 'supabase' ? 'rgba(217,119,6,.35)' : 'rgba(229,62,62,.35)';
+      }
+
+      // Detay paneli
+      badge.addEventListener('click', function() {
+        var oturum = (typeof ARES !== 'undefined' && ARES.oturumAl) ? ARES.oturumAl() : null;
+        var mod    = (typeof ARES !== 'undefined') ? ARES.mod : '?';
+        var lines  = [
+          'MOD: ' + mod,
+          'TENANT: ' + (oturum?.tenant_id || '—'),
+          'ROL: '    + (oturum?.rol       || '—'),
+          'USER: '   + (oturum?.ad_soyad  || '—'),
+          'SUPA: '   + ((typeof ARES !== 'undefined' && ARES.supabase()) ? 'bağlı' : 'bağlı değil')
+        ];
+        alert('AresPipe Debug\n\n' + lines.join('\n'));
+      });
+
+      document.body.appendChild(badge);
+      _guncelle();
+      // Her 3 saniyede güncelle (mod değişimini yakala)
+      setInterval(_guncelle, 3000);
+    })();
+
   });
 
 })();
