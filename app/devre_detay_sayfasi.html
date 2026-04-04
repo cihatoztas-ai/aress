@@ -1897,6 +1897,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   sayfaYukle();
   if (ARES.mod === 'supabase') {
     await spoolYukle();
+    statGuncelle(); // spooller yüklendikten sonra stat güncelle
   }
   renderTable();
   renderMalzeme();
