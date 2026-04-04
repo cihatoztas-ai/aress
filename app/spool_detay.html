@@ -686,22 +686,136 @@ body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;min-he
 
 // ── STATE ─────────────────────────────────────────────────────
 var SP = {};
-var MALZEME = [
-  {id:'M1',kod:'S81061',ac:'Dikişsiz Paslanmaz Çelik Boru',malz:'Paslanmaz',kal:'316L',cap:'48,3 mm',et:'3,2 mm',boy:'6000 mm',adet:1,agr:'12,5 kg',heat:'2H4471',sert:true},
-  {id:'M2',kod:'FLG-150',ac:'Kaynak Boyunlu Flanş PN16',malz:'Karbon',kal:'St37',cap:'114,3 mm',et:'20 mm',boy:'--',adet:2,agr:'3,2 kg',heat:'',sert:false},
-];
+var MALZEME = [];
 var KESIMLER = [], BUKUMLER = [], MARKALAR = [], NOTLAR = [], LOGLAR = [], BELGELER = [];
-var TESTLER = [
-  {id:'T1',no:'FT-2026-047',ad:'Film Çekimi',durum:'bekliyor',tarih:null},
-  {id:'T2',no:'HT-2026-012',ad:'Hidrostatik Test',durum:'tamir',tarih:'22.03.2026'},
-];
-var FOTOLAR = [
-  {url:'https://picsum.photos/id/104/800/450',baslik:'Spool Montaj Öncesi',kisi:'M. Demir',tarih:'20.03.2026 09:15'},
-  {url:'https://picsum.photos/id/20/800/450',baslik:'Kaynak Aşaması',kisi:'A. Yılmaz',tarih:'21.03.2026 14:30'},
-];
+var TESTLER = [];
+var FOTOLAR = [];
 var _gonderTip = '';
 var _swiper = null;
 var _lbIdx = 0;
+
+// ── SUPABASE SPOOL YÜKLEYİCİ ─────────────────────────────────────
+async function spoolYukle(supaId) {
+  if (!supaId) return;
+  try {
+    var supa = ARES.supabase();
+    if (!supa) return;
+
+    // Spool + ilişkili tüm veriler
+    var res = await supa
+      .from('spooller')
+      .select('*, spool_malzemeleri(*), notlar(*), fotograflar(*), belgeler(*)')
+      .eq('id', supaId)
+      .single();
+
+    if (res.error) { console.warn('Spool yükleme:', res.error); return; }
+    var s = res.data;
+
+    // SP'yi Supabase verisiyle zenginleştir
+    SP.supaId     = s.id;
+    SP.spoolNo    = s.spool_no    || SP.spoolNo;
+    SP.pipeline   = s.pipeline_no || SP.pipeline;
+    SP.cap        = s.dis_cap_mm  ? String(parseFloat(s.dis_cap_mm).toFixed(1)).replace('.',',') + ' mm' : SP.cap;
+    SP.kalinlik   = s.et_kalinligi_mm ? String(s.et_kalinligi_mm).replace('.',',') + ' mm' : SP.kalinlik;
+    SP.agirlik    = s.agirlik_kg  ? String(parseFloat(s.agirlik_kg).toFixed(2)).replace('.',',') + ' kg' : SP.agirlik;
+    SP.malzeme    = s.malzeme     || SP.malzeme;
+    SP.kalite     = s.kalite_standart || SP.kalite;
+    SP.yuzey      = s.yuzey_islemi || SP.yuzey;
+    SP.stopped    = s.durduruldu  || false;
+    SP.durdurmaAciklama = s.durdurma_sebebi || '';
+    SP.alistirma  = s.alistirma   || null;
+    SP.trackerCurrent = s.aktif_basamak || 0;
+    SP.diainch    = {
+      kg:      s.imalat_kg  || null,
+      imalat:  s.imalat_di  || null,
+      argon:   s.argon_di   || null,
+      gazalti: s.gazalti_di || null
+    };
+    // Devre bilgileri
+    if (s.devreler) {
+      var dv = s.devreler;
+      SP._devre   = dv.devre_no   || SP._devre;
+      if (dv.projeler) {
+        SP._gemi    = dv.projeler.gemi_adi   || SP._gemi;
+        SP._isEmri  = dv.projeler.is_emri_no || SP._isEmri;
+        if (dv.projeler.tersaneler) {
+          SP._tersane = dv.projeler.tersaneler.ad || SP._tersane;
+        }
+      }
+    }
+    // localStorage'ı güncelle
+    try { localStorage.setItem('ares_aktif_spool', JSON.stringify(SP)); } catch(e) {}
+
+    // Malzeme listesi
+    MALZEME = (s.spool_malzemeleri || []).map(function(m, i) {
+      return {
+        id:   m.id,
+        kod:  m.kod   || ('M' + (i+1)),
+        ac:   m.aciklama || '—',
+        malz: m.malzeme  || '—',
+        kal:  m.kalite   || '—',
+        cap:  m.dis_cap_mm ? String(m.dis_cap_mm).replace('.',',') + ' mm' : '—',
+        et:   m.et_mm     ? String(m.et_mm).replace('.',',') + ' mm' : '--',
+        boy:  m.uzunluk_mm ? m.uzunluk_mm + ' mm' : '--',
+        adet: m.adet      || null,
+        agr:  m.agirlik_kg ? String(m.agirlik_kg).replace('.',',') + ' kg' : '--',
+        heat: m.heat_no   || '',
+        sert: m.sertifika || false
+      };
+    });
+
+    // Notlar
+    NOTLAR = (s.notlar || []).map(function(n) {
+      return {
+        id:       n.id,
+        metin:    n.metin   || '',
+        kisi:     n.yapan_id || 'Admin',
+        tarih:    n.olusturma ? new Date(n.olusturma).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : ''
+      };
+    });
+
+    // Fotoğraflar
+    FOTOLAR = (s.fotograflar || []).map(function(f) {
+      return {
+        id:     f.id,
+        url:    f.dosya_url || '',
+        baslik: f.baslik    || '',
+        kisi:   f.yapan_id  || '',
+        tarih:  f.olusturma ? new Date(f.olusturma).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : ''
+      };
+    });
+
+    // Belgeler
+    BELGELER = (s.belgeler || []).map(function(b) {
+      return {
+        id:    b.id,
+        ad:    b.ad       || '—',
+        tip:   b.tip      || 'diger',
+        url:   b.dosya_url || '',
+        tarih: b.olusturma ? new Date(b.olusturma).toLocaleString('tr-TR') : ''
+      };
+    });
+
+    // İşlem logu
+    var logRes = await supa
+      .from('islem_log')
+      .select('*')
+      .eq('spool_id', supaId)
+      .order('olusturma', { ascending: false })
+      .limit(50);
+    LOGLAR = (logRes.data || []).map(function(l) {
+      return {
+        tarih:     l.olusturma ? new Date(l.olusturma).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '',
+        islem:     l.islem    || '',
+        kullanici: l.yapan_id || 'Sistem',
+        ac:        l.aciklama || ''
+      };
+    });
+
+  } catch(e) {
+    console.warn('spoolYukle hatası:', e);
+  }
+}
 
 // ── YARDIMCI ──────────────────────────────────────────────────
 function T(id){return document.getElementById(id);}
@@ -1180,7 +1294,29 @@ document.addEventListener('change',function(e){if(e.target.name==='mTip')markTip
 
 // ── INIT ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',function(){
+  (async function() {
+
+  // ── AUTH KONTROLÜ ─────────────────────────────────────────────
+  try {
+    var _bekle = 0;
+    while (_bekle < 80) {
+      var _supa = ARES.supabase();
+      if (_supa) {
+        var _ses = await _supa.auth.getSession();
+        if (_ses.data && _ses.data.session) break;
+        if (_bekle > 20) { location.href = 'giris.html'; return; }
+      }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      _bekle++;
+    }
+  } catch(e) { /* offline — devam */ }
+
+  // ── VERİ YÜKLE ────────────────────────────────────────────────
   yukle();
+  if (ARES.mod === 'supabase' && SP.supaId) {
+    await spoolYukle(SP.supaId);
+    yukle(); // SP zenginleştikten sonra UI'ı güncelle
+  }
   renderTracker();
   renderFotolar();
   renderKesimler();
@@ -1200,6 +1336,8 @@ document.addEventListener('DOMContentLoaded',function(){
     renderLog();renderBelgeler();renderQR();
   };
   document.documentElement.style.visibility='';
+
+  })(); // async wrapper sonu
 });
 </script>
 </body></html>
