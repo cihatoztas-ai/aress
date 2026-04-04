@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Büküm | AresPipe</title>
 <!-- ✅ Flash prevention — Kural FP-01 -->
-<script>(function(){try{var t=localStorage.getItem('ares_theme');if(t)document.documentElement.setAttribute('data-theme',t);var l=localStorage.getItem('ares_lang');if(l)document.documentElement.setAttribute('lang',l);}catch(e){}document.documentElement.style.visibility='hidden';})();</script>
+<script>(function(){var t=localStorage.getItem('ares_theme')||'dark';document.documentElement.setAttribute('data-theme',t);var l=localStorage.getItem('ares_lang')||'tr';document.documentElement.setAttribute('lang',l);document.documentElement.style.visibility='hidden';})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
@@ -532,20 +532,49 @@ new MutationObserver(function(){_applyI18n();}).observe(document.documentElement
 // ════ VERİ ════
 // kaynak: 'spool' | 'fason'
 // durum: 'bekliyor' | 'tamamlandi'
-var bukumler = [
-  {id:'B001',kaynak:'spool',ref:'I26-012',spoolNo:'NB1099C-D100-803-001-B01',spoolId:'1021',tersane:'TERSAN',  malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:920, durum:'bekliyor',fasonId:null},
-  {id:'B002',kaynak:'spool',ref:'I26-012',spoolNo:'NB1099C-D100-803-001-B02',spoolId:'1022',tersane:'TERSAN',  malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:1450,durum:'bekliyor',fasonId:null},
-  {id:'B003',kaynak:'spool',ref:'I26-048',spoolNo:'NB1099C-D100-803-002-B01',spoolId:'1023',tersane:'TERSAN',  malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:2100,durum:'bekliyor',fasonId:null},
-  {id:'B004',kaynak:'spool',ref:'I26-048',spoolNo:'NB1099C-D100-803-002-B02',spoolId:'1024',tersane:'TERSANNB',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:650, durum:'bekliyor',fasonId:null},
-  {id:'B005',kaynak:'spool',ref:'I26-055',spoolNo:'NB1099C-D100-803-003-B01',spoolId:'1025',tersane:'TERSANNB',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:1780,durum:'bekliyor',fasonId:null},
-  {id:'B006',kaynak:'spool',ref:'I26-041',spoolNo:'NB1099C-D200-801-011-B01',spoolId:'1090',tersane:'TERSANNB',malzeme:'Karbon Celik',kalite:'St37',cap:'168,3 mm',kalinlik:'6,3 mm',olcu:3200,durum:'bekliyor',fasonId:null},
-  {id:'B007',kaynak:'spool',ref:'I26-041',spoolNo:'NB1099C-D200-801-011-B02',spoolId:'1091',tersane:'TERSANNB',malzeme:'Karbon Celik',kalite:'St37',cap:'168,3 mm',kalinlik:'6,3 mm',olcu:2750,durum:'bekliyor',fasonId:null},
-  {id:'B008',kaynak:'spool',ref:'I26-015',spoolNo:'NB1137-Y100-817-007-B01', spoolId:'1278',tersane:'TERSAN',  malzeme:'Karbon Celik',kalite:'St37',cap:'114,3 mm',kalinlik:'4,5 mm',olcu:4100,durum:'bekliyor',fasonId:null},
-  {id:'B009',kaynak:'spool',ref:'I26-082',spoolNo:'NB1137-F300-809-014-B01', spoolId:'1311',tersane:'TERSAN',  malzeme:'Paslanmaz',   kalite:'304L',cap:'114,3 mm',kalinlik:'6,0 mm',olcu:2900,durum:'bekliyor',fasonId:null},
-  {id:'B010',kaynak:'spool',ref:'I26-090',spoolNo:'NB1099C-C100-802-007-B01',spoolId:'1156',tersane:'TERSANNB',malzeme:'Bakir Alasim',kalite:'CuNi90/10',cap:'33,7 mm',kalinlik:'2,6 mm',olcu:1100,durum:'bekliyor',fasonId:null},
-  {id:'B011',kaynak:'spool',ref:'I26-012',spoolNo:'NB1099C-D100-803-001-B03',spoolId:'1026',tersane:'TERSAN',  malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:870, durum:'bekliyor',fasonId:null},
-  {id:'B012',kaynak:'spool',ref:'I26-055',spoolNo:'NB1099C-D100-803-003-B02',spoolId:'1027',tersane:'TERSANNB',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',kalinlik:'4,5 mm',olcu:1340,durum:'bekliyor',fasonId:null},
-];
+var bukumler = []; // Supabase'den yüklenecek
+
+// ── SUPABASE VERİ YÜKLEYİCİ ─────────────────────────────────
+async function veriYukle() {
+  try {
+    var supa = ARES.supabase();
+    if (!supa) return;
+    var res = await supa
+      .from('bukum_kalemleri')
+      .select('*, spool_malzemeleri(aciklama, malzeme, kalite, dis_cap_mm, et_mm), spooller(spool_no, devre_id, devreler(devre_no, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad))))')
+      .order('olusturma', { ascending: false });
+    if (res.error) { console.warn('[ARES] Büküm yükleme:', res.error); return; }
+    bukumler = (res.data || []).map(function(k) {
+      var mal = k.spool_malzemeleri || {};
+      var sp  = k.spooller          || {};
+      var dv  = sp.devreler         || {};
+      var prj = dv.projeler         || {};
+      var trs = prj.tersaneler      || {};
+      var spoolLabel = [prj.gemi_adi, dv.devre_no, sp.spool_no].filter(Boolean).join('-');
+      return {
+        id:       k.id,
+        supaId:   k.id,
+        kaynak:   'spool',
+        ref:      prj.is_emri_no   || '—',
+        spoolNo:  spoolLabel       || sp.spool_no || '—',
+        spoolId:  sp.id            || '',
+        tersane:  trs.ad           || '—',
+        malzeme:  mal.malzeme      || '—',
+        kalite:   mal.kalite       || '—',
+        cap:      mal.dis_cap_mm   ? String(parseFloat(mal.dis_cap_mm).toFixed(1)).replace('.',',') + ' mm' : '—',
+        kalinlik: mal.et_mm        ? String(mal.et_mm).replace('.',',') + ' mm' : '—',
+        olcu:     k.olcu_mm        || 0,
+        durum:    k.bukuldumu      ? 'tamamlandi' : 'bekliyor',
+        fasonId:  null
+      };
+    });
+    populateFilters();
+    applyFilters();
+  } catch(e) {
+    console.warn('[ARES] veriYukle hatası:', e);
+    applyFilters();
+  }
+}
 
 var firmalar = [
   {id:'F01',ad:'Yilmaz Boru Sanayi A.S.',    tel:'0232 456 78 90',il:'Izmir'},
@@ -1209,8 +1238,24 @@ function toast(msg,type){
   document.body.appendChild(t);setTimeout(function(){if(t.parentNode)t.remove();},4000);
 }
 document.addEventListener('DOMContentLoaded',function(){
-  populateFilters();applyFilters();
+  (async function() {
+  try {
+    var _bekle = 0;
+    while (_bekle < 80) {
+      var _supa = ARES.supabase();
+      if (_supa) {
+        var _ses = await _supa.auth.getSession();
+        if (_ses.data && _ses.data.session) { await ARES.oturumKontrol(); break; }
+        if (_bekle > 20) { location.href = 'giris.html'; return; }
+      }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      _bekle++;
+    }
+  } catch(e) {}
+  if (ARES.mod === 'supabase') { await veriYukle(); }
+  else { populateFilters(); applyFilters(); }
   document.documentElement.style.visibility='';
+  })();
 });
 
 </script>
