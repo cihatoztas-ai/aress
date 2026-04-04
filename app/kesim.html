@@ -501,6 +501,24 @@ async function veriYukle() {
       };
     });
 
+    // Kesim listeleri
+    var klRes = await supa.from('kesim_listeleri').select('*').order('olusturma', {ascending:false});
+    (klRes.data || []).forEach(function(kl) {
+      // Supabase'deki kapalı listeleri yükle
+      kesimListeleri.push({
+        id: kl.id,
+        supaId: kl.id,
+        no: kl.no,
+        tarih: kl.olusturma ? new Date(kl.olusturma).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—',
+        boruIds: [],
+        kesilmisIds: new Set(),
+        arsiv: kl.arsiv || [],
+        kriter: kl.kriter || {},
+        kapali: kl.kapali || false
+      });
+    });
+    klSayac = kesimListeleri.length + 1;
+
     populateFilters();
     applyFilters();
   } catch(e) {
@@ -802,15 +820,30 @@ function createListe(){
     capler:[...new Set(sec.map(k=>k.cap))],
     kalinliklar:[...new Set(sec.map(k=>k.kalinlik))]
   };
-  kesimListeleri.push({
-    id:'L'+Date.now(),no:listeNo,
-    tarih:new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
-    boruIds:sec.map(k=>k.id),
-    kesilmisIds:new Set(),   // ← BOŞ başlar, usta işaretler
-    arsiv:[],kriter
-  });
+  var listeId = 'L'+Date.now();
+  var listeObj = {
+    id: listeId, supaId: null, no: listeNo,
+    tarih: new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    boruIds: sec.map(k=>k.id),
+    kesilmisIds: new Set(),
+    arsiv: [], kriter
+  };
+  kesimListeleri.push(listeObj);
   klSayac++;
   sec.forEach(k=>k.durum='listede');
+  // Supabase'e kaydet
+  if (ARES.mod === 'supabase') {
+    ARES.supabase().from('kesim_listeleri').insert({
+      tenant_id: ARES.tenantId(),
+      no: listeNo,
+      kriter: kriter,
+      kapali: false,
+      arsiv: []
+    }).select('id').single().then(function(r) {
+      if (r.data) listeObj.supaId = r.data.id;
+      if (r.error) console.warn('[ARES] Liste kayıt hatası:', r.error.message);
+    });
+  }
   closeListeModal();applyFilters();updateStats();
   toast(listeNo+' oluşturuldu — '+sec.length+' boru','success');
   switchTab('listeler');
@@ -927,6 +960,24 @@ function klKaydet(klId){
   kesilmisler.forEach(k=>k.durum='tamamlandi');
   kesilmemis.forEach(k=>k.durum='bekliyor');
   kl.kapali=true;
+  // Supabase'e yaz
+  if (ARES.mod === 'supabase') {
+    // Kesilen boruları güncelle
+    kesilmisler.forEach(function(k) {
+      if (k.supaId) {
+        ARES.supabase().from('kesim_kalemleri').update({kesildi:true,guncelleme:new Date().toISOString()}).eq('id',k.supaId).then(function(){});
+      }
+    });
+    // Listeyi güncelle
+    if (kl.supaId) {
+      ARES.supabase().from('kesim_listeleri').update({
+        kapali: true,
+        arsiv: kl.arsiv
+      }).eq('id', kl.supaId).then(function(r){
+        if (r.error) console.warn('[ARES] Liste güncelleme:', r.error.message);
+      });
+    }
+  }
   applyFilters();updateStats();renderKL();renderArc();
   toast(kismi?kl.no+' kısmi kaydedildi — '+kesilmisler.length+'/'+klB.length+' kesildi':kl.no+' tamamlandı',kismi?'info':'success');
   switchTab('tamamlandi');
