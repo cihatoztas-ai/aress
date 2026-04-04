@@ -813,27 +813,9 @@ function takvimKapat() {
 // ── VERİ ─────────────────────────────────────────────────────────
 // caps: Supabase geçişinde spool listesinden hesaplanacak.
 // Her cap elemanı = bir spool'un çapı (DN veya mm). Ağırlık spool listesinden gelecek.
-var DEVRELER = [
-  {id:1,  isEmri:'I26-010', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'f500',         spool:10, agirlik:1840.5,  malzeme:['celik'],     yuzey:['Asit','Galvaniz'], ilerleme:72,  durum:'imalatta',       sonIslem:'12.03.2026 14:22', caps:['DN300','DN300','DN250','DN250','DN200','DN200','DN150','DN150','DN100','DN80']},
-  {id:2,  isEmri:'I26-011', tersane:'TERSAN', gemi:'NB1099C', devre:'582-Sewage Graywater', zone:'D100-E2',       spool:6,  agirlik:920.0,   malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:45,  durum:'imalatta',       sonIslem:'11.03.2026 09:10', caps:['DN100','DN100','DN80','DN80','DN50','DN50']},
-  {id:3,  isEmri:'I26-012', tersane:'TERSAN', gemi:'NB1099C', devre:'803-bg',               zone:'CF400',        spool:8,  agirlik:1360.75, malzeme:['paslanmaz'], yuzey:['Asit'],            ilerleme:88,  durum:'kalite_davette',  sonIslem:'13.03.2026 16:45', caps:['DN200','DN200','DN150','DN150','DN100','DN100','DN80','DN50']},
-  {id:4,  isEmri:'I26-013', tersane:'TERSAN', gemi:'NB1099C', devre:'813-Fire System',      zone:'Z11-12-13-14', spool:14, agirlik:2100.0,  malzeme:['celik'],     yuzey:['Siyah'],           ilerleme:30,  durum:'baslamadi',      sonIslem:'08.03.2026 11:00', caps:['DN150','DN150','DN150','DN100','DN100','DN100','DN100','DN80','DN80','DN80','DN50','DN50','DN50','DN40']},
-  {id:5,  isEmri:'I26-014', tersane:'TERSAN', gemi:'NB1099C', devre:'265-overboard',        zone:'c1003',        spool:5,  agirlik:750.25,  malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:60,  durum:'imalatta',       sonIslem:'10.03.2026 13:30', caps:['DN300','DN250','DN200','DN150','DN100']},
-  {id:6,  isEmri:'I26-023', tersane:'ADA',    gemi:'NB138',   devre:'Air Vent Sounding',    zone:'Z10',          spool:4,  agirlik:480.0,   malzeme:['celik'],     yuzey:['Asit'],            ilerleme:100, durum:'sevke_hazir',    sonIslem:'14.03.2026 10:00', caps:['DN80','DN80','DN50','DN50']},
-  {id:7,  isEmri:'I26-025', tersane:'ADA',    gemi:'NB138',   devre:'Fuel Filling Transfer',zone:'Z14',          spool:7,  agirlik:1120.5,  malzeme:['paslanmaz'],yuzey:['Asit'],            ilerleme:55,  durum:'imalatta',       sonIslem:'12.03.2026 08:45', caps:['DN150','DN150','DN100','DN100','DN100','DN80','DN50']},
-  {id:8,  isEmri:'I26-026', tersane:'ADA',    gemi:'NB138',   devre:'Ballast',              zone:'z101',         spool:9,  agirlik:1650.0,  malzeme:['celik'],     yuzey:['Galvaniz','Siyah'],ilerleme:20,  durum:'baslamadi',      sonIslem:'07.03.2026 15:20', caps:['DN400','DN350','DN300','DN300','DN250','DN200','DN150','DN100','DN80']},
-  {id:9,  isEmri:'I26-027', tersane:'ADA',    gemi:'NB138',   devre:'Fuel System',          zone:'z10-11-14',    spool:11, agirlik:1890.75, malzeme:['celik'],     yuzey:['Siyah'],           ilerleme:75,  durum:'imalatta',       sonIslem:'13.03.2026 12:15', caps:['DN200','DN200','DN150','DN150','DN150','DN100','DN100','DN80','DN80','DN50','DN50']},
-  {id:10, isEmri:'I26-028', tersane:'ADA',    gemi:'NB138',   devre:'813-Fire System',      zone:'Z14',          spool:6,  agirlik:980.0,   malzeme:['celik'],     yuzey:['Asit'],            ilerleme:40,  durum:'imalatta',       sonIslem:'11.03.2026 14:00', caps:['DN150','DN100','DN100','DN80','DN80','DN50']},
-  {id:11, isEmri:'I26-030', tersane:'TERSAN', gemi:'NB1137',  devre:'582-Sanitary Disch',   zone:'M120-Galv',    spool:3,  agirlik:1360.75, malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:90,  durum:'kalite_davette',  sonIslem:'15.03.2026 09:30', caps:['DN100','DN80','DN50']},
-  {id:12, isEmri:'I26-032', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'G400-Galv',    spool:8,  agirlik:1240.0,  malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:65,  durum:'imalatta',       sonIslem:'12.03.2026 16:00', caps:['DN200','DN150','DN150','DN100','DN100','DN80','DN80','DN50']},
-  {id:13, isEmri:'I26-033', tersane:'TERSAN', gemi:'NB1137',  devre:'804-Drain System',     zone:'Y200-Galv',    spool:5,  agirlik:810.5,   malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:50,  durum:'imalatta',       sonIslem:'11.03.2026 10:45', caps:['DN150','DN100','DN100','DN80','DN50']},
-  {id:14, isEmri:'I26-034', tersane:'TERSAN', gemi:'NB1137',  devre:'803-Bilge System',     zone:'AT110-Galv-P2',spool:12, agirlik:2240.0,  malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:35,  durum:'baslamadi',      sonIslem:'09.03.2026 13:00', caps:['DN250','DN250','DN200','DN200','DN150','DN150','DN100','DN100','DN100','DN80','DN80','DN50']},
-  {id:15, isEmri:'I26-038', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi',   zone:'B100',         spool:4,  agirlik:560.0,   malzeme:['paslanmaz'],yuzey:['Asit'],            ilerleme:80,  durum:'imalatta',       sonIslem:'13.03.2026 11:30', caps:['DN100','DN100','DN80','DN50']},
-  {id:16, isEmri:'I26-039', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devresi 2', zone:'B100',         spool:3,  agirlik:420.25,  malzeme:['paslanmaz'],yuzey:['Asit'],            ilerleme:95,  durum:'sevke_hazir',    sonIslem:'15.03.2026 14:20', caps:['DN100','DN80','DN50']},
-  {id:17, isEmri:'I26-043', tersane:'TERSAN', gemi:'NB1137',  devre:'701-FO-KK',            zone:'CF400K25',     spool:7,  agirlik:1050.0,  malzeme:['celik'],     yuzey:['Siyah'],           ilerleme:15,  durum:'baslamadi',      sonIslem:'06.03.2026 09:00', caps:['DN300','DN250','DN200','DN150','DN100','DN80','DN50']},
-  {id:18, isEmri:'I26-048', tersane:'TERSAN', gemi:'NB1137',  devre:'Bilge Test Devre 3',   zone:'B100',         spool:2,  agirlik:310.0,   malzeme:['paslanmaz'],yuzey:['Asit'],            ilerleme:70,  durum:'imalatta',       sonIslem:'12.03.2026 15:45', caps:['DN80','DN50']},
-  {id:19, isEmri:'I26-049', tersane:'TERSAN', gemi:'NB1137',  devre:'265-overboard',        zone:'f1101',        spool:6,  agirlik:890.5,   malzeme:['celik'],     yuzey:['Galvaniz'],        ilerleme:55,  durum:'imalatta',       sonIslem:'11.03.2026 12:30', caps:['DN300','DN250','DN200','DN150','DN100','DN80']}
-];
+// Supabase'den yüklenecek — başlangıçta boş
+var DEVRELER = [];
+var _supaIdMap = {}; // uiId → supabase UUID
 
 var RENKLER = ['#2D8EFF','#e53e3e','#d97706','#16a36e','#7c3aed','#f97316','#06b6d4','#84cc16','#ec4899','#8b5cf6'];
 
@@ -861,6 +843,111 @@ function _logEkle(devre, islem, aciklama) {
     if (log.length > 1000) log = log.slice(0, 1000);
     localStorage.setItem('ares_islemLog', JSON.stringify(log));
   } catch(e) {}
+}
+
+// ── SUPABASE VERİ YÜKLEYİCİ ─────────────────────────────────────
+async function veriYukle() {
+  var tbody = document.getElementById('tableBody');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:40px;color:var(--txd);font-size:14px;">⏳ Yükleniyor...</td></tr>';
+  }
+  try {
+    var supa = ARES.supabase();
+    if (!supa) { renderTable(); return; }
+
+    // Devreler + proje + tersane
+    var devRes = await supa
+      .from('devreler')
+      .select('*, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad, kod))')
+      .order('created_at', { ascending: false });
+    if (devRes.error) { console.warn('Devre yükleme:', devRes.error); renderTable(); return; }
+
+    // Spool istatistikleri
+    var spoolRes = await supa
+      .from('spooller')
+      .select('id, devre_id, agirlik, ilerleme, cap_mm');
+
+    // Son işlem tarihleri
+    var logRes = await supa
+      .from('islem_log')
+      .select('devre_id, created_at')
+      .order('created_at', { ascending: false });
+
+    // devre_id → spooller ve loglar
+    var spoolByDevre = {}, logByDevre = {};
+    (spoolRes.data || []).forEach(function(s) {
+      if (!spoolByDevre[s.devre_id]) spoolByDevre[s.devre_id] = [];
+      spoolByDevre[s.devre_id].push(s);
+    });
+    (logRes.data || []).forEach(function(l) {
+      if (!logByDevre[l.devre_id]) logByDevre[l.devre_id] = l.created_at;
+    });
+
+    // Filtre için unique tersane/proje
+    var tersaneSet = {}, projeSet = {};
+
+    // DEVRELER dizisine map et (UI integer id + supaId UUID)
+    _supaIdMap = {};
+    DEVRELER = (devRes.data || []).map(function(d, i) {
+      var uiId   = i + 1;
+      _supaIdMap[uiId] = d.id;
+      var spools = spoolByDevre[d.id] || [];
+      var totalAg = spools.reduce(function(s, x) { return s + (parseFloat(x.agirlik) || 0); }, 0);
+      var avgIler = spools.length
+        ? Math.round(spools.reduce(function(s, x) { return s + (x.ilerleme || 0); }, 0) / spools.length)
+        : (d.ilerleme || 0);
+      var caps = spools.map(function(s) { return s.cap_mm ? String(s.cap_mm) : null; }).filter(Boolean);
+      var prj  = d.projeler || {};
+      var trs  = prj.tersaneler || {};
+      var sonIslem = logByDevre[d.id]
+        ? new Date(logByDevre[d.id]).toLocaleString('tr-TR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
+        : '—';
+      if (trs.ad)      tersaneSet[trs.ad]      = true;
+      if (prj.gemi_adi) projeSet[prj.gemi_adi] = true;
+      return {
+        id:       uiId,
+        supaId:   d.id,
+        isEmri:   prj.is_emri_no  || '—',
+        tersane:  trs.ad          || '—',
+        gemi:     prj.gemi_adi    || '—',
+        devre:    d.devre_no      || '—',
+        zone:     d.zone          || '—',
+        spool:    spools.length,
+        agirlik:  totalAg,
+        malzeme:  d.malzeme      ? d.malzeme.split(',').map(function(m){return m.trim();})      : ['celik'],
+        yuzey:    d.yuzey_islemi ? d.yuzey_islemi.split(',').map(function(y){return y.trim();}) : [],
+        ilerleme: d.ilerleme !== undefined ? d.ilerleme : avgIler,
+        durum:    d.durum         || 'baslamadi',
+        sonIslem: sonIslem,
+        caps:     caps
+      };
+    });
+
+    // Filtre dropdownlarını güncelle
+    var fFirma = document.getElementById('fFirma');
+    if (fFirma) {
+      while (fFirma.options.length > 1) fFirma.remove(1);
+      Object.keys(tersaneSet).sort().forEach(function(ad) {
+        var opt = document.createElement('option');
+        opt.value = ad; opt.textContent = ad;
+        fFirma.appendChild(opt);
+      });
+    }
+    var fProje = document.getElementById('fProje');
+    if (fProje) {
+      while (fProje.options.length > 1) fProje.remove(1);
+      Object.keys(projeSet).sort().forEach(function(ad) {
+        var opt = document.createElement('option');
+        opt.value = ad; opt.textContent = ad;
+        fProje.appendChild(opt);
+      });
+    }
+
+    renderTable();
+  } catch(e) {
+    console.warn('veriYukle hatası:', e);
+    renderTable();
+  }
 }
 
 // ── YILDIZ SİSTEMİ ───────────────────────────────────────────────
@@ -1065,15 +1152,29 @@ function silModal(e, id) {
 function silOnayla() {
   if (_silAktifId === null) return;
   var d = DEVRELER.find(function(x) { return x.id === _silAktifId; });
-  var silinenler = getSilinenler();
-  if (silinenler.indexOf(_silAktifId) === -1) silinenler.push(_silAktifId);
-  try { localStorage.setItem('ares_silinenler', JSON.stringify(silinenler)); } catch(e) {}
-  // L-01: Silme işlemi loglanır
-  if (d) _logEkle(d, 'SİLME', 'Devre silindi');
   modal('modalSil', false);
+  var aktifId = _silAktifId;
   _silAktifId = null;
-  renderTable();
-  showToast('Devre silindi', 'success');
+
+  if (d && d.supaId && ARES.mod === 'supabase') {
+    // G-12: Soft delete — Supabase
+    ARES.softSil('devreler', d.supaId).then(function(ok) {
+      if (ok) {
+        showToast('Devre silindi', 'success');
+        veriYukle();
+      } else {
+        showToast('Silme başarısız', 'error');
+      }
+    });
+  } else {
+    // localStorage fallback
+    var silinenler = getSilinenler();
+    if (silinenler.indexOf(aktifId) === -1) silinenler.push(aktifId);
+    try { localStorage.setItem('ares_silinenler', JSON.stringify(silinenler)); } catch(e) {}
+    if (d) _logEkle(d, 'SİLME', 'Devre silindi');
+    renderTable();
+    showToast('Devre silindi', 'success');
+  }
 }
 
 // ── İPTAL ────────────────────────────────────────────────────────
@@ -1330,7 +1431,10 @@ function renderTable(sayfaReset) {
 function devreAc(id) {
   var d = DEVRELER.find(function(x) { return x.id === id; });
   if (!d) return;
-  try { localStorage.setItem('ares_aktif_devre', JSON.stringify(d)); } catch(e) {}
+  try {
+    localStorage.setItem('ares_aktif_devre', JSON.stringify(d));
+    if (d.supaId) localStorage.setItem('ares_aktif_devre_id', d.supaId);
+  } catch(e) {}
   location.href = 'devre_detay_sayfasi.html';
 }
 
@@ -1920,6 +2024,14 @@ function _tabelaPdf() {
 
 // ── BAŞLATMA (DOMContentLoaded) ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
+  (async function() {
+
+  // ── AUTH KONTROLÜ ─────────────────────────────────────────────
+  try {
+    var oturum = await ARES.oturumKontrol();
+    if (!oturum) { location.href = 'giris.html'; return; }
+  } catch(e) { /* offline modu — devam */ }
+
   // Modal kapama
   document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-ov')) { e.target.classList.remove('open'); return; }
@@ -1973,13 +2085,21 @@ document.addEventListener('DOMContentLoaded', function() {
   navBadgeGuncelle();
   guncelleMLButonu();
   _applyI18n();
-  renderTable();
+
+  // Supabase modda Supabase'den yükle, yoksa boş tablo
+  if (ARES.mod === 'supabase') {
+    await veriYukle();
+  } else {
+    renderTable();
+  }
 
   // D-01: dil değişimi
   window._onLangChange = function() { _applyI18n(); renderTable(); };
 
   // B-03: visibility restore
   document.documentElement.style.visibility = '';
+
+  })(); // async wrapper sonu
 });
 </script>
 
