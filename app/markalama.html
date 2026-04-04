@@ -350,26 +350,47 @@ mark{background:rgba(245,158,11,.3);color:var(--tx);border-radius:2px;padding:0 
 // tip: 'otomatik' | 'plaka' | 'manuel'
 // yuzey: markanin vurulacagi malzeme (flans, boru, bilezik vb.)
 // durum: 'bekliyor' | 'listede' | 'tamamlandi'
-let markalamalar = [
-  {id:'M001',spoolNo:'NB1137-Y100-817-007-S02',  spoolId:'1277',tersane:'TERSAN',  isEmir:'I26-015',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'114,3 mm',tip:'otomatik',durum:'bekliyor'},
-  {id:'M002',spoolNo:'NB1137-Y100-817-007-S02',  spoolId:'1277',tersane:'TERSAN',  isEmir:'I26-015',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'114,3 mm',tip:'otomatik',durum:'bekliyor'},
-  {id:'M003',spoolNo:'NB1137-F300-809-014-S01',  spoolId:'1310',tersane:'TERSAN',  isEmir:'I26-082',yuzey:'Kor Flans PN25',            malzeme:'Karbon Celik',kalite:'St44',cap:'88,9 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M004',spoolNo:'NB1099C-D100-803-001-S03', spoolId:'1003',tersane:'TERSAN',  isEmir:'I26-012',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M005',spoolNo:'NB1099C-D100-803-002-S01', spoolId:'1006',tersane:'TERSAN',  isEmir:'I26-048',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M006',spoolNo:'NB1099C-D100-803-002-S02', spoolId:'1007',tersane:'TERSAN',  isEmir:'I26-048',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M007',spoolNo:'NB1137-Y100-817-007-S02',  spoolId:'1277',tersane:'TERSAN',  isEmir:'I26-015',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Paslanmaz',   kalite:'316L', cap:'114,3 mm',tip:'otomatik',durum:'bekliyor'},
-  {id:'M008',spoolNo:'NB1099C-C100-802-007-S01', spoolId:'1155',tersane:'TERSANNB',isEmir:'I26-090',yuzey:'Slip-On Flans PN10',        malzeme:'Paslanmaz',   kalite:'316L', cap:'33,7 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M009',spoolNo:'NB1099C-D100-803-001-S01', spoolId:'1001',tersane:'TERSAN',  isEmir:'I26-012',yuzey:'Dikissiz Boru',             malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M010',spoolNo:'NB1099C-D100-803-003-S02', spoolId:'1012',tersane:'TERSANNB',isEmir:'I26-055',yuzey:'Dikissiz Boru',             malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M011',spoolNo:'NB1099C-D200-801-011-S01', spoolId:'1088',tersane:'TERSANNB',isEmir:'I26-041',yuzey:'Dikissiz Boru',             malzeme:'Karbon Celik',kalite:'St37',cap:'168,3 mm',tip:'otomatik',durum:'bekliyor'},
-  {id:'M012',spoolNo:'NB1137-Y100-817-007-S02',  spoolId:'1277',tersane:'TERSAN',  isEmir:'I26-015',yuzey:'Bilezik DN100',             malzeme:'Paslanmaz',   kalite:'316L', cap:'114,3 mm',tip:'otomatik',durum:'bekliyor'},
-  {id:'M013',spoolNo:'NB1099C-D100-803-025C-S03',spoolId:'1046',tersane:'TERSANNB',isEmir:'I26-021',yuzey:'Tee Esdeger DN80',          malzeme:'Karbon Celik',kalite:'St44',cap:'88,9 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M014',spoolNo:'NB1099C-D100-803-001-S04', spoolId:'1004',tersane:'TERSAN',  isEmir:'I26-012',yuzey:'Plaka',malzemeAdi:'Plaka',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',et:'3,2 mm',tip:'plaka',durum:'bekliyor'},
-  {id:'M015',spoolNo:'NB1099C-D100-803-003-S01', spoolId:'1011',tersane:'TERSANNB',isEmir:'I26-055',yuzey:'Plaka',malzemeAdi:'Plaka',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm',et:'3,2 mm',tip:'plaka',durum:'bekliyor'},
-  {id:'M016',spoolNo:'NB1099C-D100-803-002-S04', spoolId:'1009',tersane:'TERSAN',  isEmir:'I26-048',yuzey:'Kaynak Boyunlu Flans PN16',malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'otomatik',durum:'bekliyor'},
-  {id:'M017',spoolNo:'NB1099C-D100-803-003-S05', spoolId:'1015',tersane:'TERSANNB',isEmir:'I26-055',yuzey:'Kor Flans PN16',            malzeme:'Karbon Celik',kalite:'St37',cap:'60,3 mm', tip:'plaka',   durum:'bekliyor'},
-  {id:'M018',spoolNo:'NB1137-F300-809-014-S01',  spoolId:'1310',tersane:'TERSAN',  isEmir:'I26-082',yuzey:'Dikissiz Boru',             malzeme:'Paslanmaz',   kalite:'304L', cap:'114,3 mm',tip:'otomatik',durum:'bekliyor'},
-];
+let markalamalar = []; // Supabase'den yüklenecek
+
+// ── SUPABASE VERİ YÜKLEYİCİ ─────────────────────────────────
+async function veriYukle() {
+  try {
+    var supa = ARES.supabase();
+    if (!supa) return;
+    var res = await supa
+      .from('markalama_kalemleri')
+      .select('*, spool_malzemeleri(aciklama, malzeme, kalite, dis_cap_mm), spooller(spool_no, devre_id, devreler(devre_no, projeler(proje_no, gemi_adi, is_emri_no, tersaneler(ad))))')
+      .order('olusturma', { ascending: false });
+    if (res.error) { console.warn('[ARES] Markalama yükleme:', res.error); return; }
+    markalamalar = (res.data || []).map(function(k) {
+      var mal = k.spool_malzemeleri || {};
+      var sp  = k.spooller          || {};
+      var dv  = sp.devreler         || {};
+      var prj = dv.projeler         || {};
+      var trs = prj.tersaneler      || {};
+      var spoolLabel = [prj.gemi_adi, dv.devre_no, sp.spool_no].filter(Boolean).join('-');
+      return {
+        id:       k.id,
+        supaId:   k.id,
+        spoolNo:  spoolLabel       || sp.spool_no || '—',
+        spoolId:  sp.id            || '',
+        tersane:  trs.ad           || '—',
+        isEmir:   prj.is_emri_no   || '—',
+        yuzey:    mal.aciklama     || '—',
+        malzeme:  mal.malzeme      || '—',
+        kalite:   mal.kalite       || '—',
+        cap:      mal.dis_cap_mm   ? String(parseFloat(mal.dis_cap_mm).toFixed(1)).replace('.',',') + ' mm' : '—',
+        tip:      k.tip            || 'otomatik',
+        durum:    k.markalandi     ? 'tamamlandi' : 'bekliyor'
+      };
+    });
+    populateFilters();
+    applyFilters();
+  } catch(e) {
+    console.warn('[ARES] veriYukle hatası:', e);
+    applyFilters();
+  }
+}
 
 let markalamaListeleri = [];
 let mlSayac = 1;
@@ -983,11 +1004,11 @@ function toast(msg,type){
 (function(){
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme',t);
-    try{localStorage.setItem('syos_theme',t);}catch(e){}
+    try{localStorage.setItem('ares_theme',t);}catch(e){}
     var lbl=document.getElementById('themeLabel');
     if(lbl)lbl.textContent=t==='light-anthracite'?'Açık Tema':'Koyu Tema';
   }
-  var saved=localStorage.getItem('syos_theme')||'dark';
+  var saved=localStorage.getItem('ares_theme')||'dark';
   applyTheme(saved);
   var btn=document.getElementById('themeToggle');
   if(btn)btn.addEventListener('click',function(){
@@ -996,8 +1017,24 @@ function toast(msg,type){
   });
 })();
 document.addEventListener('DOMContentLoaded',function(){
-  try{var t=localStorage.getItem('syos_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
-  populateFilters();applyFilters();
+  (async function() {
+  try {
+    var _bekle = 0;
+    while (_bekle < 80) {
+      var _supa = ARES.supabase();
+      if (_supa) {
+        var _ses = await _supa.auth.getSession();
+        if (_ses.data && _ses.data.session) { await ARES.oturumKontrol(); break; }
+        if (_bekle > 20) { location.href = 'giris.html'; return; }
+      }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      _bekle++;
+    }
+  } catch(e) {}
+  if (ARES.mod === 'supabase') { await veriYukle(); }
+  else { populateFilters(); applyFilters(); }
+  document.documentElement.style.visibility='';
+  })();
 });
 
 </script>
