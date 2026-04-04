@@ -865,7 +865,7 @@ async function veriYukle() {
     // Spool istatistikleri
     var spoolRes = await supa
       .from('spooller')
-      .select('id, devre_id, agirlik_kg, aktif_basamak, dis_cap_mm, malzeme, yuzey_islemi');
+      .select('id, devre_id, agirlik_kg, aktif_basamak, basamak_snapshot, dis_cap_mm, malzeme, yuzey_islemi');
 
     // Son işlem tarihleri
     var logRes = await supa
@@ -893,12 +893,17 @@ async function veriYukle() {
       _supaIdMap[uiId] = d.id;
       var spools = spoolByDevre[d.id] || [];
       var totalAg = spools.reduce(function(s, x) { return s + (parseFloat(x.agirlik_kg) || 0); }, 0);
-      // İlerleme: aktif_basamak / snapshot uzunluğu
+      // İlerleme: aktif_basamak string → index dönüşümü
       var avgIler = spools.length ? Math.round(
         spools.reduce(function(s, x) {
-          var snap = x.basamak_snapshot;
-          var total = (snap && snap.length) ? snap.length : 6;
-          var aktif = x.aktif_basamak || 0;
+          var snap  = x.basamak_snapshot || [];
+          var total = snap.length || 6;
+          var aktifStr = x.aktif_basamak || '';
+          var aktif = 0;
+          if (aktifStr && snap.length) {
+            var idx = snap.findIndex(function(b){ return b.sistem_adi === aktifStr; });
+            aktif = idx >= 0 ? idx + 1 : 0;
+          }
           return s + Math.round((aktif / total) * 100);
         }, 0) / spools.length
       ) : 0;
