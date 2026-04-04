@@ -1161,7 +1161,18 @@ function renderAlistirma(val){
 }
 function alistirmaEdit(){var f=T('bkAlistForm'),b=T('alistirmaBtn');if(f)f.style.display='block';if(b)b.style.display='none';}
 function alistirmaFormKapat(){var f=T('bkAlistForm'),b=T('alistirmaBtn');if(f)f.style.display='none';if(b)b.style.display='inline';}
-function alistirmaSet(v){SP.alistirma=v;alistirmaFormKapat();renderAlistirma(v);renderQrOnizleme();logEkle('Alaştırma Güncellendi',v);toast('Alaştırma: '+v,'ok');}
+function alistirmaSet(v){
+  SP.alistirma=v;
+  alistirmaFormKapat();
+  renderAlistirma(v);
+  renderQrOnizleme();
+  logEkle('Alaştırma Güncellendi',v);
+  // Supabase'e yaz
+  if (SP.supaId && ARES.mod === 'supabase') {
+    _supaUpdate('spooller', SP.supaId, { alistirma: v, guncelleme: new Date().toISOString() });
+  }
+  toast('Alaştırma: '+v,'ok');
+}
 
 // ── NOTLAR ────────────────────────────────────────────────────
 function renderNotlar(){
@@ -1397,10 +1408,19 @@ function durdurKaydet(){
   var sebep=((T('durdurSebep')||{}).value||'');var ac=((T('durdurAciklama')||{}).value||'').trim();
   if(!sebep){toast('Sebep seçin','er');return;}if(!ac){toast('Açıklama girin','er');return;}
   SP.stopped=true;SP.durdurmaAciklama=sebep+': '+ac;
+  if (SP.supaId && ARES.mod === 'supabase') {
+    _supaUpdate('spooller', SP.supaId, { durduruldu: true, durdurma_sebebi: sebep+': '+ac, durdurma_tarihi: new Date().toISOString() });
+  }
   var band=T('durdurBand');if(band)band.style.display='flex';txc('durdurAciklamaEl',SP.durdurmaAciklama);
   T('durdurModal').style.display='none';renderQrOnizleme();logEkle('Spool Durduruldu',sebep);toast('Spool durduruldu','er');
 }
-function durdurmaKaldir(){if(!confirm('Durdurma kaldırılsın mı?'))return;SP.stopped=false;var b=T('durdurBand');if(b)b.style.display='none';renderQrOnizleme();logEkle('Durdurma Kaldırıldı','');toast('Durdurma kaldırıldı','ok');}
+function durdurmaKaldir(){if(!confirm('Durdurma kaldırılsın mı?'))return;
+  SP.stopped=false;
+  if (SP.supaId && ARES.mod === 'supabase') {
+    _supaUpdate('spooller', SP.supaId, { durduruldu: false, durdurma_sebebi: null, durdurma_tarihi: null });
+  }
+  var b=T('durdurBand');if(b)b.style.display='none';renderQrOnizleme();logEkle('Durdurma Kaldırıldı','');toast('Durdurma kaldırıldı','ok');
+}
 
 // ── DÜZENLE ───────────────────────────────────────────────────
 function duzenleAc(){
