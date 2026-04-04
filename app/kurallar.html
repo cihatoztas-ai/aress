@@ -191,8 +191,10 @@
     <strong style="color:var(--tx);">Hemen yap:</strong> Aksiyon Planı + Sayfa Şartnameleri sekmelerini oku → "Dosyayı okudum, sıradaki: [X]. Devam edelim mi?" de<br><br>
     <strong style="color:var(--tx);">Her zaman:</strong> Kural ihlali varsa yapma / söyle · Sayfa değişince şartname kartını güncelle · M-09 Supabase'de her seferinde hatırlat<br><br>
     <strong style="color:var(--tx);">Mevcut durum:</strong><br>
-    • Tamamlanan: tanimlar ✅ · bukum ✅ · spool_detay ⚠ revizyon · devre_detay ✅ · devreler ✅ · proje_liste ✅ · devre_yeni ✅ · tersaneler ✅<br>
-    • Sıradaki: spool_detay revizyonu · Supabase kurulumu
+    • Tamamlanan: tanimlar ✅ · bukum ✅ · spool_detay ✅ · devre_detay ✅ · devreler ✅ · proje_liste ✅ · devre_yeni ✅ · tersaneler ✅ · giris.html ✅<br>
+    • Supabase bağlı: devreler ✅ · devre_detay ✅ · spool_detay ✅<br>
+    • Supabase altyapı: G-06 ✅ · G-07 ✅ · G-08 ✅ · G-10 ✅ · G-11 ✅ · G-12 ✅<br>
+    • Sıradaki: bukum/markalama Supabase bağlantısı · G-09 RLS test · hakedis.html
   </div>
 </div>
 
@@ -877,6 +879,86 @@
 </div><div class="kural-body">
   <div class="kural-aciklama">Bir firmanın verisi hiçbir koşulda başka firmaya görünmez. Tüm tablolarda <code style="background:var(--sur2);padding:1px 4px;border-radius:3px;font-size:12px;">tenant_id</code> zorunlu. RLS otomatik filtreler.</div>
 </div></div>
+
+<div class="sec-header" style="margin-top:32px;"><span class="sec-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">SUPABASE</span><div class="sec-title">Supabase Bağlantı Kuralları</div><div class="sec-line"></div></div>
+
+<div class="kural-kart cl-ac"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">SB-01</span>
+  <span class="kural-baslik">Auth Kontrolü — Her Sayfada Zorunlu</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Her sayfanın DOMContentLoaded'ı async wrapper içinde çalışır. CDN yüklenene kadar bekler, oturum yoksa giris.html'e yönlendirir.</div>
+  <div class="kod-blok">
+    document.addEventListener(<span class="v">'DOMContentLoaded'</span>, function() {<br>
+    &nbsp;&nbsp;(async function() {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="e">// Supabase CDN + session bekle (max 8 sn)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;var _bekle = 0;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;while (_bekle &lt; 80) {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var _supa = ARES.supabase();<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_supa) {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var _ses = await _supa.auth.getSession();<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_ses.data &amp;&amp; _ses.data.session) break;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (_bekle &gt; 20) { location.href = <span class="v">'giris.html'</span>; return; }<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;await new Promise(function(r){ setTimeout(r, 100); });<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bekle++;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="e">// ... sayfa kodu ...</span><br>
+    &nbsp;&nbsp;})();<br>
+    });
+  </div>
+  <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--re);font-weight:600;margin-top:8px;">⚠ Bu pattern giris.html hariç tüm sayfalara eklenir. Eklenmezse oturum açılmadan sayfa görüntülenebilir.</div>
+</div></div>
+
+<div class="kural-kart cl-gr"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">SB-02</span>
+  <span class="kural-baslik">Supabase Sütun Adı Standardı</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Tüm Supabase tablolarında sütun adları snake_case ve Türkçe standarttır. JS tarafında sütun adları direkt kullanılır — mapping yapılmaz.</div>
+  <div class="kod-blok">
+    <span class="k">olusturma</span> &nbsp;— created_at değil<br>
+    <span class="k">guncelleme</span> &nbsp;— updated_at değil<br>
+    <span class="k">silindi</span> &nbsp;&nbsp;&nbsp;— deleted değil (G-12)<br>
+    <span class="k">silinme_tarihi</span> — deleted_at değil<br>
+    <span class="k">zone_no</span> &nbsp;&nbsp;&nbsp;— zone değil<br>
+    <span class="k">dis_cap_mm</span> &nbsp;— cap_mm değil<br>
+    <span class="k">agirlik_kg</span> &nbsp;— agirlik değil
+  </div>
+</div></div>
+
+<div class="kural-kart cl-warn"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">SB-03</span>
+  <span class="kural-baslik">Veri Yükleme Pattern'i</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Supabase modda veri yükleme fonksiyonları async'tir. Loading state gösterilir, hata olunca graceful fallback yapılır.</div>
+  <div class="kod-blok">
+    <span class="e">// 1. Loading göster</span><br>
+    tbody.innerHTML = <span class="v">'&lt;tr&gt;&lt;td&gt;⏳ Yükleniyor...&lt;/td&gt;&lt;/tr&gt;'</span>;<br><br>
+    <span class="e">// 2. Supabase'den çek</span><br>
+    if (ARES.mod === <span class="v">'supabase'</span>) { await veriYukle(); }<br>
+    else { renderTable(); } <span class="e">// local fallback</span><br><br>
+    <span class="e">// 3. Hata yakalamada renderTable() çağır — boş tablo göster</span><br>
+    catch(e) { console.warn(e); renderTable(); }
+  </div>
+</div></div>
+
+<div class="kural-kart cl-re"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(229,62,62,.12);color:var(--re);">SB-04</span>
+  <span class="kural-baslik">supaId — UI ID Ayrımı</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Supabase UUID'leri UI fonksiyonlarında (yıldız, sıra, onclick handler) doğrudan kullanılmaz. Her kayıt için sequential integer <code>id</code> (UI için) + <code>supaId</code> UUID (DB işlemleri için) tutulur.</div>
+  <div class="kod-blok">
+    DEVRELER[i] = {<br>
+    &nbsp;&nbsp;<span class="k">id</span>: i + 1, &nbsp;&nbsp;<span class="e">// UI fonksiyonları bu id'yi kullanır</span><br>
+    &nbsp;&nbsp;<span class="k">supaId</span>: d.id, <span class="e">// Supabase sorguları bunu kullanır</span><br>
+    &nbsp;&nbsp;...<br>
+    };
+  </div>
+</div></div>
+
 </div>
 
 <!-- ══ GÜVENLİK ══ -->
@@ -911,6 +993,94 @@
 </div><div class="kural-body">
   <div class="kural-aciklama"><strong>RLS olmadan hiçbir tablo production'a alınamaz.</strong> Her tablo için Row Level Security aktif olmalı.</div>
 </div></div>
+
+<div class="kural-kart cl-leg"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">G-06</span>
+  <span class="kural-baslik">JWT Custom Claims — Performans</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Her sorguda <code>get_tenant_id()</code> yerine JWT token'ından <code>tenant_id</code> ve <code>rol</code> okunur. Kullanıcı sayısı arttıkça ekstra DB sorgusunu önler.</div>
+  <div class="kod-blok">
+    <span class="e">// Önce: kullanicilar tablosuna sorgu</span><br>
+    get_tenant_id() → <span class="e">SELECT tenant_id FROM kullanicilar WHERE id = auth.uid()</span><br><br>
+    <span class="v">// Sonra: token'dan anında okur</span><br>
+    (auth.jwt() ->> <span class="v">'tenant_id'</span>)::uuid
+  </div>
+  <div class="etki-baslik">Uygulama</div>
+  <div class="kural-aciklama">Supabase'de <code>custom_access_token_hook</code> Postgres fonksiyonu + Auth Hooks aktif edildi. <code>get_tenant_id()</code> COALESCE ile token'dan okur, yoksa tabloya gider (güvenli geçiş).</div>
+  <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--re);font-weight:600;">⚠ Sayfalar Supabase'e bağlanmadan önce yapılmalı — sonradan tüm RLS politikaları değişmek zorunda kalır.</div>
+</div></div>
+
+<div class="kural-kart cl-ac"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">G-07</span>
+  <span class="kural-baslik">Veritabanı Sequence — Tekil Numara Üretimi</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">İş emri, spool no ve hakediş numaraları Postgres sequence ile üretilir. İki kullanıcı aynı anda kayıt açarsa çakışma olmaz.</div>
+  <div class="kod-blok">
+    <span class="e">// JS'den çağrım</span><br>
+    const no = await ARES.sonrakiNo(<span class="v">'is_emri'</span>);<br>
+    <span class="e">// → Supabase RPC: SELECT nextval('seq_is_emri')</span><br>
+    <span class="e">// Tip: 'is_emri' | 'spool_no' | 'hakedis_no'</span>
+  </div>
+</div></div>
+
+<div class="kural-kart cl-warn"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(217,119,6,.12);color:var(--warn);">G-08</span>
+  <span class="kural-baslik">Oturum Yönetimi — Token Yenileme</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Supabase token varsayılan 1 saat. Kullanıcı işlem yaparken token süresi dolarsa hata alır. Otomatik token yenileme aktif, süresi dolunca giriş sayfasına yönlendirilir.</div>
+  <div class="kural-aciklama" style="margin-top:8px;"><strong>Sayfa Kontrol Protokolü eklendi (SB-01):</strong> Her sayfada DOMContentLoaded başında auth kontrolü zorunlu — CDN yüklenene kadar bekle, oturum yoksa giris.html'e yönlendir.</div>
+</div></div>
+
+<div class="kural-kart cl-re"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(229,62,62,.12);color:var(--re);">G-09</span>
+  <span class="kural-baslik">RLS Çok Kullanıcı Testi — Production Öncesi Zorunlu</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-kritik">⚠ KRİTİK</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Canlıya geçmeden önce iki farklı tenant kullanıcısı açılır. Tenant A'nın verisi Tenant B'ye görünmüyor mu test edilir. Bu test geçilmeden production'a geçilmez.</div>
+</div></div>
+
+<div class="kural-kart cl-ac"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(45,142,255,.12);color:var(--ac);">G-10</span>
+  <span class="kural-baslik">Supabase Storage — Dosya Yükleme</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Fotoğraf ve belge yükleme için Storage bucket kuruldu. Bucket adı: <code>arespipe-dosyalar</code>. RLS: her tenant sadece kendi dosyalarını görebilir. Klasör yapısı: <code>{tenant_id}/{dosya}</code></div>
+  <div style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txm);margin-top:8px;">⚠ Ham nokta bulutu (LiDAR) sisteme girmez. Sadece sapma raporu + görsel yüklenir.</div>
+</div></div>
+
+<div class="kural-kart cl-leg"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(124,58,237,.12);color:var(--leg);">G-11</span>
+  <span class="kural-baslik">Audit Log — Kritik İşlem Geçmişi</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama"><code>islem_log</code> iş mantığı logudur. Bunun yanında güvenlik amaçlı <code>audit_log</code> tablosu Postgres trigger ile otomatik doldurulur. Elle çağırmak gerekmez.</div>
+  <div class="etki-baslik">Kapsam</div>
+  <div class="kural-aciklama">hakedis_paketleri · kullanicilar · devreler · spooller — kritik tablolarda INSERT/UPDATE/DELETE otomatik loglanır.</div>
+  <div class="kod-blok">
+    audit_log: <span class="k">tablo_adi</span> · <span class="k">kayit_id</span> · <span class="k">islem</span> · <span class="k">eski_deger jsonb</span> · <span class="k">yeni_deger jsonb</span> · <span class="k">yapan_id</span> · <span class="k">tarih</span>
+  </div>
+</div></div>
+
+<div class="kural-kart cl-gr"><div class="kural-head" onclick="tog(this.parentElement)">
+  <span class="kural-kod" style="background:rgba(22,163,110,.12);color:var(--gr);">G-12</span>
+  <span class="kural-baslik">Soft Delete — Güvenli Silme</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="kural-arrow">▼</span></div>
+</div><div class="kural-body">
+  <div class="kural-aciklama">Fiziksel silme yerine <code>silindi = true</code> ve <code>silinme_tarihi</code> alanları işaretlenir. RLS politikasına <code>silindi = false</code> koşulu eklenir — silinen kayıtlar sayfada görünmez ama veritabanında durur.</div>
+  <div class="etki-baslik">Kapsam</div>
+  <div class="kural-aciklama">spooller · devreler · hakedis_paketleri · belgeler · notlar</div>
+  <div class="etki-baslik">JS Kullanımı</div>
+  <div class="kod-blok">
+    <span class="e">// G-01 innerHTML yasak gibi — fiziksel DELETE yasak</span><br>
+    await ARES.softSil(<span class="v">'devreler'</span>, supaId);<br>
+    <span class="e">// → UPDATE devreler SET silindi=true WHERE id=$1</span>
+  </div>
+  <div style="background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--re);font-weight:600;margin-top:8px;">⚠ Şemaya şimdi eklenmeli — sonradan tüm tablolara alan eklemek zahmetli olur.</div>
+</div></div>
+
 </div>
 
 <!-- ══ SAYFA ŞARTNAMELERİ ══ -->
@@ -1065,6 +1235,65 @@
   <div class="bekleyen-item"><span class="bekleyen-kural">Stat</span><span class="bekleyen-aciklama">Proje/spool/ağırlık değerleri Supabase sorgusundan gelecek.</span></div>
 </div></div>
 
+<div class="sec-header" style="margin-top:28px;"><span class="sec-badge" style="background:rgba(45,142,255,.12);color:var(--ac);">SUPABASE</span><div class="sec-title">Supabase Bağlı Sayfalar</div><div class="sec-line"></div></div>
+<div style="font-size:12px;color:var(--txd);margin-bottom:20px;">Bu sayfalar Supabase'e bağlandı. localStorage artık sadece geçici cache.</div>
+
+<div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(22,163,110,.12);">🔐</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Giriş Sayfası <span class="durum-badge d-tamam" style="font-size:12px;vertical-align:middle;">✓ Tamamlandı</span></div><div class="sartname-dosya">giris.html</div></div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;"><span class="badge-yeni">YENİ</span><span class="sartname-arrow">▼</span></div>
+</div><div class="sartname-body">
+  <div class="sartname-row"><div class="sartname-etiket">Amaç</div><div class="sartname-deger">Email/şifre ile giriş. Oturum varsa index.html'e yönlendirir. Hata mesajları Türkçeleştirilmiş.</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Özellikler</div><div class="sartname-deger">Supabase CDN bekleme · spinner + disabled state · Enter tuşu desteği · şifre göster/gizle · Flash prevention (tema + lang)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Bağlantı</div><div class="sartname-deger">ARES.girisYap() → JWT token'a tenant_id + rol yazılır (G-06) → index.html</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;color:var(--gr);">✅ Bekleyen değişiklik yok.</div>
+</div></div>
+
+<div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(45,142,255,.12);">📋</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Aktif Devreler — Supabase <span class="durum-badge d-tamam" style="font-size:12px;vertical-align:middle;">✓ Bağlandı</span></div><div class="sartname-dosya">devreler.html</div></div>
+  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+</div><div class="sartname-body">
+  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger">devreler + projeler + tersaneler join · spooller aggregate (adet, ağırlık, ilerleme) · islem_log (son işlem tarihi)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Sütun Mapping</div><div class="sartname-deger">zone_no → zone · dis_cap_mm → cap · agirlik_kg → agirlik · olusturma → created_at (SB-02)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">ID Yapısı</div><div class="sartname-deger">id (sequential int, UI) + supaId (UUID, DB) — SB-04</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Silme</div><div class="sartname-deger">ARES.softSil('devreler', supaId) — G-12</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen</div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">İlerleme</span><span class="bekleyen-aciklama">basamak_snapshot'tan gerçek ilerleme hesabı — şimdi 0 gösteriyor.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">Filtre</span><span class="bekleyen-aciklama">Malzeme/yüzey filtreleri spool seviyesinden geliyor — aggregate sorgu gerekiyor.</span></div>
+</div></div>
+
+<div class="sartname-kart cl-ac"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(45,142,255,.12);">🔌</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Devre Detay — Supabase <span class="durum-badge d-tamam" style="font-size:12px;vertical-align:middle;">✓ Bağlandı</span></div><div class="sartname-dosya">devre_detay_sayfasi.html</div></div>
+  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+</div><div class="sartname-body">
+  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger">DEVRE: ares_aktif_devre localStorage · SPOOLS: Supabase spooller tablosu (devre_id ile)</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">spoolYukle()</div><div class="sartname-deger">spooller + spool_malzemeleri join · basamak_snapshot'tan ilerleme/adimlar dizisi · dis_cap_mm, agirlik_kg mapping</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Geçiş</div><div class="sartname-deger">devreAc() → ares_aktif_devre + ares_aktif_devre_id (UUID) localStorage'a kaydedilir</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen</div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">DEVRE</span><span class="bekleyen-aciklama">DEVRE objesi hâlâ localStorage'dan geliyor. Supabase'den direkt çekilmeli — ares_aktif_devre_id ile.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">KK/Sevk</span><span class="bekleyen-aciklama">kk_davetler + sevkiyatlar tablosundan gerçek durum çekilmeli.</span></div>
+</div></div>
+
+<div class="sartname-kart cl-gr"><div class="sartname-head" onclick="togS(this.parentElement)">
+  <div class="sartname-icon" style="background:rgba(22,163,110,.12);">📦</div>
+  <div class="sartname-meta"><div class="sartname-baslik">Spool Detay — Supabase <span class="durum-badge d-tamam" style="font-size:12px;vertical-align:middle;">✓ Bağlandı</span></div><div class="sartname-dosya">spool_detay.html</div></div>
+  <div style="margin-left:auto;"><span class="sartname-arrow">▼</span></div>
+</div><div class="sartname-body">
+  <div class="sartname-row"><div class="sartname-etiket">Veri Kaynağı</div><div class="sartname-deger">SP: ares_aktif_spool localStorage (supaId içerir) · ARES.supabase() ile spooller + spool_malzemeleri + notlar + fotograflar + belgeler</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">spoolYukle()</div><div class="sartname-deger">SP'yi Supabase verisiyle zenginleştirir · MALZEME/NOTLAR/FOTOLAR/BELGELER/LOGLAR dizilerini doldurur</div></div>
+  <div class="sartname-row"><div class="sartname-etiket">Tracker</div><div class="sartname-deger">aktif_basamak + basamak_snapshot → adimlar dizisi (0/1/3) · renderTracker() parseInt ile güvenli</div></div>
+  <hr class="sartname-divider">
+  <div style="font-size:12px;font-weight:800;color:var(--re);text-transform:uppercase;margin-bottom:8px;">Bekleyen</div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">Yazma</span><span class="bekleyen-aciklama">Kesim/büküm/markalama eklemek, not kaydetmek, fotoğraf yüklemek — hâlâ localStorage. Supabase'e yazma eklenmeli.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">G-10</span><span class="bekleyen-aciklama">Fotoğraf yükleme Supabase Storage'a bağlanacak.</span></div>
+  <div class="bekleyen-item"><span class="bekleyen-kural">TESTLER</span><span class="bekleyen-aciklama">testler tablosundan çekilmeli — şimdi boş array.</span></div>
+</div></div>
+
 </div>
 
 <!-- ══ NOTLAR ══ -->
@@ -1195,15 +1424,21 @@
 <div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">markalama.html tam revizyon</div><div class="aksiyon-aciklama">D-01 + F-01 + P-01 + L-01 + G-01</div></div><span class="durum-badge d-revizyon">⚠ Revizyon</span></div>
 <div class="aksiyon-item"><div class="aksiyon-no">12</div><div style="flex:1;"><div class="aksiyon-baslik">ares-layout.js — #lang-toggle CSS fix</div><div class="aksiyon-aciklama">injectGlobalCSS() içine ekle: #lang-toggle { color: var(--sb-txm) !important; border-color: var(--sb-bor) !important; }</div></div><span class="durum-badge d-revizyon">⚠ Bekliyor</span></div>
 
-<div style="font-size:12px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">🗄️ Supabase Aşaması</div>
-<div class="aksiyon-item"><div class="aksiyon-no">13</div><div style="flex:1;"><div class="aksiyon-baslik">Sistem kurgusu netleştir</div><div class="aksiyon-aciklama">Modüller, kullanıcı akışları, işlem basamakları listesi</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
-<div class="aksiyon-item" style="border-color:rgba(229,62,62,.4);background:rgba(229,62,62,.03);">
-  <div class="aksiyon-no" style="color:var(--re);">⚠</div>
-  <div style="flex:1;"><div class="aksiyon-baslik" style="color:var(--re);">M-09 Basamak Snapshot — KRİTİK</div><div class="aksiyon-aciklama">Supabase şemasında ilk ele alınacak. ATLANAMAZ.</div></div>
-  <span class="badge-kritik">⚠ KRİTİK</span>
-</div>
-<div class="aksiyon-item"><div class="aksiyon-no">14</div><div style="flex:1;"><div class="aksiyon-baslik">Veritabanı şeması tasarla</div><div class="aksiyon-aciklama">Tablo yapıları, ilişkiler, tenant_id, RLS kuralları. Spool tablosuna cap (mm) + agirlik alanları zorunlu (CAP-01/02).</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
-<div class="aksiyon-item"><div class="aksiyon-no">15</div><div style="flex:1;"><div class="aksiyon-baslik">Super Admin Paneli</div><div class="aksiyon-aciklama">Supabase kurulduktan sonra</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div style="font-size:12px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">🗄️ Supabase Altyapı Aşaması</div>
+<div class="aksiyon-item"><div class="aksiyon-no">13</div><div style="flex:1;"><div class="aksiyon-baslik">G-06 JWT Custom Claims</div><div class="aksiyon-aciklama">custom_access_token_hook · get_tenant_id() JWT'den okur · ares-store.js v2.2</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">14</div><div style="flex:1;"><div class="aksiyon-baslik">G-07/G-10/G-11/G-12 — Altyapı Paket</div><div class="aksiyon-aciklama">Sequence · Storage bucket · Audit log trigger · Soft delete alanları</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">15</div><div style="flex:1;"><div class="aksiyon-baslik">giris.html — Giriş Sayfası</div><div class="aksiyon-aciklama">Email/şifre · ARES.girisYap() · Oturum varsa index.html'e yönlendirme · SB-01 pattern</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">16</div><div style="flex:1;"><div class="aksiyon-baslik">devreler.html — Supabase Bağlantısı</div><div class="aksiyon-aciklama">veriYukle() · devreler + spooller + log join · filtre dropdownları dinamik · G-12 softSil · SB-01/02/03/04</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">17</div><div style="flex:1;"><div class="aksiyon-baslik">devre_detay_sayfasi.html — Supabase Bağlantısı</div><div class="aksiyon-aciklama">spoolYukle() · basamak_snapshot'tan ilerleme · SB-01 auth kontrolü</div></div><span class="durum-badge d-tamam">✓</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">18</div><div style="flex:1;"><div class="aksiyon-baslik">spool_detay.html — Supabase Bağlantısı</div><div class="aksiyon-aciklama">spoolYukle() · spool_malzemeleri + notlar + fotograflar + belgeler + islem_log · SB-01 auth</div></div><span class="durum-badge d-tamam">✓</span></div>
+
+<div style="font-size:12px;font-weight:800;color:var(--txd);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">⚙️ Sıradakiler</div>
+<div class="aksiyon-item"><div class="aksiyon-no">19</div><div style="flex:1;"><div class="aksiyon-baslik">G-09 RLS Çok Kullanıcı Testi</div><div class="aksiyon-aciklama">İki farklı tenant açılır, A'nın verisi B'ye görünmüyor mu test edilir. Production öncesi zorunlu.</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">20</div><div style="flex:1;"><div class="aksiyon-baslik">bukum.html / markalama.html — Supabase Bağlantısı</div><div class="aksiyon-aciklama">SB-01/02/03/04 · localStorage → Supabase geçişi</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">21</div><div style="flex:1;"><div class="aksiyon-baslik">hakedis.html — Yeni Sayfa</div><div class="aksiyon-aciklama">Supabase hakedis_paketleri + hakedis_spooller tabloları</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">22</div><div style="flex:1;"><div class="aksiyon-baslik">G-08 Oturum Yönetimi — Token Yenileme</div><div class="aksiyon-aciklama">Otomatik refresh · Süresi dolunca giris.html yönlendirme</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">23</div><div style="flex:1;"><div class="aksiyon-baslik">mobil_qr.html</div><div class="aksiyon-aciklama">QR okuma sayfası — telefon tarayıcısında çalışacak</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
+<div class="aksiyon-item"><div class="aksiyon-no">24</div><div style="flex:1;"><div class="aksiyon-baslik">Super Admin Paneli</div><div class="aksiyon-aciklama">Tenant yönetimi, kullanıcı ekleme, plan/demo kontrolü</div></div><span class="durum-badge d-yapilmadi">Bekliyor</span></div>
 </div>
 
 <!-- ══ KULLANIM KILAVUZLARI ══ -->
