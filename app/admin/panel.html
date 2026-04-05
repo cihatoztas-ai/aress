@@ -6,6 +6,7 @@
 <title>AresPipe — Süper Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../ares-store.js"></script>
 <style>
 :root {
   --bg:    #0a0b0e;
@@ -477,10 +478,20 @@ tr:hover td{background:rgba(255,255,255,.02);}
 'use strict';
 
 // ── SUPABASE ──────────────────────────────────────────────────
-const _supa = supabase.createClient(
+// Önce ares-store.js'deki client'ı dene (shared session)
+// yoksa bağımsız client oluştur
+const _supaBase = supabase.createClient(
   'https://ochvbepfiatzvyknkvsn.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jaHZiZXBmaWF0enZ5a25rdnNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NTc5NTIsImV4cCI6MjA1OTMzMzk1Mn0.lAIdEBEQiRonaxlZgEluPFRidQJMv8YzZgJMDVE9RLM'
 );
+// ARES.supabase() varsa onu kullan — session paylaşımı için
+function _getSupa() {
+  if (typeof ARES !== 'undefined' && ARES.supabase && ARES.supabase()) return ARES.supabase();
+  return _supaBase;
+}
+// _supa referansını ARES'e bağla
+Object.defineProperty(window, '_supa', { get: _getSupa });
+
 
 // ── STATE ──────────────────────────────────────────────────────
 var _oturum = null;
